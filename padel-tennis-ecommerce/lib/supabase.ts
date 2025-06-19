@@ -11,12 +11,7 @@ export type Product = {
   category: string
   subcategory: string
   price: number
-  original_price: number | null
   image: string
-  rating: number
-  reviews: number
   description: string
   in_stock: boolean
-  code: string
-  created_at?: string
 }

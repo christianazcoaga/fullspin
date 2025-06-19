@@ -24,8 +24,7 @@ export default function AdminPage() {
     if (searchQuery.trim()) {
       const filtered = products.filter(
         (product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.code.toLowerCase().includes(searchQuery.toLowerCase()),
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
       setFilteredProducts(filtered)
     } else {
@@ -114,7 +113,6 @@ export default function AdminPage() {
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
-                          <p className="text-xs text-gray-500">Código: {product.code}</p>
                         </div>
                       </div>
                     </div>

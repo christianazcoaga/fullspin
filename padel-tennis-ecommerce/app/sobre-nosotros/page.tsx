@@ -19,7 +19,13 @@ export default function SobreNosotrosPage() {
 
             <nav className="hidden md:flex space-x-8">
               <Link href="/" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+                Inicio
+              </Link>
+              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
                 Padel
+              </Link>
+              <Link href="/tenis-mesa" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+                Tenis de Mesa
               </Link>
               <Link href="/sobre-nosotros" className="text-sm font-medium text-orange-600 border-b-2 border-orange-600">
                 Sobre nosotros
@@ -34,7 +40,7 @@ export default function SobreNosotrosPage() {
         <Link href="/">
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver al catálogo
+            Volver al inicio
           </Button>
         </Link>
       </div>
