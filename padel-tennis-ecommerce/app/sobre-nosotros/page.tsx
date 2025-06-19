@@ -14,20 +14,20 @@ export default function SobreNosotrosPage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4 cursor-pointer">
               <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={50} height={50} className="rounded-lg" />
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-orange-600 transition-colors">FullSpin</h1>
+              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">FullSpin</h1>
             </Link>
 
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Inicio
               </Link>
-              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Padel
               </Link>
-              <Link href="/tenis-mesa" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/tenis-mesa" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Tenis de Mesa
               </Link>
-              <Link href="/sobre-nosotros" className="text-sm font-medium text-orange-600 border-b-2 border-orange-600">
+              <Link href="/sobre-nosotros" className="text-sm font-medium text-blue-600 border-b-2 border-blue-600">
                 Sobre nosotros
               </Link>
             </nav>
@@ -40,13 +40,13 @@ export default function SobreNosotrosPage() {
         <Link href="/">
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver al inicio
+            Volver al catálogo
           </Button>
         </Link>
       </div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 to-orange-100 py-16">
+      <section className="bg-gradient-to-br from-blue-50 to-blue-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Sobre Nosotros</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -78,15 +78,15 @@ export default function SobreNosotrosPage() {
             </div>
 
             <div className="relative">
-              <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl p-8">
+              <div className="relative h-64 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8">
                 <div className="text-center space-y-4">
-                  <div className="w-24 h-24 bg-orange-500 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-24 h-24 rounded-full mx-auto flex items-center justify-center">
                     <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900">Calidad Garantizada</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-xl font-semibold text-white">Calidad Garantizada</h3>
+                  <p className="text-white">
                     Todos nuestros productos son originales y cuentan con garantía oficial de fábrica.
                   </p>
                 </div>
@@ -97,19 +97,19 @@ export default function SobreNosotrosPage() {
           {/* Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">100+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">100+</div>
               <div className="text-gray-600 font-medium">Productos</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">5+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">5+</div>
               <div className="text-gray-600 font-medium">Marcas Premium</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">24/7</div>
               <div className="text-gray-600 font-medium">Atención WhatsApp</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">100%</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
               <div className="text-gray-600 font-medium">Productos Originales</div>
             </div>
           </div>
@@ -117,8 +117,8 @@ export default function SobreNosotrosPage() {
           {/* Services */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="text-center p-6 bg-gray-50 rounded-xl">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
@@ -127,8 +127,8 @@ export default function SobreNosotrosPage() {
             </div>
 
             <div className="text-center p-6 bg-gray-50 rounded-xl">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -142,8 +142,8 @@ export default function SobreNosotrosPage() {
             </div>
 
             <div className="text-center p-6 bg-gray-50 rounded-xl">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -159,7 +159,7 @@ export default function SobreNosotrosPage() {
 
           {/* Mission & Vision */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="bg-orange-50 p-8 rounded-xl">
+            <div className="bg-blue-50 p-8 rounded-xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Nuestra Misión</h3>
               <p className="text-gray-600 leading-relaxed">
                 Proporcionar a los jugadores de padel el mejor equipamiento deportivo, combinando calidad, variedad y un
@@ -181,10 +181,10 @@ export default function SobreNosotrosPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="bg-orange-600 py-16">
+      <section className="bg-blue-600 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">¿Tienes alguna pregunta?</h2>
-          <p className="text-orange-100 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
             Estamos aquí para ayudarte. Contáctanos por WhatsApp y te asesoraremos en todo lo que necesites.
           </p>
           <Button
@@ -193,7 +193,7 @@ export default function SobreNosotrosPage() {
               const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`
               window.open(whatsappUrl, "_blank")
             }}
-            className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
+            className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
           >
             Contactar por WhatsApp
           </Button>

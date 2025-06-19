@@ -18,25 +18,25 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4">
               <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={50} height={50} className="rounded-lg" />
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-orange-600 transition-colors">FullSpin</h1>
+              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">FullSpin</h1>
             </Link>
 
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium text-orange-600 border-b-2 border-orange-600">
+              <Link href="/" className="text-sm font-medium text-blue-600 border-b-2 border-blue-600">
                 Inicio
               </Link>
-              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Padel
               </Link>
               <Link
                 href="/tenis-mesa"
-                className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Tenis de Mesa
               </Link>
               <Link
                 href="/sobre-nosotros"
-                className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Sobre nosotros
               </Link>
@@ -54,7 +54,7 @@ export default function HomePage() {
             <div className="px-4 py-2 space-y-2">
               <Link
                 href="/"
-                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-orange-100 text-orange-700"
+                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Inicio
@@ -86,28 +86,25 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 to-orange-100 py-20">
+      <section className="bg-gradient-to-br from-blue-50 to-blue-100 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Bienvenido a <span className="text-orange-600">FullSpin</span>
+              Bienvenido a <span className="text-blue-600">FullSpin</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Tu tienda especializada en equipamiento deportivo para Padel y Tenis de Mesa
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/padel">
-                <Button className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 text-lg">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg">
                   Ver Productos de Padel
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/tenis-mesa">
-                <Button
-                  variant="outline"
-                  className="border-orange-600 text-orange-600 hover:bg-orange-50 px-8 py-3 text-lg"
-                >
-                  Ver Productos de Tenis de Mesa
+                <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 text-lg">
+                  Ver Tenis de Mesa
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -128,7 +125,7 @@ export default function HomePage() {
             {/* Padel Card */}
             <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
               <CardContent className="p-0">
-                <div className="relative h-64 bg-gradient-to-br from-orange-400 to-orange-600">
+                <div className="relative h-64 bg-gradient-to-br from-blue-500 to-blue-700">
                   <div className="absolute inset-0 bg-black bg-opacity-20"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
@@ -143,7 +140,7 @@ export default function HomePage() {
                     Head y más.
                   </p>
                   <Link href="/padel">
-                    <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                       Explorar Padel
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -192,32 +189,32 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <Award className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <Award className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Calidad Premium</h3>
               <p className="text-gray-600">Productos originales de las mejores marcas del mercado</p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <Zap className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <Zap className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Entrega Rápida</h3>
               <p className="text-gray-600">Consulta disponibilidad y tiempos de entrega por WhatsApp</p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <Users className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Atención Personalizada</h3>
               <p className="text-gray-600">Te asesoramos para elegir el equipamiento ideal</p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                <Star className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto flex items-center justify-center mb-4">
+                <Star className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">100% Originales</h3>
               <p className="text-gray-600">Garantía oficial de fábrica en todos nuestros productos</p>
@@ -227,10 +224,10 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-orange-600">
+      <section className="py-16 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">¿Listo para mejorar tu juego?</h2>
-          <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Contáctanos por WhatsApp y te ayudaremos a encontrar el equipamiento perfecto para ti
           </p>
           <Button
@@ -239,7 +236,7 @@ export default function HomePage() {
               const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`
               window.open(whatsappUrl, "_blank")
             }}
-            className="bg-white text-orange-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
+            className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
           >
             Contactar por WhatsApp
           </Button>

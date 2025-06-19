@@ -116,7 +116,7 @@ export default function PadelPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando productos...</p>
         </div>
       </div>
@@ -131,25 +131,25 @@ export default function PadelPage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4">
               <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={50} height={50} className="rounded-lg" />
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-orange-600 transition-colors">FullSpin</h1>
+              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">FullSpin</h1>
             </Link>
 
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Inicio
               </Link>
-              <Link href="/padel" className="text-sm font-medium text-orange-600 border-b-2 border-orange-600">
+              <Link href="/padel" className="text-sm font-medium text-blue-600 border-b-2 border-blue-600">
                 Padel
               </Link>
               <Link
                 href="/tenis-mesa"
-                className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Tenis de Mesa
               </Link>
               <Link
                 href="/sobre-nosotros"
-                className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Sobre nosotros
               </Link>
@@ -174,7 +174,7 @@ export default function PadelPage() {
               </Link>
               <Link
                 href="/padel"
-                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-orange-100 text-orange-700"
+                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Padel
@@ -199,10 +199,10 @@ export default function PadelPage() {
       </header>
 
       {/* Page Header */}
-      <div className="bg-gradient-to-r from-orange-500 to-orange-600 py-12">
+      <div className="bg-gradient-to-r from-blue-500 to-blue-700 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Catálogo de Padel</h1>
-          <p className="text-orange-100 text-lg">Encuentra el equipamiento perfecto para tu juego</p>
+          <p className="text-blue-100 text-lg">Encuentra el equipamiento perfecto para tu juego</p>
         </div>
       </div>
 
@@ -315,7 +315,7 @@ export default function PadelPage() {
                     <p className="text-xs text-gray-600 line-clamp-2">{product.description}</p>
 
                     <div className="space-y-1">
-                      <div className="text-lg font-bold text-orange-600">{formatPrice(product.price)}</div>
+                      <div className="text-lg font-bold text-blue-600">{formatPrice(product.price)}</div>
                     </div>
 
                     <Button

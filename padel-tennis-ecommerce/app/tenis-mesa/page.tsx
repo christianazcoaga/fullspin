@@ -116,7 +116,7 @@ export default function TenisMesaPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando productos...</p>
         </div>
       </div>
@@ -131,22 +131,22 @@ export default function TenisMesaPage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4">
               <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={50} height={50} className="rounded-lg" />
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-orange-600 transition-colors">FullSpin</h1>
+              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">FullSpin</h1>
             </Link>
 
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Inicio
               </Link>
-              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors">
+              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
                 Padel
               </Link>
-              <Link href="/tenis-mesa" className="text-sm font-medium text-blue-600 border-b-2 border-blue-600">
+              <Link href="/tenis-mesa" className="text-sm font-medium text-blue-800 border-b-2 border-blue-800">
                 Tenis de Mesa
               </Link>
               <Link
                 href="/sobre-nosotros"
-                className="text-sm font-medium text-gray-700 hover:text-orange-600 transition-colors"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 Sobre nosotros
               </Link>
@@ -178,7 +178,7 @@ export default function TenisMesaPage() {
               </Link>
               <Link
                 href="/tenis-mesa"
-                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-700"
+                className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium bg-blue-100 text-blue-800"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tenis de Mesa
@@ -196,7 +196,7 @@ export default function TenisMesaPage() {
       </header>
 
       {/* Page Header */}
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 py-12">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Catálogo de Tenis de Mesa</h1>
           <p className="text-blue-100 text-lg">Equipamiento profesional para tu juego</p>
@@ -312,7 +312,7 @@ export default function TenisMesaPage() {
                     <p className="text-xs text-gray-600 line-clamp-2">{product.description}</p>
 
                     <div className="space-y-1">
-                      <div className="text-lg font-bold text-blue-600">{formatPrice(product.price)}</div>
+                      <div className="text-lg font-bold text-blue-700">{formatPrice(product.price)}</div>
                     </div>
 
                     <Button
