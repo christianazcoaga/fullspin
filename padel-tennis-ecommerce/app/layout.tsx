@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'FullSpin',
-  description: 'Created with v0',
+  description: 'FullSpin - El mejor equipamiento deportivo',
   generator: 'v0.dev',
 }
 
