@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Search, Menu, X, Star, MessageCircle } from "lucide-react"
+import { Search, Menu, X, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -24,15 +24,25 @@ const formatPrice = (price: number): string => {
 
 const categories = [
   { id: "padel", name: "Padel", subcategories: ["palas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"] },
+  {
+    id: "tenis-mesa",
+    name: "Tenis de Mesa",
+    subcategories: ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"],
+  },
 ]
 
 const subcategoryNames: { [key: string]: string } = {
+  // Padel
   palas: "Palas",
   zapatillas: "Zapatillas",
   pelotas: "Pelotas",
   bolsos: "Bolsos",
   ropa: "Ropa",
   accesorios: "Accesorios",
+  // Tenis de Mesa
+  paletas: "Paletas",
+  gomas: "Gomas",
+  mesas: "Mesas",
 }
 
 export default function EcommercePage() {
@@ -338,20 +348,6 @@ export default function EcommercePage() {
 
                     <p className="text-xs text-gray-600 line-clamp-2">{product.description}</p>
 
-                    <div className="flex items-center gap-1">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 ${
-                              i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-600">({product.reviews})</span>
-                    </div>
-
                     <div className="space-y-1">
                       <div className="text-lg font-bold text-orange-600">{formatPrice(product.price)}</div>
                       <div className="text-xs text-gray-500">Código: {product.code}</div>
@@ -379,7 +375,7 @@ export default function EcommercePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">FullSpin</h3>
-              <p className="text-gray-400">Tu tienda especializada en equipamiento de padel.</p>
+              <p className="text-gray-400">Tu tienda especializada en equipamiento deportivo.</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contacto</h3>
