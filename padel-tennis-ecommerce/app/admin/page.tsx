@@ -9,16 +9,50 @@ import { Search } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD // Cambiá esto por la contraseña que desees
+
 export default function AdminPage() {
+  const [authenticated, setAuthenticated] = useState(false)
+  const [passwordInput, setPasswordInput] = useState("")
+  const [error, setError] = useState("")
+
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(true)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
+  // Verifica si ya está logueado en localStorage
   useEffect(() => {
-    loadProducts()
+    if (typeof window !== "undefined") {
+      const auth = localStorage.getItem("fullspin-admin-auth")
+      if (auth === "ok") setAuthenticated(true)
+    }
   }, [])
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (passwordInput === ADMIN_PASSWORD) {
+      setAuthenticated(true)
+      localStorage.setItem("fullspin-admin-auth", "ok")
+      setError("")
+    } else {
+      setError("Contraseña incorrecta")
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("fullspin-admin-auth")
+    setAuthenticated(false)
+    setPasswordInput("")
+  }
+
+  useEffect(() => {
+    if (authenticated) {
+      loadProducts()
+    }
+    // eslint-disable-next-line
+  }, [authenticated])
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -50,6 +84,26 @@ export default function AdminPage() {
     setFilteredProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, image: newImageUrl } : p)))
   }
 
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <form onSubmit={handleLogin} className="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm space-y-4">
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">Panel de Admin</h2>
+          <Input
+            type="password"
+            placeholder="Contraseña"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            className="w-full"
+            autoFocus
+          />
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          <Button type="submit" className="w-full">Ingresar</Button>
+        </form>
+      </div>
+    )
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -68,9 +122,14 @@ export default function AdminPage() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900">Administración de Productos</h1>
-            <Link href="/">
-              <Button variant="outline">Volver a la tienda</Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/">
+                <Button variant="outline">Volver a la tienda</Button>
+              </Link>
+              <Button variant="destructive" onClick={handleLogout}>
+                Cerrar sesión
+              </Button>
+            </div>
           </div>
 
           {/* Search */}
