@@ -1,22 +1,40 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Search, Menu, X, MessageCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getProductsByCategory, getProductsBySubcategory, searchProducts, type Product } from "@/lib/products"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Search, Menu, X, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  getProductsByCategory,
+  getProductsBySubcategory,
+  searchProducts,
+  type Product,
+} from "@/lib/products";
 
 // Función para formatear precios con separadores de miles
 const formatPrice = (price: number): string => {
-  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 })}`
-}
+  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 })}`;
+};
 
-const subcategories = ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"]
+const subcategories = [
+  "paletas",
+  "gomas",
+  "pelotas",
+  "mesas",
+  "ropa",
+  "accesorios",
+];
 
 const subcategoryNames: { [key: string]: string } = {
   paletas: "Paletas",
@@ -25,92 +43,102 @@ const subcategoryNames: { [key: string]: string } = {
   mesas: "Mesas",
   ropa: "Ropa",
   accesorios: "Accesorios",
-}
+};
 
 export default function TenisMesaPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [selectedSubcategory, setSelectedSubcategory] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [priceFilter, setPriceFilter] = useState("all")
-  const [sortBy, setSortBy] = useState("name")
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priceFilter, setPriceFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("name");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(15);
 
   // Cargar productos al iniciar
   useEffect(() => {
-    loadProducts()
-  }, [])
+    loadProducts();
+  }, []);
 
   const loadProducts = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const data = await getProductsByCategory("tenis-mesa")
-      setProducts(data)
-      setFilteredProducts(data)
+      const data = await getProductsByCategory("tenis-mesa");
+      setProducts(data);
+      setFilteredProducts(data);
     } catch (error) {
-      console.error("Error loading products:", error)
+      console.error("Error loading products:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // Filtrar productos cuando cambian los filtros
   useEffect(() => {
-    filterProducts()
-  }, [products, selectedSubcategory, searchQuery, priceFilter, sortBy])
+    filterProducts();
+  }, [products, selectedSubcategory, searchQuery, priceFilter, sortBy]);
 
   const filterProducts = async () => {
-    let filtered = [...products]
+    let filtered = [...products];
 
     // Filtro por búsqueda
     if (searchQuery.trim()) {
-      const searchResults = await searchProducts(searchQuery.trim())
-      filtered = searchResults.filter((product) => product.category === "tenis-mesa")
+      const searchResults = await searchProducts(searchQuery.trim());
+      filtered = searchResults.filter(
+        (product) => product.category === "tenis-mesa"
+      );
     } else {
       // Filtro por subcategoría
       if (selectedSubcategory !== "all") {
-        const subcategoryResults = await getProductsBySubcategory("tenis-mesa", selectedSubcategory)
-        filtered = subcategoryResults
+        const subcategoryResults = await getProductsBySubcategory(
+          "tenis-mesa",
+          selectedSubcategory
+        );
+        filtered = subcategoryResults;
       } else {
-        const categoryResults = await getProductsByCategory("tenis-mesa")
-        filtered = categoryResults
+        const categoryResults = await getProductsByCategory("tenis-mesa");
+        filtered = categoryResults;
       }
     }
 
     // Filtro por precio
     if (priceFilter !== "all") {
-      const [min, max] = priceFilter.split("-").map(Number)
+      const [min, max] = priceFilter.split("-").map(Number);
       filtered = filtered.filter((product) => {
         if (max) {
-          return product.price >= min && product.price <= max
+          return product.price >= min && product.price <= max;
         } else {
-          return product.price >= min
+          return product.price >= min;
         }
-      })
+      });
     }
 
     // Ordenamiento
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-asc":
-          return a.price - b.price
+          return a.price - b.price;
         case "price-desc":
-          return b.price - a.price
+          return b.price - a.price;
         case "name":
         default:
-          return a.name.localeCompare(b.name)
+          return a.name.localeCompare(b.name);
       }
-    })
+    });
 
-    setFilteredProducts(filtered)
-  }
+    setFilteredProducts(filtered);
+  };
 
   const handleWhatsAppClick = (product: Product) => {
-    const message = `Hola! Me interesa el producto: ${product.name} - ${formatPrice(product.price)}. ¿Está disponible?`
-    const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, "_blank")
-  }
+    const message = `Hola! Me interesa el producto: ${
+      product.name
+    } - ${formatPrice(product.price)}. ¿Está disponible?`;
+    const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   if (loading) {
     return (
@@ -120,7 +148,7 @@ export default function TenisMesaPage() {
           <p className="text-gray-600">Cargando productos...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -130,18 +158,35 @@ export default function TenisMesaPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4">
-              <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={50} height={50} className="rounded-lg" />
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">FullSpin</h1>
+              <Image
+                src="/fullspin-logo.png"
+                alt="FullSpin Logo"
+                width={50}
+                height={50}
+                className="rounded-lg"
+              />
+              <h1 className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
+                FullSpin
+              </h1>
             </Link>
 
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+              <Link
+                href="/"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+              >
                 Inicio
               </Link>
-              <Link href="/padel" className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+              <Link
+                href="/padel"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+              >
                 Padel
               </Link>
-              <Link href="/tenis-mesa" className="text-sm font-medium text-blue-800 border-b-2 border-blue-800">
+              <Link
+                href="/tenis-mesa"
+                className="text-sm font-medium text-blue-800 border-b-2 border-blue-800"
+              >
                 Tenis de Mesa
               </Link>
               <Link
@@ -152,8 +197,15 @@ export default function TenisMesaPage() {
               </Link>
             </nav>
 
-            <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <button
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -198,8 +250,12 @@ export default function TenisMesaPage() {
       {/* Page Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Catálogo de Tenis de Mesa</h1>
-          <p className="text-blue-100 text-lg">Equipamiento profesional para tu juego</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            Catálogo de Tenis de Mesa
+          </h1>
+          <p className="text-blue-100 text-lg">
+            Equipamiento profesional para tu juego
+          </p>
         </div>
       </div>
 
@@ -224,7 +280,10 @@ export default function TenisMesaPage() {
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-4">
               {/* Subcategory Filter */}
-              <Select value={selectedSubcategory} onValueChange={setSelectedSubcategory}>
+              <Select
+                value={selectedSubcategory}
+                onValueChange={setSelectedSubcategory}
+              >
                 <SelectTrigger className="w-full sm:w-48">
                   <SelectValue placeholder="Subcategoría" />
                 </SelectTrigger>
@@ -246,8 +305,12 @@ export default function TenisMesaPage() {
                 <SelectContent>
                   <SelectItem value="all">Todos los precios</SelectItem>
                   <SelectItem value="0-50000">Hasta $50.000</SelectItem>
-                  <SelectItem value="50000-100000">$50.000 - $100.000</SelectItem>
-                  <SelectItem value="100000-200000">$100.000 - $200.000</SelectItem>
+                  <SelectItem value="50000-100000">
+                    $50.000 - $100.000
+                  </SelectItem>
+                  <SelectItem value="100000-200000">
+                    $100.000 - $200.000
+                  </SelectItem>
                   <SelectItem value="200000-999999">Más de $200.000</SelectItem>
                 </SelectContent>
               </Select>
@@ -259,8 +322,12 @@ export default function TenisMesaPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="name">Nombre A-Z</SelectItem>
-                  <SelectItem value="price-asc">Precio: Menor a Mayor</SelectItem>
-                  <SelectItem value="price-desc">Precio: Mayor a Menor</SelectItem>
+                  <SelectItem value="price-asc">
+                    Precio: Menor a Mayor
+                  </SelectItem>
+                  <SelectItem value="price-desc">
+                    Precio: Mayor a Menor
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -275,11 +342,12 @@ export default function TenisMesaPage() {
             {searchQuery
               ? `Resultados para "${searchQuery}"`
               : selectedSubcategory !== "all"
-                ? subcategoryNames[selectedSubcategory]
-                : "Todos los productos de Tenis de Mesa"}
+              ? subcategoryNames[selectedSubcategory]
+              : "Todos los productos de Tenis de Mesa"}
           </h2>
           <p className="text-gray-600">
-            {filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""} encontrado
+            {filteredProducts.length} producto
+            {filteredProducts.length !== 1 ? "s" : ""} encontrado
             {filteredProducts.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -287,12 +355,17 @@ export default function TenisMesaPage() {
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">No se encontraron productos</p>
-            <p className="text-gray-400 mt-2">Intenta ajustar los filtros de búsqueda</p>
+            <p className="text-gray-400 mt-2">
+              Intenta ajustar los filtros de búsqueda
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
-              <Card key={product.id} className="group hover:shadow-lg transition-shadow">
+            {filteredProducts.slice(0, visibleCount).map((product) => (
+              <Card
+                key={product.id}
+                className="group hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="p-4">
                   <div className="aspect-square mb-4 bg-gray-100 rounded-lg overflow-hidden">
                     <img
@@ -307,12 +380,18 @@ export default function TenisMesaPage() {
                       {subcategoryNames[product.subcategory]}
                     </Badge>
 
-                    <h3 className="font-semibold text-sm line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
+                    <h3 className="font-semibold text-sm line-clamp-2 min-h-[2.5rem]">
+                      {product.name}
+                    </h3>
 
-                    <p className="text-xs text-gray-600 line-clamp-2">{product.description}</p>
+                    <p className="text-xs text-gray-600 line-clamp-2">
+                      {product.description}
+                    </p>
 
                     <div className="space-y-1">
-                      <div className="text-lg font-bold text-blue-700">{formatPrice(product.price)}</div>
+                      <div className="text-lg font-bold text-blue-700">
+                        {formatPrice(product.price)}
+                      </div>
                     </div>
 
                     <Button
@@ -329,6 +408,17 @@ export default function TenisMesaPage() {
             ))}
           </div>
         )}
+        {visibleCount < filteredProducts.length && (
+          <div className="flex justify-center mt-10">
+            <Button
+              onClick={() => setVisibleCount((prev) => prev + 8)}
+              variant="outline"
+              className="text-sm font-semibold border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
+            >
+              Cargar más productos
+            </Button>
+          </div>
+        )}
       </main>
 
       {/* Footer */}
@@ -337,7 +427,9 @@ export default function TenisMesaPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">FullSpin</h3>
-              <p className="text-gray-400">Tu tienda especializada en equipamiento deportivo.</p>
+              <p className="text-gray-400">
+                Tu tienda especializada en equipamiento deportivo.
+              </p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contacto</h3>
@@ -356,5 +448,5 @@ export default function TenisMesaPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
