@@ -21,6 +21,14 @@ import {
   searchProducts,
   type Product,
 } from "@/lib/products";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 // Función para formatear precios con separadores de miles
 const formatPrice = (price: number): string => {
@@ -307,8 +315,8 @@ export default function PadelPage() {
               </div>
             </div>
 
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* Desktop Filters */}
+            <div className="hidden lg:flex flex-col sm:flex-row gap-4">
               {/* View Mode Toggle */}
               <div className="flex rounded-xl border border-gray-200 p-1 bg-white">
                 <button
@@ -380,6 +388,95 @@ export default function PadelPage() {
                   </SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Mobile Filters */}
+            <div className="lg:hidden flex gap-2">
+               <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="flex-1">
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtros y Orden
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Filtros y Orden</SheetTitle>
+                  </SheetHeader>
+                  <div className="py-4 space-y-4">
+                     {/* Subcategory Filter */}
+                    <Select
+                      value={selectedSubcategory}
+                      onValueChange={setSelectedSubcategory}
+                    >
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Subcategoría" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas las subcategorías</SelectItem>
+                        {subcategories.map((sub) => (
+                          <SelectItem key={sub} value={sub}>
+                            {subcategoryNames[sub]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Price Filter */}
+                    <Select value={priceFilter} onValueChange={setPriceFilter}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Precio" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos los precios</SelectItem>
+                        <SelectItem value="0-50000">Hasta $50.000</SelectItem>
+                        <SelectItem value="50000-100000">
+                          $50.000 - $100.000
+                        </SelectItem>
+                        <SelectItem value="100000-200000">
+                          $100.000 - $200.000
+                        </SelectItem>
+                        <SelectItem value="200000-999999">Más de $200.000</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Sort */}
+                    <Select value={sortBy} onValueChange={setSortBy}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Ordenar por" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="name">Nombre A-Z</SelectItem>
+                        <SelectItem value="price-asc">
+                          Precio: Menor a Mayor
+                        </SelectItem>
+                        <SelectItem value="price-desc">
+                          Precio: Mayor a Menor
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </SheetContent>
+              </Sheet>
+              {/* View Mode Toggle */}
+              <div className="flex rounded-xl border border-gray-200 p-1 bg-white">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  <Grid className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                >
+                  <List className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
