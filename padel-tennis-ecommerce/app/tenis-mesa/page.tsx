@@ -150,7 +150,7 @@ export default function TenisMesaPage() {
   const handleWhatsAppClick = (product: Product) => {
     const message = `Hola! Me interesa el producto: ${
       product.name
-    } - ${formatPrice(product.price)}. ¿Está disponible?`;
+    }. ¿Está disponible?`;
     const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(
       message
     )}`;
