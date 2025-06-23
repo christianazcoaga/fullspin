@@ -24,7 +24,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/fullspin-logo.png',
+    apple: '/fullspin-logo.png',
   },
+  manifest: "/manifest.json",
 }
 
 export default function RootLayout({
