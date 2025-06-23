@@ -1,62 +1,81 @@
-import { supabase } from "./supabase"
+import { createClient } from "./supabase/server"
+import { cookies } from "next/headers"
+import { Product } from "./products"
 
-export async function uploadProductImage(file: File, productCode: string): Promise<string | null> {
-  try {
-    // Crear un nombre único para el archivo
-    const fileExt = file.name.split(".").pop()
-    const fileName = `${productCode}-${Date.now()}.${fileExt}`
-    const filePath = `products/${fileName}`
+const BUCKET_NAME = "images"
 
-    // Subir el archivo a Supabase Storage
-    const { data, error } = await supabase.storage.from("product-images").upload(filePath, file)
+export async function uploadProductImage(file: File, productId: number | string) {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
-    if (error) {
-      console.error("Error uploading image:", error)
-      return null
-    }
-
-    // Obtener la URL pública de la imagen
-    const { data: publicData } = supabase.storage.from("product-images").getPublicUrl(filePath)
-
-    return publicData.publicUrl
-  } catch (error) {
-    console.error("Error in uploadProductImage:", error)
-    return null
+  if (!file) {
+    throw new Error("No file provided for upload.")
   }
+
+  const fileExt = file.name.split(".").pop()
+  const fileName = `${productId}-${Date.now()}.${fileExt}`
+  const filePath = `products/${fileName}`
+
+  const { error: uploadError } = await supabase.storage.from(BUCKET_NAME).upload(filePath, file)
+
+  if (uploadError) {
+    console.error("Error uploading file:", uploadError)
+    throw uploadError
+  }
+
+  // Generar una URL firmada con una validez larga (ej. 10 años)
+  const { data, error: signError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10) // 10 años en segundos
+
+  if (signError) {
+    throw signError
+  }
+
+  return data.signedUrl
 }
 
-export async function updateProductImage(productId: number, imageUrl: string): Promise<boolean> {
-  try {
-    const { error } = await supabase.from("productos_fullspin").update({ image: imageUrl }).eq("id", productId)
+export async function updateProductImage(productId: number, imageUrl: string) {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
-    if (error) {
-      console.error("Error updating product image:", error)
-      return false
-    }
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .update({ image: imageUrl })
+    .eq("id", productId)
+    .select()
+    .single()
 
-    return true
-  } catch (error) {
-    console.error("Error in updateProductImage:", error)
-    return false
+  if (error) {
+    console.error("Error updating product image URL in database:", error)
+    return null
   }
+  return data
 }
 
 export async function deleteProductImage(imageUrl: string): Promise<boolean> {
-  try {
-    // Extraer el path del archivo de la URL
-    const urlParts = imageUrl.split("/")
-    const filePath = urlParts.slice(-2).join("/") // products/filename.jpg
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
-    const { error } = await supabase.storage.from("product-images").remove([filePath])
+  if (!imageUrl) return true // No image to delete
+
+  try {
+    const urlParts = new URL(imageUrl)
+    const pathWithBucket = urlParts.pathname
+    // Extraer el path del archivo desde la URL, que es todo lo que viene después del nombre del bucket
+    // Ejemplo: /storage/v1/object/public/images/products/123.png -> products/123.png
+    const filePath = pathWithBucket.substring(pathWithBucket.indexOf(BUCKET_NAME) + BUCKET_NAME.length + 1)
+    
+    const { error } = await supabase.storage.from(BUCKET_NAME).remove([filePath])
 
     if (error) {
-      console.error("Error deleting image:", error)
-      return false
+      console.error("Error deleting image from storage:", error)
+      // No devolvemos false aquí para permitir que la eliminación del producto continúe
+      // si la imagen no se encuentra, lo cual puede pasar.
     }
-
     return true
   } catch (error) {
-    console.error("Error in deleteProductImage:", error)
+    console.error("Invalid URL or error parsing image URL for deletion:", error)
     return false
   }
 }

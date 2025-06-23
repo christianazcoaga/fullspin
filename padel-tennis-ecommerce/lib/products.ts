@@ -1,4 +1,4 @@
-import { supabase } from "./supabase"
+import { createClient as createBrowserClient } from "./supabase/client"
 
 export type Product = {
   id: number
@@ -11,62 +11,60 @@ export type Product = {
   in_stock: boolean
 }
 
-export async function getProducts(): Promise<Product[]> {
-  const { data, error } = await supabase.from("productos_fullspin").select("*").eq("in_stock", true).order("name")
+// Client-safe functions
+export async function getProducts() {
+  const supabase = createBrowserClient()
+  const { data, error } = await supabase.from("productos_fullspin").select("*").order("name", { ascending: true })
 
   if (error) {
     console.error("Error fetching products:", error)
     return []
   }
-
-  return data || []
+  return data
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {
+  const supabase = createBrowserClient()
   const { data, error } = await supabase
     .from("productos_fullspin")
     .select("*")
     .eq("category", category)
-    .eq("in_stock", true)
     .order("name")
 
   if (error) {
     console.error("Error fetching products by category:", error)
     return []
   }
-
-  return data || []
+  return data
 }
 
 export async function getProductsBySubcategory(category: string, subcategory: string): Promise<Product[]> {
+  const supabase = createBrowserClient()
   const { data, error } = await supabase
     .from("productos_fullspin")
     .select("*")
     .eq("category", category)
     .eq("subcategory", subcategory)
-    .eq("in_stock", true)
     .order("name")
 
   if (error) {
     console.error("Error fetching products by subcategory:", error)
     return []
   }
-
-  return data || []
+  return data
 }
 
 export async function searchProducts(query: string): Promise<Product[]> {
+  const supabase = createBrowserClient()
   const { data, error } = await supabase
     .from("productos_fullspin")
     .select("*")
-    .or(`name.ilike.%${query}%,description.ilike.%${query}%,code.ilike.%${query}%`)
-    .eq("in_stock", true)
+    .ilike("name", `%${query}%`)
     .order("name")
 
   if (error) {
     console.error("Error searching products:", error)
     return []
   }
-
-  return data || []
+  return data
 }

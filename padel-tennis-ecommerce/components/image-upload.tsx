@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Upload, Check } from "lucide-react"
-import { uploadProductImage, updateProductImage } from "@/lib/storage"
+import { uploadImageAction } from "@/app/admin/actions"
 import type { Product } from "@/lib/products"
 
 interface ImageUploadProps {
@@ -36,26 +36,22 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
     setSuccess(false)
 
     try {
-      // Subir imagen a Supabase Storage
-      const imageUrl = await uploadProductImage(file, product.code)
+      const formData = new FormData()
+      formData.append("file", file)
+      
+      const result = await uploadImageAction(formData, product.id)
 
-      if (imageUrl) {
-        // Actualizar el producto en la base de datos
-        const updated = await updateProductImage(product.id, imageUrl)
-
-        if (updated) {
-          onImageUpdated(imageUrl)
-          setSuccess(true)
-          setTimeout(() => setSuccess(false), 3000)
-        } else {
-          alert("Error al actualizar el producto")
-        }
+      if (result.success && result.imageUrl) {
+        onImageUpdated(result.imageUrl)
+        setSuccess(true)
+        setTimeout(() => setSuccess(false), 3000)
       } else {
-        alert("Error al subir la imagen")
+        alert(`Error al subir la imagen. Por favor, inténtelo de nuevo.\n\nDetalles: ${result.error}`)
       }
     } catch (error) {
-      console.error("Error:", error)
-      alert("Error al procesar la imagen")
+      console.error("Error processing image upload:", error)
+      const errorMessage = error instanceof Error ? error.message : "Ocurrió un error inesperado."
+      alert(`Error al subir la imagen. Por favor, inténtelo de nuevo.\n\nDetalles: ${errorMessage}`)
     } finally {
       setUploading(false)
     }
@@ -83,7 +79,6 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
       <CardHeader>
         <CardTitle className="text-lg">Actualizar Imagen</CardTitle>
         <p className="text-sm text-gray-600">{product.name}</p>
-        <p className="text-xs text-gray-500">Código: {product.code}</p>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Vista previa de imagen actual */}
@@ -133,7 +128,7 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
 
         {/* Botón alternativo */}
         <Button
-          onClick={() => document.querySelector('input[type="file"]')?.click()}
+          onClick={() => (document.querySelector('input[type="file"]') as HTMLElement)?.click()}
           disabled={uploading}
           className="w-full"
           variant="outline"
