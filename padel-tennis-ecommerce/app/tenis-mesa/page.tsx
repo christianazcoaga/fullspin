@@ -63,7 +63,6 @@ export default function TenisMesaPage() {
   const [sortBy, setSortBy] = useState("name");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(15);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [scrollY, setScrollY] = useState(0);
 
@@ -317,26 +316,6 @@ export default function TenisMesaPage() {
 
             {/* Desktop Filters */}
             <div className="hidden lg:flex flex-col sm:flex-row gap-4">
-              {/* View Mode Toggle */}
-              <div className="flex rounded-xl border border-gray-200 p-1 bg-white">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'grid' ? 'bg-purple-100 text-purple-600' : 'text-gray-400 hover:text-gray-600'
-                  }`}
-                >
-                  <Grid className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'list' ? 'bg-purple-100 text-purple-600' : 'text-gray-400 hover:text-gray-600'
-                  }`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-              </div>
-
               {/* Subcategory Filter */}
               <Select
                 value={selectedSubcategory}
@@ -458,25 +437,6 @@ export default function TenisMesaPage() {
                   </div>
                 </SheetContent>
               </Sheet>
-              {/* View Mode Toggle */}
-              <div className="flex rounded-xl border border-gray-200 p-1 bg-white">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'grid' ? 'bg-purple-100 text-purple-600' : 'text-gray-400 hover:text-gray-600'
-                  }`}
-                >
-                  <Grid className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition-colors ${
-                    viewMode === 'list' ? 'bg-purple-100 text-purple-600' : 'text-gray-400 hover:text-gray-600'
-                  }`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -510,23 +470,15 @@ export default function TenisMesaPage() {
             </p>
           </div>
         ) : (
-          <div className={`grid gap-6 ${
-            viewMode === 'grid' 
-              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-              : 'grid-cols-1'
-          }`}>
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.slice(0, visibleCount).map((product, index) => (
               <Card
                 key={product.id}
-                className={`group hover-lift card-modern border-0 overflow-hidden animate-scale-in ${
-                  viewMode === 'list' ? 'flex flex-row' : ''
-                }`}
+                className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in"
                 style={{animationDelay: `${index * 0.05}s`}}
               >
-                <CardContent className={`p-0 ${viewMode === 'list' ? 'flex w-full' : ''}`}>
-                  <div className={`relative bg-gray-100 overflow-hidden ${
-                    viewMode === 'list' ? 'w-48 h-48' : 'aspect-square mb-4'
-                  }`}>
+                <CardContent className="p-0">
+                  <div className="relative bg-gray-100 overflow-hidden aspect-square mb-4">
                     <img
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
@@ -554,16 +506,12 @@ export default function TenisMesaPage() {
                     </div>
                   </div>
                   
-                  <div className={`space-y-3 ${viewMode === 'list' ? 'flex-1 p-6' : 'p-4'}`}>
-                    <h3 className={`font-bold text-gray-900 line-clamp-2 group-hover:text-purple-600 transition-colors ${
-                      viewMode === 'list' ? 'text-xl' : 'text-sm'
-                    }`}>
+                  <div className="space-y-3 p-4">
+                    <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-purple-600 transition-colors text-sm">
                       {product.name}
                     </h3>
 
-                    <p className={`text-gray-600 line-clamp-2 ${
-                      viewMode === 'list' ? 'text-base' : 'text-xs'
-                    }`}>
+                    <p className="text-gray-600 line-clamp-2 text-xs">
                       {product.description}
                     </p>
 
@@ -577,16 +525,14 @@ export default function TenisMesaPage() {
                     </div>
 
                     <div className="space-y-3">
-                      <div className={`font-bold text-purple-600 ${
-                        viewMode === 'list' ? 'text-2xl' : 'text-lg'
-                      }`}>
+                      <div className="font-bold text-purple-600 text-lg">
                         {formatPrice(product.price)}
                       </div>
 
                       <Button
                         onClick={() => handleWhatsAppClick(product)}
                         className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
-                        size={viewMode === 'list' ? 'default' : 'sm'}
+                        size="sm"
                       >
                         <MessageCircle className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                         Consultar por WhatsApp
