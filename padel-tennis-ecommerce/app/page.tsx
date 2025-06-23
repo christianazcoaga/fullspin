@@ -164,7 +164,7 @@ export default function HomePage() {
               </Link>
               <Link href="/tenis-mesa">
                 <Button variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Ver Tenis de Mesa
+                  Ver Productos de Tenis de Mesa
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -198,16 +198,20 @@ export default function HomePage() {
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
-                      <h3 className="text-4xl font-bold mb-4">PADEL</h3>
-                      <p className="text-xl opacity-90">Palas, zapatillas, pelotas y más</p>
+                      <h3 className="text-4xl font-bold mb-2">PADEL</h3>
+                      <p className="text-xl opacity-90 mb-6">Palas, zapatillas, pelotas y más</p>
+                       {/* Brand Logos */}
+                      <div className="flex justify-center items-center gap-x-12">
+                        <Image src="/adidas-logo.png" alt="Adidas Logo" width={120} height={70} className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
+                        <Image src="/wilson-logo.png" alt="Wilson Logo" width={140} height={70} className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
+                      </div>
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
                 </div>
                 <div className="p-8">
                   <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    Descubre nuestra amplia selección de productos de padel de las mejores marcas como Wilson, Adidas,
-                    Head y más.
+                    Descubre nuestra amplia selección de productos de padel de las mejores marcas como Wilson y Adidas.
                   </p>
                   <Link href="/padel">
                     <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group">
@@ -231,16 +235,20 @@ export default function HomePage() {
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
-                      <h3 className="text-4xl font-bold mb-4">TENIS DE MESA</h3>
-                      <p className="text-xl opacity-90">Paletas, gomas, mesas y accesorios</p>
+                      <h3 className="text-4xl font-bold mb-2">TENIS DE MESA</h3>
+                      <p className="text-xl opacity-90 mb-6">Paletas, gomas, mesas y accesorios</p>
+                       {/* Brand Logos */}
+                      <div className="flex justify-center items-center gap-x-6">
+                        <Image src="/butterfly-logo.png" alt="Butterfly Logo" width={80} height={50} className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
+                        <Image src="/dhs-logo.png" alt="DHS Logo" width={80} height={50} className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" />
+                      </div>
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400"></div>
                 </div>
                 <div className="p-8">
                   <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    Equipamiento profesional de tenis de mesa con las mejores marcas como Butterfly, Stiga, Yasaka y
-                    más.
+                    Equipamiento profesional de tenis de mesa con las mejores marcas como Butterfly y DHS.
                   </p>
                   <Link href="/tenis-mesa">
                     <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white rounded-xl py-3 group">
