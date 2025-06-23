@@ -57,6 +57,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
 
     const productData = {
       name: formData.get("name") as string,
+      marca: formData.get("marca") as string,
       price: parseFloat(formData.get("price") as string),
       description: formData.get("description") as string,
       category: formData.get("category") as string,
@@ -80,6 +81,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
     id: 0,
     name: "Nuevo Producto",
     image: uploadedImageUrl || "",
+    marca: "",
     category: currentCategory,
     subcategory: "",
     price: 0,
@@ -98,6 +100,11 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
             <div>
               <Label htmlFor="name">Nombre del Producto</Label>
               <Input id="name" name="name" required />
+            </div>
+
+            <div>
+              <Label htmlFor="marca">Marca</Label>
+              <Input id="marca" name="marca" />
             </div>
 
             <div>

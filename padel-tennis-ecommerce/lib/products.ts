@@ -3,6 +3,7 @@ import { createClient as createBrowserClient } from "./supabase/client"
 export type Product = {
   id: number
   name: string
+  marca: string
   category: string
   subcategory: string
   price: number

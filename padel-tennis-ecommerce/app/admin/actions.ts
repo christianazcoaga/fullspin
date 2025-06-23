@@ -9,6 +9,7 @@ export async function updateProductAction(productId: number, formData: FormData)
   try {
     const updates = {
       name: formData.get("name") as string,
+      marca: formData.get("marca") as string,
       price: parseFloat(formData.get("price") as string),
       description: formData.get("description") as string,
       category: formData.get("category") as string,

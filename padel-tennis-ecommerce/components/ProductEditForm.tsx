@@ -92,6 +92,11 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
           </div>
 
           <div>
+            <Label htmlFor="marca">Marca</Label>
+            <Input id="marca" name="marca" defaultValue={product.marca} />
+          </div>
+
+          <div>
             <Label htmlFor="price">Precio (ARS)</Label>
             <Input id="price" name="price" type="number" step="0.01" defaultValue={product.price} required />
           </div>

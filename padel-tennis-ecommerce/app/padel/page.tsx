@@ -30,6 +30,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+const brandLogos: { [key: string]: { src: string, alt: string, width: number, height: number } } = {
+  "Adidas": { src: "/adidas-logo.png", alt: "Adidas Logo", width: 60, height: 40 },
+  "Wilson": { src: "/wilson-logo.png", alt: "Wilson Logo", width: 80, height: 40 },
+  "Babolat": { src: "/babolat-logo.png", alt: "Babolat Logo", width: 80, height: 40 },
+  "Bullpadel": { src: "/bullpadel-logo.png", alt: "Bullpadel Logo", width: 90, height: 40 },
+  "Dunlop": { src: "/dunlop-logo.png", alt: "Dunlop Logo", width: 80, height: 40 },
+  "Head": { src: "/head-logo.png", alt: "Head Logo", width: 80, height: 40 },
+};
+
 // Función para formatear precios con separadores de miles
 const formatPrice = (price: number): string => {
   return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 })}`;
@@ -567,13 +576,16 @@ export default function PadelPage() {
                       {product.description}
                     </p>
 
-                    <div className="flex items-center gap-2">
-                      <div className="flex text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-current" />
-                        ))}
-                      </div>
-                      <span className="text-sm text-gray-500">(4.8)</span>
+                    <div className="h-10 flex items-center">
+                      {product.marca && brandLogos[product.marca] && (
+                        <Image
+                          src={brandLogos[product.marca].src}
+                          alt={brandLogos[product.marca].alt}
+                          width={brandLogos[product.marca].width}
+                          height={brandLogos[product.marca].height}
+                          className="object-contain"
+                        />
+                      )}
                     </div>
 
                     <div className="space-y-3">
