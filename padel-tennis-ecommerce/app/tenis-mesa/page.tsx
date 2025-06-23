@@ -62,7 +62,7 @@ export default function TenisMesaPage() {
   const [priceFilter, setPriceFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(15);
+  const [visibleCount, setVisibleCount] = useState(12);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [scrollY, setScrollY] = useState(0);
 
