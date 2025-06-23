@@ -112,6 +112,28 @@ export default function HomePage() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl animate-float"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
         
+        {/* Decorative Images */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/3 opacity-5 hidden lg:block pointer-events-none" style={{ top: '40%' }}>
+          <Image
+            src="/padel-racket-bg.png"
+            alt="Padel Racket"
+            width={600}
+            height={600}
+            className="transform -rotate-45"
+            priority
+          />
+        </div>
+        <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/3 opacity-5 hidden lg:block pointer-events-none" style={{ top: '60%' }}>
+          <Image
+            src="/tt-paddle-bg.png"
+            alt="Table Tennis Paddle"
+            width={500}
+            height={500}
+            className="transform rotate-45"
+            priority
+          />
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center animate-fade-in-up">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-8 animate-pulse-slow">
