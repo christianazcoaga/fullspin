@@ -151,9 +151,7 @@ export default function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Tu tienda especializada en equipamiento deportivo para{" "}
-              <span className="font-semibold text-blue-600">Padel</span> y{" "}
-              <span className="font-semibold text-purple-600">Tenis de Mesa</span>
+              Especialistas en <span className="font-semibold text-blue-600">Padel</span> y <span className="font-semibold text-purple-600">Tenis de Mesa</span> en Argentina. Envíos a todo el país.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

@@ -128,9 +128,7 @@ export default function SobreNosotrosPage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Somos apasionados del deporte y nos dedicamos a brindar el mejor equipamiento para{" "}
-              <span className="font-semibold text-blue-600">Padel</span> y{" "}
-              <span className="font-semibold text-purple-600">Tenis de Mesa</span>
+              Somos una tienda argentina, especialistas en <span className="font-semibold text-blue-600">Padel</span> y <span className="font-semibold text-purple-600">Tenis de Mesa</span>. Enviamos a todo el país.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

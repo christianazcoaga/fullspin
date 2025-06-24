@@ -12,6 +12,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { handleAuthError } from "@/lib/supabase/handleAuthError"
 
 type AdminView = {
   mode: "list" | "edit" | "create"
@@ -38,7 +39,11 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
 
   const handleLogout = async () => {
     const supabase = createClient()
-    await supabase.auth.signOut()
+    try {
+      await supabase.auth.signOut()
+    } catch (error) {
+      await handleAuthError(error)
+    }
     router.push("/login")
   }
 

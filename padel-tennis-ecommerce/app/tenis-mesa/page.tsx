@@ -292,7 +292,7 @@ export default function TenisMesaPage() {
             Catálogo de Tenis de Mesa
           </h1>
           <p className="text-purple-100 text-xl">
-            Equipamiento profesional para tu juego
+            Somos especialistas en tenis de mesa en Argentina. Enviamos a todo el país.
           </p>
         </div>
       </div>

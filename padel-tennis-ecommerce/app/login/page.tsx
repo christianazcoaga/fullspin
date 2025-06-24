@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { handleAuthError } from "@/lib/supabase/handleAuthError"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -26,6 +27,7 @@ export default function LoginPage() {
     })
 
     if (error) {
+      await handleAuthError(error)
       setError(error.message)
     } else {
       router.push("/admin")

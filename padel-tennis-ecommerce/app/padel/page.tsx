@@ -297,11 +297,11 @@ export default function PadelPage() {
           <div className="absolute bottom-5 left-10 w-24 h-24 bg-white/10 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Catálogo de Padel
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Catálogo de Pádel
           </h1>
-          <p className="text-blue-100 text-xl">
-            Encuentra el equipamiento perfecto para tu juego
+          <p className="text-white text-xl drop-shadow">
+            Somos especialistas en pádel en Argentina. Enviamos a todo el país.
           </p>
         </div>
       </div>
