@@ -114,7 +114,7 @@ export default function HomePage() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
         
         {/* Decorative Images */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/3 opacity-5 hidden lg:block pointer-events-none" style={{ top: '40%' }}>
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none" style={{ top: '40%' }}>
           <Image
             src="/padel-racket-bg.png"
             alt="Padel Racket"
@@ -124,7 +124,7 @@ export default function HomePage() {
             priority
           />
         </div>
-        <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/3 opacity-5 hidden lg:block pointer-events-none" style={{ top: '60%' }}>
+        <div className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none" style={{ top: '60%' }}>
           <Image
             src="/tt-paddle-bg.png"
             alt="Table Tennis Paddle"
@@ -157,13 +157,13 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link href="/padel">
                 <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Ver Productos de Padel
+                  Productos de Padel
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
               <Link href="/tenis-mesa">
                 <Button variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Ver Productos de Tenis de Mesa
+                  Productos de Tenis de Mesa
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -403,11 +403,6 @@ export default function HomePage() {
                     </svg>
                     <span className="text-gray-400 hover:text-pink-500 transition-colors">@fullspinargentina</span>
                   </a>
-                </p>
-                <p className="text-sm">
-                  <strong>Horarios:</strong><br />
-                  Lunes a Viernes: 9:00 - 18:00<br />
-                  Sábados: 9:00 - 13:00
                 </p>
               </div>
             </div>

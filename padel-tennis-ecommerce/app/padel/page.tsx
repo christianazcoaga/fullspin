@@ -658,11 +658,6 @@ export default function PadelPage() {
                     <span className="text-gray-400 hover:text-pink-500 transition-colors">@fullspinargentina</span>
                   </a>
                 </p>
-                <p className="text-sm">
-                  <strong>Horarios:</strong><br />
-                  Lunes a Viernes: 9:00 - 18:00<br />
-                  Sábados: 9:00 - 13:00
-                </p>
               </div>
             </div>
           </div>
