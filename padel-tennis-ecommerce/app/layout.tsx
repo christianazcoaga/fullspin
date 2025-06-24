@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FullSpin',
     description: 'FullSpin - El mejor equipamiento deportivo',
-    url: 'https://fullspin-padel.vercel.app',
+    url: 'https://www.fullspinarg.com/',
     siteName: 'FullSpin',
     images: [
       {
