@@ -51,10 +51,11 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
   const [error, setError] = useState<string | null>(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [currentCategory, setCurrentCategory] = useState(initialFormData.category)
+  const [inStock, setInStock] = useState(initialFormData.in_stock)
 
   const handleCreateAction = async (formData: FormData) => {
     setError(null)
-
+    formData.set("in_stock", inStock ? "true" : "false")
     const productData = {
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
@@ -65,9 +66,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
       in_stock: formData.get("in_stock") === "true",
       image: uploadedImageUrl || "",
     }
-
     const result = await createProductAction(productData)
-    
     if (result.success && result.data) {
       onProductCreated(result.data)
     } else {
@@ -155,8 +154,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
             </div>
 
             <div className="flex items-center space-x-2 pt-2">
-              <Input type="hidden" name="in_stock" value="false" />
-              <Switch id="in_stock" name="in_stock" defaultChecked={initialFormData.in_stock} value="true" />
+              <Switch id="in_stock" name="in_stock" checked={inStock} onCheckedChange={setInStock} />
               <Label htmlFor="in_stock" className="cursor-pointer">
                 Disponible en Stock
               </Label>

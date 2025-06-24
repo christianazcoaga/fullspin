@@ -54,10 +54,12 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [inStock, setInStock] = useState(product.in_stock)
 
   const handleUpdateAction = async (formData: FormData) => {
     setError(null)
     setSuccess(false)
+    formData.set("in_stock", inStock ? "true" : "false")
     const result = await updateProductAction(product.id, formData)
     if (result.success) {
       setSuccess(true)
@@ -145,8 +147,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
           </div>
 
           <div className="flex items-center space-x-2 pt-2">
-            <Input type="hidden" name="in_stock" value="false" />
-            <Switch id="in_stock" name="in_stock" defaultChecked={product.in_stock} value="true" />
+            <Switch id="in_stock" name="in_stock" checked={inStock} onCheckedChange={setInStock} />
             <Label htmlFor="in_stock" className="cursor-pointer">
               Disponible en Stock
             </Label>

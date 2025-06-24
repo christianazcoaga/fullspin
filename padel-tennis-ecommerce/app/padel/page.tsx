@@ -29,6 +29,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import AIChat from "@/components/AIChat";
 
 const brandLogos: { [key: string]: { src: string, alt: string, width: number, height: number } } = {
   "Adidas": { src: "/adidas-logo.png", alt: "Adidas Logo", width: 60, height: 40 },
@@ -187,7 +188,7 @@ export default function PadelPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50">
       {/* Header */}
       <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrollY > 50 ? 'glass-effect shadow-lg' : 'bg-white/80 backdrop-blur-sm'
@@ -520,7 +521,7 @@ export default function PadelPage() {
                       {product.name}
                     </h3>
 
-                    <p className="text-gray-600 line-clamp-2 text-xs min-h-[2.5rem]">
+                    <p className="text-gray-600 text-xs">
                       {product.description}
                     </p>
 
@@ -636,6 +637,9 @@ export default function PadelPage() {
           </div>
         </div>
       </footer>
+
+      {/* AI Chat Component */}
+      <AIChat />
     </div>
   );
 }

@@ -15,10 +15,29 @@ export type Product = {
 // Client-safe functions
 export async function getProducts() {
   const supabase = createBrowserClient()
-  const { data, error } = await supabase.from("productos_fullspin").select("*").order("name", { ascending: true })
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("in_stock", true)
+    .order("name", { ascending: true })
 
   if (error) {
     console.error("Error fetching products:", error)
+    return []
+  }
+  return data
+}
+
+// Función para el admin que incluye todos los productos (incluso los que no están en stock)
+export async function getAllProducts() {
+  const supabase = createBrowserClient()
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("*")
+    .order("name", { ascending: true })
+
+  if (error) {
+    console.error("Error fetching all products:", error)
     return []
   }
   return data
@@ -30,6 +49,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     .from("productos_fullspin")
     .select("*")
     .eq("category", category)
+    .eq("in_stock", true)
     .order("name")
 
   if (error) {
@@ -46,6 +66,7 @@ export async function getProductsBySubcategory(category: string, subcategory: st
     .select("*")
     .eq("category", category)
     .eq("subcategory", subcategory)
+    .eq("in_stock", true)
     .order("name")
 
   if (error) {
@@ -61,6 +82,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
     .from("productos_fullspin")
     .select("*")
     .ilike("name", `%${query}%`)
+    .eq("in_stock", true)
     .order("name")
 
   if (error) {

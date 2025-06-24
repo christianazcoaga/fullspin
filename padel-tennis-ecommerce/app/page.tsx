@@ -6,6 +6,7 @@ import { Menu, X, ArrowRight, Star, Users, Award, Zap, Sparkles, TrendingUp, Shi
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useState, useEffect } from "react"
+import AIChat from "@/components/AIChat"
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -348,6 +349,9 @@ export default function HomePage() {
           </Button>
         </div>
       </section>
+
+      {/* AI Chat Component */}
+      <AIChat />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">

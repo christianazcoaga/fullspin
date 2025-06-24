@@ -1,4 +1,4 @@
-import { getProducts } from "@/lib/products"
+import { getAllProducts } from "@/lib/products"
 import AdminClientPage from "./AdminClientPage"
 import { Suspense } from "react"
 
@@ -14,7 +14,7 @@ function AdminPageSkeleton() {
 }
 
 export default async function AdminPage() {
-  const products = await getProducts()
+  const products = await getAllProducts()
 
   return (
     <Suspense fallback={<AdminPageSkeleton />}>
