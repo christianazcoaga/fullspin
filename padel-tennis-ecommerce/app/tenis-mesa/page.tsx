@@ -66,6 +66,9 @@ export default function TenisMesaPage() {
   const [visibleCount, setVisibleCount] = useState(12);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
   const [scrollY, setScrollY] = useState(0);
+  const [selectedBrand, setSelectedBrand] = useState("all");
+
+  const brands = Array.from(new Set(products.map(p => p.marca).filter(Boolean)));
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -94,7 +97,7 @@ export default function TenisMesaPage() {
   // Filtrar productos cuando cambian los filtros
   useEffect(() => {
     filterProducts();
-  }, [products, selectedSubcategory, searchQuery, priceFilter, sortBy]);
+  }, [products, selectedSubcategory, searchQuery, priceFilter, sortBy, selectedBrand]);
 
   const filterProducts = async () => {
     let filtered = [...products];
@@ -129,6 +132,11 @@ export default function TenisMesaPage() {
           return product.price >= min;
         }
       });
+    }
+
+    // Filtro por marca
+    if (selectedBrand !== "all") {
+      filtered = filtered.filter(product => product.marca === selectedBrand);
     }
 
     // Ordenamiento
@@ -353,6 +361,19 @@ export default function TenisMesaPage() {
                 </SelectContent>
               </Select>
 
+              {/* Brand Filter */}
+              <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
+                  <SelectValue placeholder="Marca" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las marcas</SelectItem>
+                  {brands.map((brand) => (
+                    <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               {/* Sort */}
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
@@ -417,6 +438,19 @@ export default function TenisMesaPage() {
                           $100.000 - $200.000
                         </SelectItem>
                         <SelectItem value="200000-999999">Más de $200.000</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Brand Filter */}
+                    <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Marca" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas las marcas</SelectItem>
+                        {brands.map((brand) => (
+                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
 
