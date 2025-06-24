@@ -55,11 +55,15 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
   const [success, setSuccess] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [inStock, setInStock] = useState(product.in_stock)
+  const [inOffer, setInOffer] = useState(product.in_offer ?? false)
+  const [offerPercent, setOfferPercent] = useState(product.offer_percent ?? 0)
 
   const handleUpdateAction = async (formData: FormData) => {
     setError(null)
     setSuccess(false)
     formData.set("in_stock", inStock ? "true" : "false")
+    formData.set("in_offer", inOffer ? "true" : "false")
+    formData.set("offer_percent", offerPercent.toString())
     const result = await updateProductAction(product.id, formData)
     if (result.success) {
       setSuccess(true)
@@ -152,6 +156,31 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
               Disponible en Stock
             </Label>
           </div>
+
+          <div className="flex items-center space-x-2 pt-2">
+            <Switch id="in_offer" name="in_offer" checked={inOffer} onCheckedChange={setInOffer} />
+            <Label htmlFor="in_offer" className="cursor-pointer text-red-600 font-semibold">
+              Oferta del Mes
+            </Label>
+          </div>
+          
+          {inOffer && (
+            <div className="flex items-center space-x-2 pt-2">
+              <Label htmlFor="offer_percent" className="font-semibold">% Descuento</Label>
+              <Input
+                id="offer_percent"
+                name="offer_percent"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={offerPercent}
+                onChange={e => setOfferPercent(Math.max(0, Math.min(100, Number(e.target.value))))}
+                className="w-24"
+              />
+              <span className="text-gray-500">%</span>
+            </div>
+          )}
           
           <div className="flex flex-col sm:flex-row gap-2 pt-2">
             <SubmitButton />

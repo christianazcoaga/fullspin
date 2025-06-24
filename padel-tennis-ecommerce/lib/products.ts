@@ -10,6 +10,8 @@ export type Product = {
   image: string
   description: string
   in_stock: boolean
+  in_offer: boolean
+  offer_percent: number
 }
 
 // Client-safe functions

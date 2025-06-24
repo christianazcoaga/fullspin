@@ -52,10 +52,14 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [currentCategory, setCurrentCategory] = useState(initialFormData.category)
   const [inStock, setInStock] = useState(initialFormData.in_stock)
+  const [inOffer, setInOffer] = useState(false)
+  const [offerPercent, setOfferPercent] = useState(0)
 
   const handleCreateAction = async (formData: FormData) => {
     setError(null)
     formData.set("in_stock", inStock ? "true" : "false")
+    formData.set("in_offer", inOffer ? "true" : "false")
+    formData.set("offer_percent", offerPercent.toString())
     const productData = {
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
@@ -159,6 +163,31 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
                 Disponible en Stock
               </Label>
             </div>
+
+            <div className="flex items-center space-x-2 pt-2">
+              <Switch id="in_offer" name="in_offer" checked={inOffer} onCheckedChange={setInOffer} />
+              <Label htmlFor="in_offer" className="cursor-pointer text-red-600 font-semibold">
+                Oferta del Mes
+              </Label>
+            </div>
+
+            {inOffer && (
+              <div className="flex items-center space-x-2 pt-2">
+                <Label htmlFor="offer_percent" className="font-semibold">% Descuento</Label>
+                <Input
+                  id="offer_percent"
+                  name="offer_percent"
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={offerPercent}
+                  onChange={e => setOfferPercent(Math.max(0, Math.min(100, Number(e.target.value))))}
+                  className="w-24"
+                />
+                <span className="text-gray-500">%</span>
+              </div>
+            )}
             
             <SubmitButton />
 

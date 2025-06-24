@@ -29,7 +29,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import AIChat from "@/components/AIChat";
 
 const brandLogos: { [key: string]: { src: string, alt: string, width: number, height: number } } = {
   "Adidas": { src: "/adidas-logo.png", alt: "Adidas Logo", width: 60, height: 40 },
@@ -666,9 +665,6 @@ export default function PadelPage() {
           </div>
         </div>
       </footer>
-
-      {/* AI Chat Component */}
-      <AIChat />
     </div>
   );
 }

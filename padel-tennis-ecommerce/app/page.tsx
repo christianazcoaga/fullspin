@@ -2,11 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Menu, X, ArrowRight, Star, Users, Award, Zap, Sparkles, TrendingUp, Shield } from "lucide-react"
+import { Menu, X, ArrowRight, Star, Users, Award, Zap, Sparkles, TrendingUp, Shield, Tag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useState, useEffect } from "react"
-import AIChat from "@/components/AIChat"
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -348,9 +347,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI Chat Component */}
-      <AIChat />
-
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -412,6 +408,26 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      <Link href="/ofertas">
+        <button
+          className="fixed left-6 bottom-8 z-50 bg-red-600 hover:bg-red-700 text-white font-extrabold px-8 py-4 rounded-full shadow-2xl backdrop-blur-lg flex items-center gap-3 border-4 border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_32px_0_rgba(255,0,0,0.25)] animate-bounce-slow ring-2 ring-red-300/40"
+          style={{ minWidth: 200, fontSize: "1.2rem", letterSpacing: "0.05em" }}
+        >
+          <Tag className="w-7 h-7 text-white drop-shadow" />
+          OFERTAS DEL MES
+        </button>
+      </Link>
+
+      <style jsx global>{`
+      @keyframes bounce-slow {
+        0%, 100% { transform: translateY(0);}
+        50% { transform: translateY(-8px);}
+      }
+      .animate-bounce-slow {
+        animation: bounce-slow 2.5s infinite;
+      }
+      `}</style>
     </div>
   )
 }

@@ -29,7 +29,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import AIChat from "@/components/AIChat";
 
 // Función para formatear precios con separadores de miles
 const formatPrice = (price: number): string => {
@@ -657,9 +656,6 @@ export default function TenisMesaPage() {
           </div>
         </div>
       </footer>
-
-      {/* AI Chat Component */}
-      <AIChat />
     </div>
   );
 }
