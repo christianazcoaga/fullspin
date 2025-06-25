@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://fullspinarg.com
+
+# Sitemaps
+Sitemap: https://fullspinarg.com/sitemap.xml
