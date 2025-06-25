@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useFormStatus } from "react-dom"
 import type { Product } from "@/lib/products"
 import { Button } from "@/components/ui/button"
@@ -57,6 +57,34 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
   const [inStock, setInStock] = useState(product.in_stock)
   const [inOffer, setInOffer] = useState(product.in_offer ?? false)
   const [offerPercent, setOfferPercent] = useState(product.offer_percent ?? 0)
+  const [category, setCategory] = useState(product.category)
+  const [subcategory, setSubcategory] = useState(product.subcategory)
+  const [name, setName] = useState(product.name)
+  const [marca, setMarca] = useState(product.marca)
+  const [price, setPrice] = useState(product.price)
+  const [description, setDescription] = useState(product.description)
+
+  // Sincroniza los estados locales con el producto seleccionado
+  useEffect(() => {
+    setInStock(product.in_stock)
+    setInOffer(product.in_offer ?? false)
+    setOfferPercent(product.offer_percent ?? 0)
+    setCategory(product.category)
+    // Si la subcategoría del producto no es válida para la categoría, selecciona la primera subcategoría
+    if (product.category && subcategories[product.category] && subcategories[product.category].length > 0) {
+      if (subcategories[product.category].includes(product.subcategory)) {
+        setSubcategory(product.subcategory)
+      } else {
+        setSubcategory(subcategories[product.category][0])
+      }
+    } else {
+      setSubcategory("")
+    }
+    setName(product.name)
+    setMarca(product.marca)
+    setPrice(product.price)
+    setDescription(product.description)
+  }, [product])
 
   const handleUpdateAction = async (formData: FormData) => {
     setError(null)
@@ -94,32 +122,34 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
           <input type="hidden" name="id" value={product.id} />
           <div>
             <Label htmlFor="name">Nombre del Producto</Label>
-            <Input id="name" name="name" defaultValue={product.name} required />
+            <Input id="name" name="name" value={name} onChange={e => setName(e.target.value)} required />
           </div>
 
           <div>
             <Label htmlFor="marca">Marca</Label>
-            <Input id="marca" name="marca" defaultValue={product.marca} />
+            <Input id="marca" name="marca" value={marca} onChange={e => setMarca(e.target.value)} />
           </div>
 
           <div>
             <Label htmlFor="price">Precio (ARS)</Label>
-            <Input id="price" name="price" type="number" step="0.01" defaultValue={product.price} required />
+            <Input id="price" name="price" type="number" step="0.01" value={price} onChange={e => setPrice(Number(e.target.value))} required />
           </div>
 
           <div>
             <Label htmlFor="description">Descripción</Label>
-            <Textarea
-              id="description"
-              name="description"
-              defaultValue={product.description}
-              rows={4}
-            />
+            <Textarea id="description" name="description" value={description} onChange={e => setDescription(e.target.value)} rows={4} />
           </div>
 
           <div>
             <Label htmlFor="category">Categoría</Label>
-            <Select name="category" defaultValue={product.category} required>
+            <Select name="category" value={category} onValueChange={(newCategory) => {
+              setCategory(newCategory);
+              if (subcategories[newCategory] && subcategories[newCategory].length > 0) {
+                setSubcategory(subcategories[newCategory][0]);
+              } else {
+                setSubcategory("");
+              }
+            }} required>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
@@ -135,13 +165,13 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
 
           <div>
             <Label htmlFor="subcategory">Subcategoría</Label>
-            <Select name="subcategory" defaultValue={product.subcategory} required>
+            <Select name="subcategory" value={subcategory} onValueChange={setSubcategory} required>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona una subcategoría" />
               </SelectTrigger>
               <SelectContent>
-                {product.category &&
-                  subcategories[product.category]?.map((sub) => (
+                {category &&
+                  subcategories[category]?.map((sub) => (
                     <SelectItem key={sub} value={sub}>
                       {sub.charAt(0).toUpperCase() + sub.slice(1)}
                     </SelectItem>
