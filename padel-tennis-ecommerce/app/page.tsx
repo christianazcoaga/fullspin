@@ -25,7 +25,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen bg-[#f6f8fb]">
       {/* Header */}
       <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrollY > 50 ? 'glass-effect shadow-lg' : 'bg-transparent'
@@ -189,12 +189,12 @@ export default function HomePage() {
             className="w-full mb-10"
           >
             <CarouselContent>
-              {/* Slide 1 - Tenis de Mesa Local Image */}
+              {/* Slide 1 - Butterfly Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
                   <Image
-                    src="/tenis-mesa1.jpg"
-                    alt="Promoción Tenis de Mesa"
+                    src="/butterfly-banner.png"
+                    alt="Butterfly Banner"
                     fill
                     className="object-contain bg-neutral-100"
                     style={{ borderRadius: '1rem' }}
@@ -202,12 +202,36 @@ export default function HomePage() {
                   />
                 </div>
               </CarouselItem>
-              {/* Slide 2 - Padel Local Image */}
+              {/* Slide 2 - DHS Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
                   <Image
-                    src="/padel1.jpg"
-                    alt="Promoción Padel"
+                    src="/dhs-banner.png"
+                    alt="DHS Banner"
+                    fill
+                    className="object-contain bg-neutral-100"
+                    style={{ borderRadius: '1rem' }}
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 3 - Adidas Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/adidas-banner.jpg"
+                    alt="Adidas Banner"
+                    fill
+                    className="object-contain bg-neutral-100"
+                    style={{ borderRadius: '1rem' }}
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 4 - Wilson Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/wilson-banner.png"
+                    alt="Wilson Banner"
                     fill
                     className="object-contain bg-neutral-100"
                     style={{ borderRadius: '1rem' }}

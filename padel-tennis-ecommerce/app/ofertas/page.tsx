@@ -77,7 +77,7 @@ export default function OfertasPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-red-50">
+    <div className="min-h-screen bg-[#f6f8fb]">
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-4 group">

@@ -195,7 +195,7 @@ export default function PadelPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50">
+    <div className="min-h-screen bg-[#f6f8fb]">
       {/* Header */}
       <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrollY > 50 ? 'glass-effect shadow-lg' : 'bg-white/80 backdrop-blur-sm'
