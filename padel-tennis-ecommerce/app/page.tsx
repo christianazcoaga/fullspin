@@ -258,7 +258,10 @@ export default function HomePage() {
             <CarouselContent>
               {/* Slide 1 - Butterfly, DHS & Sanwei Logos */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                    <span className="text-2xl md:text-3xl font-bold text-gray-700">TENIS DE MESA</span>
+                  </div>
                   <Image
                     src="/butterfly-logo.png"
                     alt="Butterfly Logo"
@@ -285,7 +288,10 @@ export default function HomePage() {
               </CarouselItem>
               {/* Slide 2 - Adidas & Wilson Logos */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                    <span className="text-2xl md:text-3xl font-bold text-gray-700">PADEL</span>
+                  </div>
                   <Image
                     src="/adidas-logo.png"
                     alt="Adidas Logo"
