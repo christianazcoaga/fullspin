@@ -258,32 +258,34 @@ export default function HomePage() {
             <CarouselContent>
               {/* Slide 1 - Butterfly, DHS & Sanwei Logos */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
-                  <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                <div className="relative flex flex-col items-center justify-center h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                  <div className="mb-4">
                     <span className="text-2xl md:text-3xl font-bold text-gray-700">TENIS DE MESA</span>
                   </div>
-                  <Image
-                    src="/butterfly-logo.png"
-                    alt="Butterfly Logo"
-                    width={120}
-                    height={60}
-                    className="object-contain max-h-20 md:max-h-32 w-auto"
-                    priority
-                  />
-                  <Image
-                    src="/dhs-logo.png"
-                    alt="DHS Logo"
-                    width={120}
-                    height={60}
-                    className="object-contain max-h-20 md:max-h-32 w-auto"
-                  />
-                  <Image
-                    src="/sanwei-logo.png"
-                    alt="Sanwei Logo"
-                    width={50}
-                    height={22}
-                    className="object-contain max-h-6 md:max-h-10 w-auto"
-                  />
+                  <div className="flex flex-row items-center justify-center gap-6 md:gap-12 w-full">
+                    <Image
+                      src="/butterfly-logo.png"
+                      alt="Butterfly Logo"
+                      width={120}
+                      height={60}
+                      className="object-contain max-h-20 md:max-h-32 w-auto"
+                      priority
+                    />
+                    <Image
+                      src="/dhs-logo.png"
+                      alt="DHS Logo"
+                      width={120}
+                      height={60}
+                      className="object-contain max-h-20 md:max-h-32 w-auto"
+                    />
+                    <Image
+                      src="/sanwei-logo.png"
+                      alt="Sanwei Logo"
+                      width={50}
+                      height={22}
+                      className="object-contain max-h-6 md:max-h-10 w-auto"
+                    />
+                  </div>
                 </div>
               </CarouselItem>
               {/* Slide 2 - Adidas & Wilson Logos */}
