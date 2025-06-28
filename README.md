@@ -76,9 +76,9 @@
 
 2. **Instala las dependencias:**
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    # o
-   pnpm install
+   pnpm install --legacy-peer-deps
    ```
 
 3. **Configura las variables de entorno:**  
