@@ -189,7 +189,20 @@ export default function HomePage() {
             className="w-full mb-10"
           >
             <CarouselContent>
-              {/* Slide 1 - Butterfly Banner */}
+              {/* Slide 1 - Adidas Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/adidas-banner.png"
+                    alt="Adidas Banner"
+                    fill
+                    className="object-contain bg-neutral-100"
+                    style={{ borderRadius: '1rem' }}
+                    priority
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 2 - Butterfly Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
                   <Image
@@ -202,24 +215,12 @@ export default function HomePage() {
                   />
                 </div>
               </CarouselItem>
-              {/* Slide 2 - DHS Banner */}
+              {/* Slide 3 - DHS Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
                   <Image
                     src="/dhs-banner.png"
                     alt="DHS Banner"
-                    fill
-                    className="object-contain bg-neutral-100"
-                    style={{ borderRadius: '1rem' }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 3 - Adidas Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <Image
-                    src="/adidas-banner.jpg"
-                    alt="Adidas Banner"
                     fill
                     className="object-contain bg-neutral-100"
                     style={{ borderRadius: '1rem' }}
