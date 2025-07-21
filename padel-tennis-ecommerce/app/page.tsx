@@ -25,15 +25,47 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { getProducts, type Product } from "@/lib/products";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [padelOffers, setPadelOffers] = useState<Product[]>([]);
+  const [tenisMesaOffers, setTenisMesaOffers] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchOfferedProducts = async () => {
+      try {
+        setIsLoading(true);
+        const allProducts = await getProducts();
+        
+        // Filtrar productos de padel en oferta
+        const padelProducts = allProducts
+          .filter(product => product.category === "padel" && product.in_offer)
+          .slice(0, 4);
+        
+        // Filtrar productos de tenis de mesa en oferta
+        const tenisMesaProducts = allProducts
+          .filter(product => product.category === "tenis-mesa" && product.in_offer)
+          .slice(0, 4);
+        
+        setPadelOffers(padelProducts);
+        setTenisMesaOffers(tenisMesaProducts);
+      } catch (error) {
+        console.error("Error fetching offered products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOfferedProducts();
   }, []);
 
   return (
@@ -216,6 +248,188 @@ export default function HomePage() {
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Padel Offers Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Ofertas de Padel
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Productos de padel con descuentos especiales
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="group hover-lift card-modern border-0 overflow-hidden animate-pulse">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
+                          <div className="h-4 bg-gray-300 rounded w-24 mx-auto mb-2"></div>
+                          <div className="h-3 bg-gray-300 rounded w-16 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : padelOffers.length > 0 ? (
+              padelOffers.map((product) => (
+                <Card key={product.id} className="group hover-lift card-modern border-0 overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={80}
+                            height={40}
+                            className="object-contain w-20 h-20"
+                          />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 text-center">{product.name}</h3>
+                        <p className="text-sm text-gray-600 text-center">{product.marca}</p>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString()}</span>
+                        <span className="text-lg text-gray-500 line-through">
+                          ${product.price.toLocaleString()}
+                        </span>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+                          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                          window.open(whatsappUrl, "_blank");
+                        }}
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group"
+                      >
+                        Consultar Stock
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              // No padel offers found
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600 text-lg">No hay ofertas de padel disponibles en este momento.</p>
+                <Link href="/padel" className="inline-block mt-4">
+                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl">
+                    Ver Productos de Padel
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Tenis de Mesa Offers Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Ofertas de Tenis de Mesa
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Productos de tenis de mesa con descuentos especiales
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="group hover-lift card-modern border-0 overflow-hidden animate-pulse">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
+                          <div className="h-4 bg-gray-300 rounded w-24 mx-auto mb-2"></div>
+                          <div className="h-3 bg-gray-300 rounded w-16 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : tenisMesaOffers.length > 0 ? (
+              tenisMesaOffers.map((product) => (
+                <Card key={product.id} className="group hover-lift card-modern border-0 overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gradient-to-br from-purple-50 to-purple-100 overflow-hidden">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={80}
+                            height={40}
+                            className="object-contain w-20 h-20"
+                          />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 text-center">{product.name}</h3>
+                        <p className="text-sm text-gray-600 text-center">{product.marca}</p>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString()}</span>
+                        <span className="text-lg text-gray-500 line-through">
+                          ${product.price.toLocaleString()}
+                        </span>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+                          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                          window.open(whatsappUrl, "_blank");
+                        }}
+                        className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl py-3 group"
+                      >
+                        Consultar Stock
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              // No tenis de mesa offers found
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600 text-lg">No hay ofertas de tenis de mesa disponibles en este momento.</p>
+                <Link href="/tenis-mesa" className="inline-block mt-4">
+                  <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-xl">
+                    Ver Productos de Tenis de Mesa
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -557,6 +771,206 @@ export default function HomePage() {
         </div>
       </section>
 
+
+
+
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Preguntas Frecuentes
+            </h2>
+            <p className="text-xl text-gray-600">
+              Resolvemos las dudas más comunes de nuestros clientes
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* FAQ Item 1 */}
+            <Card className="group hover-lift card-modern border-0 overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ¿Cómo puedo consultar disponibilidad de productos?
+                  </h3>
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-bold">+</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Puedes contactarnos directamente por WhatsApp al +54 370 510-3672 o por Instagram @fullspinargentina. Te responderemos en menos de 24 horas con toda la información sobre stock y precios.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* FAQ Item 2 */}
+            <Card className="group hover-lift card-modern border-0 overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ¿Realizan envíos a todo el país?
+                  </h3>
+                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 font-bold">+</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Sí, realizamos envíos a todo el territorio argentino. Los tiempos de entrega varían según la ubicación, pero generalmente son de 3-7 días hábiles. Consulta los costos de envío según tu localidad.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* FAQ Item 3 */}
+            <Card className="group hover-lift card-modern border-0 overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ¿Los productos son originales?
+                  </h3>
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-bold">+</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Absolutamente. Todos nuestros productos son 100% originales con garantía oficial de fábrica. Trabajamos directamente con distribuidores autorizados de las mejores marcas como Adidas, Wilson, Butterfly y DHS.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* FAQ Item 4 */}
+            <Card className="group hover-lift card-modern border-0 overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ¿Pueden asesorarme para elegir el equipamiento adecuado?
+                  </h3>
+                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span className="text-purple-600 font-bold">+</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  ¡Por supuesto! Nuestro equipo está especializado en padel y tenis de mesa. Te ayudaremos a elegir el equipamiento ideal según tu nivel, estilo de juego y presupuesto. No dudes en consultarnos.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* FAQ Item 5 */}
+            <Card className="group hover-lift card-modern border-0 overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ¿Aceptan diferentes métodos de pago?
+                  </h3>
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-bold">+</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4 leading-relaxed">
+                  Sí, aceptamos transferencias bancarias, efectivo, y todas las tarjetas de crédito y débito. También ofrecemos opciones de pago en cuotas sin interés según el producto y banco.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-4">
+              ¿No encontraste la respuesta que buscabas?
+            </p>
+            <Button
+              onClick={() => {
+                const message = "Hola! Tengo una consulta sobre sus productos.";
+                const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, "_blank");
+              }}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+            >
+              <svg
+                className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+              </svg>
+              Consultar por WhatsApp
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              ¡Mantente Informado!
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Recibe las últimas ofertas, novedades y consejos de equipamiento directamente en tu WhatsApp
+            </p>
+          </div>
+
+          <Card className="group hover-lift card-modern border-0 overflow-hidden max-w-2xl mx-auto">
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="text-left">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    Beneficios Exclusivos
+                  </h3>
+                  <ul className="space-y-3 text-gray-600">
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                      Ofertas especiales antes que nadie
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                      Consejos de equipamiento personalizado
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                      Novedades de productos
+                    </li>
+                    <li className="flex items-center">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                      Descuentos exclusivos
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-col justify-center">
+                  <div className="mb-6">
+                    <p className="text-gray-600 mb-4">
+                      ¡Es gratis y sin spam!
+                    </p>
+                    <Button
+                      onClick={() => {
+                        const message = "Hola! Me gustaría recibir información sobre ofertas y novedades de FullSpin.";
+                        const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                        window.open(whatsappUrl, "_blank");
+                      }}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                    >
+                      <svg
+                        className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                      </svg>
+                      Suscribirse por WhatsApp
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Al suscribirte, aceptas recibir mensajes promocionales
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
@@ -726,28 +1140,29 @@ export default function HomePage() {
 
       <Link href="/ofertas">
         <button
-          className="fixed left-6 bottom-8 z-50 bg-red-600 hover:bg-red-700 text-white font-extrabold px-8 py-4 rounded-full shadow-2xl backdrop-blur-lg flex items-center gap-3 border-4 border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_32px_0_rgba(255,0,0,0.25)] animate-bounce-slow ring-2 ring-red-300/40"
-          style={{ minWidth: 200, fontSize: "1.2rem", letterSpacing: "0.05em" }}
+          className="fixed left-4 bottom-6 z-50 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-6 py-3 rounded-2xl shadow-xl backdrop-blur-md flex items-center gap-2 border border-white/20 transition-all duration-300 hover:scale-110 hover:shadow-2xl animate-float"
+          style={{ fontSize: "0.9rem", letterSpacing: "0.02em" }}
         >
-          <Tag className="w-7 h-7 text-white drop-shadow" />
-          OFERTAS DEL MES
+          <Tag className="w-5 h-5 text-white" />
+          OFERTAS
         </button>
       </Link>
 
       <style jsx global>{`
-        @keyframes bounce-slow {
-          0%,
-          100% {
-            transform: translateY(0);
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
           }
           50% {
-            transform: translateY(-8px);
+            transform: translateY(-4px);
           }
         }
-        .animate-bounce-slow {
-          animation: bounce-slow 2.5s infinite;
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
         }
       `}</style>
+
+
     </div>
   );
 }

@@ -571,9 +571,21 @@ export default function PadelPage() {
                     </div>
 
                     <div className="mt-auto space-y-3">
-                      <div className="font-bold text-blue-600 text-lg">
-                        {formatPrice(product.price)}
-                      </div>
+                      {product.in_offer && product.offer_percent > 0 ? (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 line-through text-base">{formatPrice(product.price)}</span>
+                            <span className="bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded text-xs">-{product.offer_percent}%</span>
+                          </div>
+                          <div className="font-bold text-red-600 text-lg">
+                            {formatPrice(Math.round(product.price * (1 - product.offer_percent / 100)))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="font-bold text-blue-600 text-lg">
+                          {formatPrice(product.price)}
+                        </div>
+                      )}
 
                       <Button
                         onClick={() => handleWhatsAppClick(product)}
