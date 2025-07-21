@@ -32,7 +32,7 @@ import {
 
 // Función para formatear precios con separadores de miles
 const formatPrice = (price: number): string => {
-  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 })}`;
+  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 }).replace(/,/g, ".")}`;
 };
 
 const subcategories = [

@@ -308,9 +308,9 @@ export default function HomePage() {
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
                         <span className="text-lg text-gray-500 line-through">
-                          ${product.price.toLocaleString()}
+                          ${product.price.toLocaleString().replace(/,/g, ".")}
                         </span>
                       </div>
                       <Button 
@@ -399,9 +399,9 @@ export default function HomePage() {
                     </div>
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
                         <span className="text-lg text-gray-500 line-through">
-                          ${product.price.toLocaleString()}
+                          ${product.price.toLocaleString().replace(/,/g, ".")}
                         </span>
                       </div>
                       <Button 

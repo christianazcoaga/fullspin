@@ -22,7 +22,7 @@ const subcategoryNames: { [key: string]: string } = {
 };
 
 const formatPrice = (price: number): string => {
-  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 })}`;
+  return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 }).replace(/,/g, ".")}`;
 };
 
 export default function OfertasPage() {
