@@ -80,10 +80,12 @@ export async function getProductsBySubcategory(category: string, subcategory: st
 
 export async function searchProducts(query: string): Promise<Product[]> {
   const supabase = createBrowserClient()
+  
+  // Buscar por nombre, marca y categoría
   const { data, error } = await supabase
     .from("productos_fullspin")
     .select("*")
-    .ilike("name", `%${query}%`)
+    .or(`name.ilike.%${query}%,marca.ilike.%${query}%,category.ilike.%${query}%`)
     .eq("in_stock", true)
     .order("name")
 
