@@ -21,8 +21,8 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    // Optimización de imágenes experimental
-    // optimizeCss: true, // Comentado temporalmente por problemas de build
+    // Optimización de CSS habilitada (requiere critters)
+    optimizeCss: true,
   },
   // Configuración de compresión
   compress: true,
@@ -31,4 +31,4 @@ const nextConfig = {
   generateEtags: true,
 }
 
-export default nextConfig
+export default nextConfig 
