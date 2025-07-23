@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import OptimizedImage from "@/components/OptimizedImage";
 import Link from "next/link";
 import {
   Menu,
@@ -27,7 +28,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { getProducts, searchProducts, type Product } from "@/lib/products";
-import { subscribeToNewsletter } from "@/lib/newsletter";
+import { subscribeToNewsletter, subscribePhoneToNewsletter } from "@/lib/newsletter";
+import { getOptimizedImage, getImageSrcSet } from "@/lib/image-mapping";
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -40,9 +42,22 @@ export default function HomePage() {
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterPhone, setNewsletterPhone] = useState("");
+  const [subscriptionType, setSubscriptionType] = useState<"email" | "phone">("email");
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscriptionMessage, setSubscriptionMessage] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState<"idle" | "success" | "error">("idle");
+
+  // Ocultar mensaje de éxito o error después de 5 segundos
+  useEffect(() => {
+    if (subscriptionStatus === "success" || subscriptionStatus === "error") {
+      const timer = setTimeout(() => {
+        setSubscriptionStatus("idle");
+        setSubscriptionMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [subscriptionStatus]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -129,9 +144,15 @@ export default function HomePage() {
   const handleNewsletterSubscription = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!newsletterEmail.trim()) {
+    if (subscriptionType === "email" && !newsletterEmail.trim()) {
       setSubscriptionStatus("error");
       setSubscriptionMessage("Por favor ingresa tu email");
+      return;
+    }
+    
+    if (subscriptionType === "phone" && !newsletterPhone.trim()) {
+      setSubscriptionStatus("error");
+      setSubscriptionMessage("Por favor ingresa tu número de teléfono");
       return;
     }
 
@@ -139,12 +160,23 @@ export default function HomePage() {
       setIsSubscribing(true);
       setSubscriptionStatus("idle");
       
-      const result = await subscribeToNewsletter(newsletterEmail.trim());
+      let result;
+      
+      if (subscriptionType === "email") {
+        result = await subscribeToNewsletter(newsletterEmail.trim());
+        if (result.success) {
+          setNewsletterEmail("");
+        }
+      } else {
+        result = await subscribePhoneToNewsletter(newsletterPhone.trim());
+        if (result.success) {
+          setNewsletterPhone("");
+        }
+      }
       
       if (result.success) {
         setSubscriptionStatus("success");
         setSubscriptionMessage(result.message);
-        setNewsletterEmail("");
       } else {
         setSubscriptionStatus("error");
         setSubscriptionMessage(result.message);
@@ -170,8 +202,8 @@ export default function HomePage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-4 group">
               <div className="relative">
-                <Image
-                  src="/fullspin-logo.png"
+                <img
+                  src="/optimized/fullspin-logo.webp"
                   alt="FullSpin Logo"
                   width={50}
                   height={50}
@@ -291,6 +323,13 @@ export default function HomePage() {
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
+                href="/ofertas"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Ofertas</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
                 href="/sobre-nosotros"
                 className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
@@ -347,6 +386,13 @@ export default function HomePage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tenis de Mesa
+              </Link>
+              <Link
+                href="/ofertas"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ofertas
               </Link>
               <Link
                 href="/sobre-nosotros"
@@ -491,26 +537,24 @@ export default function HomePage() {
           className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none"
           style={{ top: "50%" }}
         >
-          <Image
-            src="/padel-racket-bg.png"
+          <img
+            src="/optimized/padel-racket-bg.webp"
             alt="Padel Racket"
             width={420}
             height={420}
             className="transform -rotate-45"
-            priority
           />
         </div>
         <div
           className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none"
           style={{ top: "50%" }}
         >
-          <Image
-            src="/tt-paddle-bg.png"
+          <img
+            src="/optimized/tt-paddle-bg.webp"
             alt="Table Tennis Paddle"
             width={420}
             height={420}
             className="transform rotate-45"
-            priority
           />
         </div>
 
@@ -750,37 +794,32 @@ export default function HomePage() {
               {/* Slide 1 - Adidas Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <Image
-                    src="/adidas-banner.png"
+                  <img
+                    src="/optimized/adidas-banner.webp"
                     alt="Adidas Banner"
-                    fill
-                    className="object-contain bg-neutral-100"
+                    className="object-contain bg-neutral-100 w-full h-full"
                     style={{ borderRadius: "1rem" }}
-                    priority
                   />
                 </div>
               </CarouselItem>
               {/* Slide 2 - Butterfly Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <Image
-                    src="/butterfly-banner.png"
+                  <img
+                    src="/optimized/butterfly-banner.webp"
                     alt="Butterfly Banner"
-                    fill
-                    className="object-contain bg-neutral-100"
+                    className="object-contain bg-neutral-100 w-full h-full"
                     style={{ borderRadius: "1rem" }}
-                    priority
                   />
                 </div>
               </CarouselItem>
               {/* Slide 3 - DHS Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <Image
-                    src="/dhs-banner.png"
+                  <img
+                    src="/optimized/dhs-banner.webp"
                     alt="DHS Banner"
-                    fill
-                    className="object-contain bg-neutral-100"
+                    className="object-contain bg-neutral-100 w-full h-full"
                     style={{ borderRadius: "1rem" }}
                   />
                 </div>
@@ -788,11 +827,10 @@ export default function HomePage() {
               {/* Slide 4 - Wilson Banner */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <Image
-                    src="/wilson-banner.png"
+                  <img
+                    src="/optimized/wilson-banner.webp"
                     alt="Wilson Banner"
-                    fill
-                    className="object-contain bg-neutral-100"
+                    className="object-contain bg-neutral-100 w-full h-full"
                     style={{ borderRadius: "1rem" }}
                   />
                 </div>
@@ -824,26 +862,19 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12 w-full mt-2">
-                    <Image
-                      src="/butterfly-logo.png"
+                    <img
+                      src="/optimized/butterfly-logo.webp"
                       alt="Butterfly Logo"
-                      width={120}
-                      height={60}
                       className="object-contain max-h-20 md:max-h-32 w-auto"
-                      priority
                     />
-                    <Image
-                      src="/dhs-logo.png"
+                    <img
+                      src="/optimized/dhs-logo.webp"
                       alt="DHS Logo"
-                      width={120}
-                      height={60}
                       className="object-contain max-h-20 md:max-h-32 w-auto"
                     />
-                    <Image
-                      src="/sanwei-logo.png"
+                    <img
+                      src="/optimized/sanwei-logo.webp"
                       alt="Sanwei Logo"
-                      width={50}
-                      height={22}
                       className="object-contain max-h-6 md:max-h-10 w-auto"
                     />
                   </div>
@@ -857,18 +888,14 @@ export default function HomePage() {
                       PADEL
                     </span>
                   </div>
-                  <Image
-                    src="/adidas-logo.png"
+                  <img
+                    src="/optimized/adidas-logo.webp"
                     alt="Adidas Logo"
-                    width={140}
-                    height={70}
                     className="object-contain max-h-20 md:max-h-32 w-auto"
                   />
-                  <Image
-                    src="/wilson-logo.png"
+                  <img
+                    src="/optimized/wilson-logo.webp"
                     alt="Wilson Logo"
-                    width={140}
-                    height={70}
                     className="object-contain max-h-20 md:max-h-32 w-auto"
                   />
                 </div>
@@ -904,29 +931,23 @@ export default function HomePage() {
                       <TrendingUp className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <h3 className="text-4xl font-bold mb-2">PADEL</h3>
-                      <p className="text-xl opacity-90 mb-6">
-                        Palas, zapatillas, pelotas y más
-                      </p>
-                      {/* Brand Logos */}
-                      <div className="flex justify-center items-center gap-x-12">
-                        <Image
-                          src="/adidas-logo.png"
-                          alt="Adidas Logo"
-                          width={120}
-                          height={70}
-                          className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                        />
-                        <Image
-                          src="/wilson-logo.png"
-                          alt="Wilson Logo"
-                          width={140}
-                          height={70}
-                          className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                        />
-                      </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <h3 className="text-4xl font-bold mb-2 text-white">PADEL</h3>
+                    <p className="text-xl opacity-90 mb-6 text-white">Palas, zapatillas, pelotas y más</p>
+                    {/* Brand Logos */}
+                    <div className="flex justify-center items-center gap-x-12">
+                      <img
+                        src="/optimized/adidas-logo.webp"
+                        alt="Adidas Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
+                      <img
+                        src="/optimized/wilson-logo.webp"
+                        alt="Wilson Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
@@ -959,29 +980,23 @@ export default function HomePage() {
                       <Zap className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <h3 className="text-4xl font-bold mb-2">TENIS DE MESA</h3>
-                      <p className="text-xl opacity-90 mb-6">
-                        Paletas, gomas, mesas y accesorios
-                      </p>
-                      {/* Brand Logos */}
-                      <div className="flex justify-center items-center gap-x-6">
-                        <Image
-                          src="/butterfly-logo.png"
-                          alt="Butterfly Logo"
-                          width={80}
-                          height={50}
-                          className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                        />
-                        <Image
-                          src="/dhs-logo.png"
-                          alt="DHS Logo"
-                          width={80}
-                          height={50}
-                          className="object-contain opacity-60 filter grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                        />
-                      </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <h3 className="text-4xl font-bold mb-2 text-white">TENIS DE MESA</h3>
+                    <p className="text-xl opacity-90 mb-6 text-white">Paletas, gomas, mesas y accesorios</p>
+                    {/* Brand Logos */}
+                    <div className="flex justify-center items-center gap-x-8">
+                      <img
+                        src="/optimized/butterfly-logo.webp"
+                        alt="Butterfly Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
+                      <img
+                        src="/optimized/dhs-logo.webp"
+                        alt="DHS Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400"></div>
@@ -1246,22 +1261,71 @@ export default function HomePage() {
                       ¡Es gratis y sin spam!
                     </p>
                     
+                    {/* Selector de tipo de suscripción */}
+                    <div className="flex space-x-2 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setSubscriptionType("email")}
+                        className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                          subscriptionType === "email"
+                            ? "bg-blue-600 text-white shadow-lg"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                      >
+                        <svg className="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Email
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSubscriptionType("phone")}
+                        className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                          subscriptionType === "phone"
+                            ? "bg-green-600 text-white shadow-lg"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                      >
+                        <svg className="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                        </svg>
+                        WhatsApp
+                      </button>
+                    </div>
+                    
                     <form onSubmit={handleNewsletterSubscription} className="space-y-4">
-                      <div className="relative">
-                        <input
-                          type="email"
-                          placeholder="tu@email.com"
-                          value={newsletterEmail}
-                          onChange={(e) => setNewsletterEmail(e.target.value)}
-                          className="w-full px-4 py-3 text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-500"
-                          disabled={isSubscribing}
-                        />
-                      </div>
+                      {subscriptionType === "email" ? (
+                        <div className="relative">
+                          <input
+                            type="email"
+                            placeholder="tu@email.com"
+                            value={newsletterEmail}
+                            onChange={(e) => setNewsletterEmail(e.target.value)}
+                            className="w-full px-4 py-3 text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-500"
+                            disabled={isSubscribing}
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          <input
+                            type="tel"
+                            placeholder="+54 370 510-3672"
+                            value={newsletterPhone}
+                            onChange={(e) => setNewsletterPhone(e.target.value)}
+                            className="w-full px-4 py-3 text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 placeholder-gray-500"
+                            disabled={isSubscribing}
+                          />
+                        </div>
+                      )}
                       
                       <Button
                         type="submit"
                         disabled={isSubscribing}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full px-6 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed ${
+                          subscriptionType === "email"
+                            ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                            : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
+                        }`}
                       >
                         {isSubscribing ? (
                           <>
@@ -1270,14 +1334,24 @@ export default function HomePage() {
                           </>
                         ) : (
                           <>
-                            <svg
-                              className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
+                            {subscriptionType === "email" ? (
+                              <svg
+                                className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                              </svg>
+                            ) : (
+                              <svg
+                                className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                              </svg>
+                            )}
                             Suscribirse al Newsletter
                           </>
                         )}
@@ -1296,7 +1370,7 @@ export default function HomePage() {
                     )}
                   </div>
                   <p className="text-sm text-gray-500">
-                    Al suscribirte, aceptas recibir emails promocionales
+                    Al suscribirte, aceptas recibir comunicaciones promocionales
                   </p>
                 </div>
               </div>
@@ -1373,8 +1447,8 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-4 mb-6">
-                <Image
-                  src="/fullspin-logo.png"
+                <OptimizedImage
+                  src={getOptimizedImage("/fullspin-logo.png")}
                   alt="FullSpin Logo"
                   width={40}
                   height={40}

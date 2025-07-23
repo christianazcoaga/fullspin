@@ -238,6 +238,13 @@ export default function PadelPage() {
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
+                href="/ofertas"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Ofertas</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
                 href="/sobre-nosotros"
                 className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
@@ -285,6 +292,13 @@ export default function PadelPage() {
                 Tenis de Mesa
               </Link>
               <Link
+                href="/ofertas"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ofertas
+              </Link>
+              <Link
                 href="/sobre-nosotros"
                 className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -304,7 +318,7 @@ export default function PadelPage() {
           <div className="absolute bottom-5 left-10 w-24 h-24 bg-white/10 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Catálogo de Pádel
           </h1>
           <p className="text-white text-xl drop-shadow">

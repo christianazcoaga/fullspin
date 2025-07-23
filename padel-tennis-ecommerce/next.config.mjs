@@ -7,8 +7,28 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Configuración adicional para optimización
+    loader: 'default',
+    path: '/_next/image',
+    domains: ['itllufoljyibrrzlwapm.supabase.co'],
+    remotePatterns: [],
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    // Optimización de imágenes experimental
+    optimizeCss: true,
+  },
+  // Configuración de compresión
+  compress: true,
+  poweredByHeader: false,
+  // Configuración de cache
+  generateEtags: true,
 }
 
 export default nextConfig

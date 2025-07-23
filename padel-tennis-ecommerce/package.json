@@ -7,7 +7,10 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "optimize-images": "node scripts/optimize-images.js",
+    "optimize-images:watch": "node scripts/optimize-images.js --watch",
+    "setup-images": "powershell -ExecutionPolicy Bypass -File scripts/setup-image-optimization.ps1"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -72,6 +75,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8.5",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }

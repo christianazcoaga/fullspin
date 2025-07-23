@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, MessageCircle, Heart, Share2 } from "lucide-react";
+import { Search, MessageCircle, Heart, Share2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,14 @@ export default function OfertasPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     loadProducts();
@@ -78,18 +86,129 @@ export default function OfertasPage() {
 
   return (
     <div className="min-h-screen bg-[#f6f8fb]">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-4 group">
-            <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={40} height={40} className="rounded-lg" />
-            <h1 className="text-2xl font-bold gradient-text">FullSpin</h1>
-          </Link>
+      {/* Header */}
+      <header
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrollY > 50 ? "glass-effect shadow-lg" : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center space-x-4 group">
+              <div className="relative">
+                <img 
+                  src="/optimized/fullspin-logo.webp" 
+                  alt="FullSpin Logo" 
+                  width={50} 
+                  height={50} 
+                  className="rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300" 
+                />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <h1 className="text-2xl font-bold gradient-text group-hover:scale-105 transition-transform duration-300">
+                FullSpin
+              </h1>
+            </Link>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg bg-white/80 backdrop-blur-sm"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6 text-gray-700" />
+              ) : (
+                <Menu className="h-6 w-6 text-gray-700" />
+              )}
+            </button>
+
+            <nav className="hidden md:flex space-x-8">
+              <Link
+                href="/"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Inicio</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
+                href="/padel"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Padel</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
+                href="/tenis-mesa"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Tenis de Mesa</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
+                href="/ofertas"
+                className="text-sm font-medium text-blue-600 relative group"
+              >
+                <span className="relative z-10">Ofertas</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
+                href="/sobre-nosotros"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Sobre nosotros</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+            </nav>
+          </div>
+
+          {/* Mobile menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-sm shadow-lg border-t border-gray-200">
+              <div className="px-4 py-6 space-y-4">
+                <Link
+                  href="/"
+                  className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Inicio
+                </Link>
+                <Link
+                  href="/padel"
+                  className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Padel
+                </Link>
+                <Link
+                  href="/tenis-mesa"
+                  className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Tenis de Mesa
+                </Link>
+                <Link
+                  href="/ofertas"
+                  className="block text-sm font-medium text-blue-600"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Ofertas
+                </Link>
+                <Link
+                  href="/sobre-nosotros"
+                  className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Sobre nosotros
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </header>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="pt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Productos en Oferta</h2>
-          <p className="text-gray-600 text-lg">Encontrá productos seleccionados a precios especiales en FullSpin.</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Productos en Oferta</h2>
+          <p className="text-xl text-gray-600 max-w-3xl">Encontrá productos seleccionados a precios especiales en FullSpin.</p>
         </div>
         {products.length === 0 ? (
           <div className="text-center py-16">
@@ -143,11 +262,10 @@ export default function OfertasPage() {
                     <div className="h-8 flex items-center justify-start mb-2">
                       {product.marca && (
                         <img
-                          src={`/${product.marca.toLowerCase()}-logo.png`}
+                          src={`/optimized/${product.marca.toLowerCase()}-logo.webp`}
                           alt={product.marca + ' Logo'}
-                          width={60}
-                          height={24}
-                          className="object-contain max-h-6"
+                          className="object-contain max-h-6 w-auto"
+                          style={{ maxWidth: '60px' }}
                         />
                       )}
                     </div>
@@ -190,7 +308,13 @@ export default function OfertasPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-4 mb-6">
-                <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={40} height={40} className="rounded-lg" />
+                <img 
+                  src="/optimized/fullspin-logo.webp" 
+                  alt="FullSpin Logo" 
+                  width={40} 
+                  height={40} 
+                  className="rounded-lg shadow-lg" 
+                />
                 <h3 className="text-2xl font-bold gradient-text">FullSpin</h3>
               </div>
               <p className="text-gray-400 text-lg leading-relaxed mb-6">
