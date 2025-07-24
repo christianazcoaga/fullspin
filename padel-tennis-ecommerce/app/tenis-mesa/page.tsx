@@ -331,7 +331,8 @@ export default function TenisMesaPage() {
                   placeholder="Buscar productos, códigos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 rounded-xl border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+                  className="pl-10 rounded-xl border-gray-200 focus:border-purple-500 focus:ring-purple-500 text-base"
+                  style={{ fontSize: '16px' }}
                 />
               </div>
             </div>

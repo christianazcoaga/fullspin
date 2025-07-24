@@ -340,7 +340,8 @@ export default function PadelPage() {
                   placeholder="Buscar productos, códigos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-base"
+                  style={{ fontSize: '16px' }}
                 />
               </div>
             </div>
