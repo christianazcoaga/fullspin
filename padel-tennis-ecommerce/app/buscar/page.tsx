@@ -237,7 +237,7 @@ export default function SearchResultsPage() {
                               src={product.image}
                               alt={product.name}
                               width={80}
-                              height={40}
+                              height={80}
                               className="object-contain w-20 h-20"
                             />
                           </div>

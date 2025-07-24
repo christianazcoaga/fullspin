@@ -163,11 +163,6 @@ export default function SobreNosotrosPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center animate-fade-in-up">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-8 animate-pulse-slow">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Conoce nuestra historia y pasión por el deporte
-            </div>
-
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
               Sobre{" "}
               <span className="gradient-text relative">

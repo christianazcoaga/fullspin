@@ -29,6 +29,26 @@ const nextConfig = {
   poweredByHeader: false,
   // Configuración de cache
   generateEtags: true,
+  // Configuración de webpack para resolver advertencias de Supabase
+  webpack: (config, { isServer }) => {
+    // Resolver advertencia de Supabase Realtime
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    };
+
+    // Ignorar advertencias específicas de Supabase
+    config.ignoreWarnings = [
+      {
+        module: /node_modules\/@supabase\/realtime-js/,
+        message: /Critical dependency: the request of a dependency is an expression/,
+      },
+    ];
+
+    return config;
+  },
 }
 
 export default nextConfig

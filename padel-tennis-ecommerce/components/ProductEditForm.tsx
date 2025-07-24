@@ -113,35 +113,35 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+      <CardHeader className="pb-3">
         <CardTitle>Editar Detalles del Producto</CardTitle>
       </CardHeader>
-      <CardContent>
-        <form action={handleUpdateAction} className="space-y-4">
+      <CardContent className="pt-0">
+        <form action={handleUpdateAction} className="space-y-3">
           <input type="hidden" name="id" value={product.id} />
           <div>
-            <Label htmlFor="name">Nombre del Producto</Label>
-            <Input id="name" name="name" value={name} onChange={e => setName(e.target.value)} required />
+            <Label htmlFor="name" className="text-sm">Nombre del Producto</Label>
+            <Input id="name" name="name" value={name} onChange={e => setName(e.target.value)} required className="h-9" />
           </div>
 
           <div>
-            <Label htmlFor="marca">Marca</Label>
-            <Input id="marca" name="marca" value={marca} onChange={e => setMarca(e.target.value)} />
+            <Label htmlFor="marca" className="text-sm">Marca</Label>
+            <Input id="marca" name="marca" value={marca} onChange={e => setMarca(e.target.value)} className="h-9" />
           </div>
 
           <div>
-            <Label htmlFor="price">Precio (ARS)</Label>
-            <Input id="price" name="price" type="number" step="0.01" value={price} onChange={e => setPrice(Number(e.target.value))} required />
+            <Label htmlFor="price" className="text-sm">Precio (ARS)</Label>
+            <Input id="price" name="price" type="number" step="0.01" value={price} onChange={e => setPrice(Number(e.target.value))} required className="h-9" />
           </div>
 
           <div>
-            <Label htmlFor="description">Descripción</Label>
-            <Textarea id="description" name="description" value={description} onChange={e => setDescription(e.target.value)} rows={4} />
+            <Label htmlFor="description" className="text-sm">Descripción</Label>
+            <Textarea id="description" name="description" value={description} onChange={e => setDescription(e.target.value)} rows={3} className="min-h-[60px]" />
           </div>
 
           <div>
-            <Label htmlFor="category">Categoría</Label>
+            <Label htmlFor="category" className="text-sm">Categoría</Label>
             <Select name="category" value={category} onValueChange={(newCategory) => {
               setCategory(newCategory);
               if (subcategories[newCategory] && subcategories[newCategory].length > 0) {
@@ -150,7 +150,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                 setSubcategory("");
               }
             }} required>
-              <SelectTrigger>
+              <SelectTrigger className="h-9">
                 <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
               <SelectContent>
@@ -164,9 +164,9 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
           </div>
 
           <div>
-            <Label htmlFor="subcategory">Subcategoría</Label>
+            <Label htmlFor="subcategory" className="text-sm">Subcategoría</Label>
             <Select name="subcategory" value={subcategory} onValueChange={setSubcategory} required>
-              <SelectTrigger>
+              <SelectTrigger className="h-9">
                 <SelectValue placeholder="Selecciona una subcategoría" />
               </SelectTrigger>
               <SelectContent>
@@ -180,23 +180,23 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
             </Select>
           </div>
 
-          <div className="flex items-center space-x-2 pt-2">
+          <div className="flex items-center space-x-2 pt-1">
             <Switch id="in_stock" name="in_stock" checked={inStock} onCheckedChange={setInStock} />
-            <Label htmlFor="in_stock" className="cursor-pointer">
+            <Label htmlFor="in_stock" className="cursor-pointer text-sm">
               Disponible en Stock
             </Label>
           </div>
 
-          <div className="flex items-center space-x-2 pt-2">
+          <div className="flex items-center space-x-2 pt-1">
             <Switch id="in_offer" name="in_offer" checked={inOffer} onCheckedChange={setInOffer} />
-            <Label htmlFor="in_offer" className="cursor-pointer text-red-600 font-semibold">
+            <Label htmlFor="in_offer" className="cursor-pointer text-red-600 font-semibold text-sm">
               Oferta del Mes
             </Label>
           </div>
           
           {inOffer && (
-            <div className="flex items-center space-x-2 pt-2">
-              <Label htmlFor="offer_percent" className="font-semibold">% Descuento</Label>
+            <div className="flex items-center space-x-2 pt-1">
+              <Label htmlFor="offer_percent" className="font-semibold text-sm">% Descuento</Label>
               <Input
                 id="offer_percent"
                 name="offer_percent"
@@ -206,9 +206,9 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                 step={1}
                 value={offerPercent}
                 onChange={e => setOfferPercent(Math.max(0, Math.min(100, Number(e.target.value))))}
-                className="w-24"
+                className="w-20 h-9"
               />
-              <span className="text-gray-500">%</span>
+              <span className="text-gray-500 text-sm">%</span>
             </div>
           )}
           
@@ -216,7 +216,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
             <SubmitButton />
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" variant="destructive" disabled={isDeleting}>
+                <Button type="button" variant="destructive" disabled={isDeleting} className="h-9">
                   {isDeleting ? "Eliminando..." : "Eliminar Producto"}
                 </Button>
               </AlertDialogTrigger>

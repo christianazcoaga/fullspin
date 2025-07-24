@@ -238,9 +238,11 @@ export default function EcommerceCatalog({ initialCategory }: { initialCategory:
               <Card key={product.id} className="group hover:shadow-lg transition-shadow">
                 <CardContent className="p-4">
                   <div className="aspect-square mb-4 bg-gray-100 rounded-lg overflow-hidden">
-                    <img
+                    <Image
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
+                      width={300}
+                      height={300}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                     />
                   </div>

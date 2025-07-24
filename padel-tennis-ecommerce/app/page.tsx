@@ -127,17 +127,53 @@ export default function HomePage() {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
+  // Prevenir scroll del body cuando el overlay móvil esté abierto
+  useEffect(() => {
+    if (showSearchResults && window.innerWidth < 768) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showSearchResults]);
+
   // Cerrar resultados de búsqueda al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
+      
+      // Para móvil: solo cerrar si se hace clic en el backdrop (fondo oscuro)
+      if (window.innerWidth < 768) {
+        if (target.classList.contains('mobile-search-backdrop')) {
+          setShowSearchResults(false);
+          setSearchQuery("");
+        }
+        return;
+      }
+      
+      // Para desktop: cerrar si se hace clic fuera del contenedor de búsqueda
       if (!target.closest('.search-container')) {
         setShowSearchResults(false);
       }
     };
 
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowSearchResults(false);
+        setSearchQuery("");
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
   }, []);
 
   // Función para manejar la suscripción al newsletter
@@ -292,8 +328,10 @@ export default function HomePage() {
 
                     </div>
                   ) : searchQuery.trim().length >= 2 ? (
-                    <div className="p-4 text-center text-gray-500">
-                      No se encontraron productos para "{searchQuery}"
+                    <div className="p-6 text-center text-gray-500">
+                      <Search className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                      <p className="text-sm mb-2">No se encontraron productos para "{searchQuery}"</p>
+                      <p className="text-xs text-gray-400">Intenta con otros términos de búsqueda</p>
                     </div>
                   ) : null}
                 </div>
@@ -407,9 +445,9 @@ export default function HomePage() {
 
         {/* Mobile Search Overlay */}
         {showSearchResults && (
-          <div className="md:hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
-            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl">
-              <div className="p-4 border-b border-gray-200">
+          <div className="md:hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 mobile-search-backdrop">
+            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl max-h-[80vh] flex flex-col">
+              <div className="p-4 border-b border-gray-200 flex-shrink-0">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">Buscar productos</h3>
                   <button
@@ -441,18 +479,18 @@ export default function HomePage() {
               </div>
 
               {/* Mobile Search Results */}
-              <div className="max-h-[60vh] overflow-y-auto">
+              <div className="flex-1 overflow-y-auto">
                 {isSearching ? (
-                  <div className="p-4 text-center text-gray-500">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                    Buscando productos...
+                  <div className="p-6 text-center text-gray-500">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-3"></div>
+                    <p className="text-sm">Buscando productos...</p>
                   </div>
                 ) : searchResults.length > 0 ? (
                   <div className="py-2">
                     {searchResults.map((product) => (
                       <div
                         key={product.id}
-                        className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 flex items-center space-x-3"
+                        className="px-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors duration-200 flex items-center space-x-3 border-b border-gray-100 last:border-b-0"
                         onClick={() => {
                           const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
                           const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
@@ -461,24 +499,29 @@ export default function HomePage() {
                           setSearchQuery("");
                         }}
                       >
-                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Image
                             src={product.image}
                             alt={product.name}
-                            width={24}
-                            height={24}
-                            className="object-contain w-6 h-6"
+                            width={32}
+                            height={32}
+                            className="object-contain w-8 h-8"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900 truncate">
                             {product.name}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 mb-1">
                             {product.marca} • {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
                           </p>
+                          {product.in_offer && (
+                            <p className="text-xs text-red-500 font-medium">
+                              -{product.offer_percent}% de descuento
+                            </p>
+                          )}
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex-shrink-0">
                           <p className="text-sm font-semibold text-gray-900">
                             ${product.in_offer 
                               ? Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")
@@ -486,35 +529,39 @@ export default function HomePage() {
                             }
                           </p>
                           {product.in_offer && (
-                            <p className="text-xs text-red-500 font-medium">
-                              -{product.offer_percent}%
+                            <p className="text-xs text-gray-500 line-through">
+                              ${product.price.toLocaleString().replace(/,/g, ".")}
                             </p>
                           )}
                         </div>
                       </div>
                     ))}
                     
-                  </div>
-                ) : searchQuery.trim().length >= 2 ? (
-                  <div className="p-4 text-center text-gray-500">
-                    <p className="mb-4">No se encontraron productos para "{searchQuery}"</p>
-                    <Link href={`/buscar?q=${encodeURIComponent(searchQuery)}`}>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
+                    {/* Botón para ver todos los resultados */}
+                    <div className="p-4 border-t border-gray-200">
+                      <button
                         onClick={() => {
                           setShowSearchResults(false);
-                          setSearchQuery("");
+                          const searchUrl = `/buscar?q=${encodeURIComponent(searchQuery)}`;
+                          window.location.href = searchUrl;
                         }}
+                        className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                       >
-                        Ver búsqueda completa
-                      </Button>
-                    </Link>
+                        Ver todos los resultados ({searchResults.length})
+                      </button>
+                    </div>
+                  </div>
+                ) : searchQuery.trim().length >= 2 ? (
+                  <div className="p-6 text-center text-gray-500">
+                    <Search className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-sm mb-2">No se encontraron productos para "{searchQuery}"</p>
+                    <p className="text-xs text-gray-400">Intenta con otros términos de búsqueda</p>
                   </div>
                 ) : (
-                  <div className="p-4 text-center text-gray-500">
-                    <Search className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-                    <p>Escribe para buscar productos</p>
+                  <div className="p-6 text-center text-gray-500">
+                    <Search className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-sm mb-2">Escribe para buscar productos</p>
+                    <p className="text-xs text-gray-400">Busca por nombre, marca o categoría</p>
                   </div>
                 )}
               </div>
@@ -644,7 +691,7 @@ export default function HomePage() {
                             src={product.image}
                             alt={product.name}
                             width={80}
-                            height={40}
+                            height={80}
                             className="object-contain w-20 h-20"
                           />
                         </div>
@@ -735,7 +782,7 @@ export default function HomePage() {
                             src={product.image}
                             alt={product.name}
                             width={80}
-                            height={40}
+                            height={80}
                             className="object-contain w-20 h-20"
                           />
                         </div>

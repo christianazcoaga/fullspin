@@ -228,9 +228,11 @@ export default function OfertasPage() {
               >
                 <CardContent className="p-0">
                   <div className="relative bg-gray-100 overflow-hidden aspect-square mb-4 flex items-center justify-center">
-                    <img
+                    <Image
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
+                      width={300}
+                      height={300}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute top-3 right-3 flex gap-2">

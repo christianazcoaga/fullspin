@@ -75,12 +75,12 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
+    <Card className="w-full bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+      <CardHeader className="pb-3">
         <CardTitle className="text-lg">Actualizar Imagen</CardTitle>
         <p className="text-sm text-gray-600">{product.name}</p>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="pt-0 space-y-3">
         {/* Vista previa de imagen actual */}
         <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
           <img src={product.image || "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
@@ -88,7 +88,7 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
 
         {/* Zona de drop */}
         <div
-          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+          className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
             dragOver ? "border-orange-500 bg-orange-50" : "border-gray-300 hover:border-gray-400"
           }`}
           onDrop={handleDrop}
@@ -100,17 +100,17 @@ export function ImageUpload({ product, onImageUpdated }: ImageUploadProps) {
         >
           {uploading ? (
             <div className="space-y-2">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500 mx-auto"></div>
               <p className="text-sm text-gray-600">Subiendo imagen...</p>
             </div>
           ) : success ? (
             <div className="space-y-2">
-              <Check className="h-8 w-8 text-green-500 mx-auto" />
+              <Check className="h-6 w-6 text-green-500 mx-auto" />
               <p className="text-sm text-green-600">¡Imagen actualizada!</p>
             </div>
           ) : (
             <div className="space-y-2">
-              <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+              <Upload className="h-6 w-6 text-gray-400 mx-auto" />
               <p className="text-sm text-gray-600">Arrastra una imagen aquí o haz clic para seleccionar</p>
               <p className="text-xs text-gray-500">PNG, JPG, WEBP hasta 5MB</p>
             </div>

@@ -3,6 +3,7 @@ import './globals.css'
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.fullspinarg.com'),
   title: 'FullSpin',
   description: 'FullSpin - El mejor equipamiento deportivo',
   generator: 'v0.dev',
