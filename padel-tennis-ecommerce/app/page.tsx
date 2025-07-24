@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -37,6 +37,7 @@ export default function HomePage() {
   const [padelOffers, setPadelOffers] = useState<Product[]>([]);
   const [tenisMesaOffers, setTenisMesaOffers] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -147,6 +148,11 @@ export default function HomePage() {
       
       // Para móvil: solo cerrar si se hace clic en el backdrop (fondo oscuro)
       if (window.innerWidth < 768) {
+        // No cerrar si se hace clic en el input o en elementos dentro del overlay
+        if (target.closest('.mobile-search-overlay')) {
+          return;
+        }
+        // Solo cerrar si se hace clic específicamente en el backdrop
         if (target.classList.contains('mobile-search-backdrop')) {
           setShowSearchResults(false);
           setSearchQuery("");
@@ -447,7 +453,7 @@ export default function HomePage() {
         {/* Mobile Search Overlay */}
         {showSearchResults && (
           <div className="md:hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 mobile-search-backdrop">
-            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl max-h-[80vh] flex flex-col">
+            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl max-h-[80vh] flex flex-col mobile-search-overlay">
               <div className="p-4 border-b border-gray-200 flex-shrink-0">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">Buscar productos</h3>
@@ -463,10 +469,17 @@ export default function HomePage() {
                 </div>
                 <div className="relative">
                   <input
+                    ref={mobileSearchInputRef}
                     type="text"
                     placeholder="Buscar productos..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => {
+                      // Asegurar que el overlay permanezca abierto cuando se enfoca el input
+                      if (!showSearchResults) {
+                        setShowSearchResults(true);
+                      }
+                    }}
                     className="w-full px-4 py-3 pl-10 pr-4 text-base bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 placeholder-gray-500"
                     style={{ fontSize: '16px' }}
                   />
