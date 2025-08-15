@@ -229,6 +229,13 @@ export default function TenisMesaPage() {
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600"></div>
               </Link>
               <Link
+                href="/tenis"
+                className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Tenis</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
                 href="/ofertas"
                 className="text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors relative group"
               >
@@ -281,6 +288,13 @@ export default function TenisMesaPage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tenis de Mesa
+              </Link>
+              <Link
+                href="/tenis"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Tenis
               </Link>
               <Link
                 href="/ofertas"
@@ -646,6 +660,11 @@ export default function TenisMesaPage() {
                 <li>
                   <Link href="/tenis-mesa" className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block">
                     Tenis de Mesa
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tenis" className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block">
+                    Tenis
                   </Link>
                 </li>
               </ul>

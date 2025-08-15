@@ -23,6 +23,7 @@ export function AdminStats({ products }: AdminStatsProps) {
     total: products.length,
     padel: products.filter(p => p.category === 'padel').length,
     tenisMesa: products.filter(p => p.category === 'tenis-mesa').length,
+    tenis: products.filter(p => p.category === 'tenis').length,
     inOffer: products.filter(p => p.in_offer).length,
     inStock: products.filter(p => p.in_stock).length,
     outOfStock: products.filter(p => !p.in_stock).length,
@@ -36,7 +37,7 @@ export function AdminStats({ products }: AdminStatsProps) {
 
   const getCategoryPercentage = (category: string) => {
     if (stats.total === 0) return 0
-    const count = category === 'padel' ? stats.padel : stats.tenisMesa
+    const count = category === 'padel' ? stats.padel : category === 'tenis-mesa' ? stats.tenisMesa : stats.tenis
     return Math.round((count / stats.total) * 100)
   }
 
@@ -91,6 +92,24 @@ export function AdminStats({ products }: AdminStatsProps) {
             </div>
             <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full">
               <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tenis Products */}
+      <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm hover:shadow-md transition-shadow">
+        <CardContent className="p-2 sm:p-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Tenis</p>
+              <p className="text-lg sm:text-2xl font-bold text-green-600">{stats.tenis}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {getCategoryPercentage('tenis')}% del total
+              </p>
+            </div>
+            <div className="p-1.5 sm:p-2 bg-green-100 rounded-full">
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
           </div>
         </CardContent>

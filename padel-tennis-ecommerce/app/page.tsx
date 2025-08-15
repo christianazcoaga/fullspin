@@ -36,6 +36,7 @@ export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
   const [padelOffers, setPadelOffers] = useState<Product[]>([]);
   const [tenisMesaOffers, setTenisMesaOffers] = useState<Product[]>([]);
+  const [tenisOffers, setTenisOffers] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,8 +83,14 @@ export default function HomePage() {
           .filter(product => product.category === "tenis-mesa" && product.in_offer)
           .slice(0, 4);
         
+        // Filtrar productos de tenis en oferta
+        const tenisProducts = allProducts
+          .filter(product => product.category === "tenis" && product.in_offer)
+          .slice(0, 4);
+        
         setPadelOffers(padelProducts);
         setTenisMesaOffers(tenisMesaProducts);
+        setTenisOffers(tenisProducts);
       } catch (error) {
         console.error("Error fetching offered products:", error);
       } finally {
@@ -314,7 +321,7 @@ export default function HomePage() {
                               {product.name}
                             </p>
                             <p className="text-xs text-gray-500">
-                              {product.marca} • {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
+                              {product.marca} • {product.category === "padel" ? "Padel" : product.category === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
                             </p>
                           </div>
                           <div className="text-right">
@@ -365,6 +372,13 @@ export default function HomePage() {
                 className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
                 <span className="relative z-10">Tenis de Mesa</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
+                href="/tenis"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Tenis</span>
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
@@ -433,6 +447,13 @@ export default function HomePage() {
                 Tenis de Mesa
               </Link>
               <Link
+                href="/tenis"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Tenis
+              </Link>
+              <Link
                 href="/ofertas"
                 className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -452,8 +473,15 @@ export default function HomePage() {
 
         {/* Mobile Search Overlay */}
         {showSearchResults && (
-          <div className="md:hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20 mobile-search-backdrop">
-            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl max-h-[80vh] flex flex-col mobile-search-overlay">
+          <div 
+            className="md:hidden fixed top-0 left-0 right-0 bottom-0 bg-black/70 z-[9999] flex items-start justify-center mobile-search-backdrop" 
+            style={{ 
+              paddingTop: '80px',
+              minHeight: '100vh',
+              minWidth: '100vw'
+            }}
+          >
+            <div className="w-full max-w-md mx-4 bg-white rounded-xl shadow-2xl max-h-[calc(100vh-100px)] flex flex-col mobile-search-overlay">
               <div className="p-4 border-b border-gray-200 flex-shrink-0">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900">Buscar productos</h3>
@@ -527,7 +555,7 @@ export default function HomePage() {
                             {product.name}
                           </p>
                           <p className="text-xs text-gray-500 mb-1">
-                            {product.marca} • {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
+                            {product.marca} • {product.category === "padel" ? "Padel" : product.category === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
                           </p>
                           {product.in_offer && (
                             <p className="text-xs text-red-500 font-medium">
@@ -631,10 +659,11 @@ export default function HomePage() {
 
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
               Especialistas en{" "}
-              <span className="font-semibold text-blue-600">Padel</span> y{" "}
+              <span className="font-semibold text-blue-600">Padel</span>,{" "}
               <span className="font-semibold text-purple-600">
                 Tenis de Mesa
               </span>{" "}
+              y <span className="font-semibold text-green-600">Tenis</span>{" "}
               en Argentina. Envíos a todo el país.
             </p>
 
@@ -651,6 +680,15 @@ export default function HomePage() {
                   className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
                 >
                   Productos de Tenis de Mesa
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
+              <Link href="/tenis">
+                <Button
+                  variant="outline"
+                  className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                >
+                  Productos de Tenis
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -841,6 +879,97 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Tenis Offers Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Ofertas de Tenis
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Productos de tenis con descuentos especiales
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="group hover-lift card-modern border-0 overflow-hidden animate-pulse">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
+                          <div className="h-4 bg-gray-300 rounded w-24 mx-auto mb-2"></div>
+                          <div className="h-3 bg-gray-300 rounded w-16 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : tenisOffers.length > 0 ? (
+              tenisOffers.map((product) => (
+                <Card key={product.id} className="group hover-lift card-modern border-0 overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gradient-to-br from-green-50 to-green-100 overflow-hidden">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={80}
+                            height={80}
+                            className="object-contain w-20 h-20"
+                          />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 text-center">{product.name}</h3>
+                        <p className="text-sm text-gray-600 text-center">{product.marca}</p>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
+                        <span className="text-lg text-gray-500 line-through">
+                          ${product.price.toLocaleString().replace(/,/g, ".")}
+                        </span>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+                          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                          window.open(whatsappUrl, "_blank");
+                        }}
+                        className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl py-3 group"
+                      >
+                        Consultar Stock
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              // No tenis offers found
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600 text-lg">No hay ofertas de tenis disponibles en este momento.</p>
+                <Link href="/tenis" className="inline-block mt-4">
+                  <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-xl">
+                    Ver Productos de Tenis
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Promotional Image Carousel Section */}
       <section className="py-10 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -941,7 +1070,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </CarouselItem>
-              {/* Slide 2 - Adidas & Wilson Logos */}
+              {/* Slide 2 - Adidas & Wilson Logos (Padel) */}
               <CarouselItem className="md:basis-1/1 flex items-center justify-center">
                 <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
                   <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
@@ -957,6 +1086,26 @@ export default function HomePage() {
                   <img
                     src="/optimized/wilson-logo.webp"
                     alt="Wilson Logo"
+                    className="object-contain max-h-20 md:max-h-32 w-auto"
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 3 - Wilson & Head Logos (Tenis) */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 h-80 md:h-96 bg-white rounded-2xl shadow-2xl px-4 md:px-8 py-6 md:py-0">
+                  <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+                    <span className="text-2xl md:text-3xl font-bold text-gray-700">
+                      TENIS
+                    </span>
+                  </div>
+                  <img
+                    src="/optimized/wilson-logo.webp"
+                    alt="Wilson Logo"
+                    className="object-contain max-h-20 md:max-h-32 w-auto"
+                  />
+                  <img
+                    src="/optimized/head-logo.webp"
+                    alt="Head Logo"
                     className="object-contain max-h-20 md:max-h-32 w-auto"
                   />
                 </div>
@@ -981,7 +1130,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Padel Card */}
             <Card className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in">
               <CardContent className="p-0">
@@ -1070,6 +1219,55 @@ export default function HomePage() {
                   <Link href="/tenis-mesa">
                     <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white rounded-xl py-3 group">
                       Explorar Tenis de Mesa
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tenis Card */}
+            <Card
+              className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in"
+              style={{ animationDelay: "0.4s" }}
+            >
+              <CardContent className="p-0">
+                <div className="relative h-80 bg-gradient-to-br from-green-500 via-green-600 to-emerald-700 overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute top-4 right-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <TrendingUp className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <h3 className="text-4xl font-bold mb-2 text-white">TENIS</h3>
+                    <p className="text-xl opacity-90 mb-6 text-white">Raquetas, zapatillas, pelotas y más</p>
+                    {/* Brand Logos */}
+                    <div className="flex justify-center items-center gap-x-8">
+                      <img
+                        src="/optimized/wilson-logo.webp"
+                        alt="Wilson Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
+                      <img
+                        src="/optimized/head-logo.webp"
+                        alt="Head Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-400"></div>
+                </div>
+                <div className="p-8">
+                  <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+                    Equipamiento profesional de tenis con las mejores
+                    marcas como Wilson y Head.
+                  </p>
+                  <Link href="/tenis">
+                    <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white rounded-xl py-3 group">
+                      Explorar Tenis
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
                   </Link>
@@ -1541,6 +1739,14 @@ export default function HomePage() {
                     Tenis de Mesa
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/tenis"
+                    className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
+                  >
+                    Tenis
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -1616,6 +1822,26 @@ export default function HomePage() {
           OFERTAS
         </button>
       </Link>
+
+      {/* WhatsApp Floating Button */}
+      <button
+        onClick={() => {
+          const message = "Hola! Me gustaría obtener más información sobre sus productos.";
+          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+          window.open(whatsappUrl, "_blank");
+        }}
+        className="fixed right-4 bottom-6 z-50 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold p-4 rounded-full shadow-xl backdrop-blur-md flex items-center justify-center border border-white/20 transition-all duration-300 hover:scale-110 hover:shadow-2xl animate-float"
+        style={{ animationDelay: "1s" }}
+        aria-label="Contactar por WhatsApp"
+      >
+        <svg
+          className="w-6 h-6 text-white"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+        </svg>
+      </button>
 
       <style jsx global>{`
         @keyframes float {

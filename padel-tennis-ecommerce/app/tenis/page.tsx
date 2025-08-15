@@ -31,12 +31,11 @@ import {
 } from "@/components/ui/sheet";
 
 const brandLogos: { [key: string]: { src: string, alt: string, width: number, height: number } } = {
-  "Adidas": { src: "/adidas-logo.png", alt: "Adidas Logo", width: 60, height: 40 },
-  "Wilson": { src: "/wilson-logo.png", alt: "Wilson Logo", width: 80, height: 40 },
-  "Babolat": { src: "/babolat-logo.png", alt: "Babolat Logo", width: 80, height: 40 },
-  "Bullpadel": { src: "/bullpadel-logo.png", alt: "Bullpadel Logo", width: 90, height: 40 },
-  "Dunlop": { src: "/dunlop-logo.png", alt: "Dunlop Logo", width: 80, height: 40 },
-  "Head": { src: "/head-logo.png", alt: "Head Logo", width: 80, height: 40 },
+  "Wilson": { src: "/optimized/wilson-logo.webp", alt: "Wilson Logo", width: 80, height: 40 },
+  "Babolat": { src: "/optimized/babolat-logo.webp", alt: "Babolat Logo", width: 80, height: 40 },
+  "Head": { src: "/optimized/head-logo.webp", alt: "Head Logo", width: 80, height: 40 },
+  "Dunlop": { src: "/optimized/dunlop-logo.webp", alt: "Dunlop Logo", width: 80, height: 40 },
+  "Adidas": { src: "/optimized/adidas-logo.webp", alt: "Adidas Logo", width: 60, height: 40 },
 };
 
 // Función para formatear precios con separadores de miles
@@ -45,7 +44,7 @@ const formatPrice = (price: number): string => {
 };
 
 const subcategories = [
-  "palas",
+  "raquetas",
   "zapatillas",
   "pelotas",
   "bolsos",
@@ -54,7 +53,7 @@ const subcategories = [
 ];
 
 const subcategoryNames: { [key: string]: string } = {
-  palas: "Palas",
+  raquetas: "Raquetas",
   zapatillas: "Zapatillas",
   pelotas: "Pelotas",
   bolsos: "Bolsos",
@@ -62,7 +61,7 @@ const subcategoryNames: { [key: string]: string } = {
   accesorios: "Accesorios",
 };
 
-export default function PadelPage() {
+export default function TenisPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,7 +89,7 @@ export default function PadelPage() {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const data = await getProductsByCategory("padel");
+      const data = await getProductsByCategory("tenis");
       setProducts(data);
       setFilteredProducts(data);
     } catch (error) {
@@ -112,18 +111,18 @@ export default function PadelPage() {
     if (searchQuery.trim()) {
       const searchResults = await searchProducts(searchQuery.trim());
       filtered = searchResults.filter(
-        (product) => product.category === "padel"
+        (product) => product.category === "tenis"
       );
     } else {
       // Filtro por subcategoría
       if (selectedSubcategory !== "all") {
         const subcategoryResults = await getProductsBySubcategory(
-          "padel",
+          "tenis",
           selectedSubcategory
         );
         filtered = subcategoryResults;
       } else {
-        const categoryResults = await getProductsByCategory("padel");
+        const categoryResults = await getProductsByCategory("tenis");
         filtered = categoryResults;
       }
     }
@@ -185,9 +184,9 @@ export default function PadelPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-green-50">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 text-lg">Cargando productos...</p>
         </div>
       </div>
@@ -218,45 +217,45 @@ export default function PadelPage() {
             <nav className="hidden md:flex space-x-8">
               <Link
                 href="/"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition-colors relative group"
               >
                 <span className="relative z-10">Inicio</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
                 href="/padel"
-                className="text-sm font-medium text-blue-600 relative"
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition-colors relative group"
               >
                 <span className="relative z-10">Padel</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
                 href="/tenis-mesa"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition-colors relative group"
               >
                 <span className="relative z-10">Tenis de Mesa</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
                 href="/tenis"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-sm font-medium text-green-600 relative"
               >
                 <span className="relative z-10">Tenis</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600"></div>
               </Link>
               <Link
                 href="/ofertas"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition-colors relative group"
               >
                 <span className="relative z-10">Ofertas</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
                 href="/sobre-nosotros"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition-colors relative group"
               >
                 <span className="relative z-10">Sobre nosotros</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
             </nav>
 
@@ -286,7 +285,7 @@ export default function PadelPage() {
               </Link>
               <Link
                 href="/padel"
-                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-700"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Padel
@@ -300,7 +299,7 @@ export default function PadelPage() {
               </Link>
               <Link
                 href="/tenis"
-                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tenis
@@ -325,7 +324,7 @@ export default function PadelPage() {
       </header>
 
       {/* Page Header */}
-      <div className="pt-20 pb-12 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
+      <div className="pt-20 pb-12 bg-gradient-to-r from-green-600 via-green-700 to-emerald-800 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
@@ -333,10 +332,10 @@ export default function PadelPage() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Catálogo de Pádel
+            Catálogo de Tenis
           </h1>
           <p className="text-white text-xl drop-shadow">
-            Somos especialistas en pádel en Argentina. Enviamos a todo el país.
+            Equipamiento completo de tenis en Argentina. Enviamos a todo el país.
           </p>
         </div>
       </div>
@@ -354,7 +353,7 @@ export default function PadelPage() {
                   placeholder="Buscar productos, códigos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 text-base"
+                  className="pl-10 rounded-xl border-gray-200 focus:border-green-500 focus:ring-green-500 text-base"
                   style={{ fontSize: '16px' }}
                 />
               </div>
@@ -522,7 +521,7 @@ export default function PadelPage() {
               ? `Resultados para "${searchQuery}"`
               : selectedSubcategory !== "all"
               ? subcategoryNames[selectedSubcategory]
-              : "Todos los productos de Padel"}
+              : "Todos los productos de Tenis"}
           </h2>
           <p className="text-gray-600 text-lg">
             {filteredProducts.length} producto
@@ -579,7 +578,7 @@ export default function PadelPage() {
                   </div>
                   
                   <div className="space-y-3 p-4 flex flex-col h-full">
-                    <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors text-sm min-h-[2.5rem]">
+                    <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors text-sm min-h-[2.5rem]">
                       {product.name}
                     </h3>
 
@@ -588,15 +587,32 @@ export default function PadelPage() {
                     </p>
 
                     <div className="h-8 flex items-center justify-start mb-2">
-                      {product.marca && brandLogos[product.marca] && (
-                        <Image
-                          src={brandLogos[product.marca].src}
-                          alt={brandLogos[product.marca].alt}
-                          width={60}
-                          height={24}
-                          className="object-contain max-h-6"
-                        />
-                      )}
+                      {product.marca && (() => {
+                        // Normalizar el nombre de la marca (quitar espacios y capitalizar)
+                        const normalizedMarca = product.marca.trim();
+                        const brandKey = Object.keys(brandLogos).find(
+                          key => key.toLowerCase() === normalizedMarca.toLowerCase()
+                        );
+                        
+                        if (brandKey && brandLogos[brandKey]) {
+                          return (
+                            <Image
+                              src={brandLogos[brandKey].src}
+                              alt={brandLogos[brandKey].alt}
+                              width={60}
+                              height={24}
+                              className="object-contain max-h-6"
+                            />
+                          );
+                        }
+                        
+                        // Si no encontramos el logo, mostrar el nombre de la marca
+                        return (
+                          <span className="text-sm font-medium text-gray-600">
+                            {normalizedMarca}
+                          </span>
+                        );
+                      })()}
                     </div>
 
                     <div className="mt-auto space-y-3">
@@ -611,7 +627,7 @@ export default function PadelPage() {
                           </div>
                         </>
                       ) : (
-                        <div className="font-bold text-blue-600 text-lg">
+                        <div className="font-bold text-green-600 text-lg">
                           {formatPrice(product.price)}
                         </div>
                       )}
@@ -637,7 +653,7 @@ export default function PadelPage() {
             <Button
               onClick={() => setVisibleCount((prev) => prev + 8)}
               variant="outline"
-              className="px-8 py-3 text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 text-green-600 border-green-600 hover:bg-green-600 hover:text-white rounded-xl transition-all duration-300 hover:scale-105"
             >
               Cargar más productos
             </Button>

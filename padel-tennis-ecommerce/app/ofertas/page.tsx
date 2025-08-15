@@ -145,6 +145,13 @@ export default function OfertasPage() {
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
+                href="/tenis"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Tenis</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
                 href="/ofertas"
                 className="text-sm font-medium text-blue-600 relative group"
               >
@@ -185,6 +192,13 @@ export default function OfertasPage() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Tenis de Mesa
+                </Link>
+                <Link
+                  href="/tenis"
+                  className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Tenis
                 </Link>
                 <Link
                   href="/ofertas"

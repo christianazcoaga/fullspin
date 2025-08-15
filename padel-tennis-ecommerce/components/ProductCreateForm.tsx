@@ -23,10 +23,16 @@ interface ProductCreateFormProps {
   onProductCreated: (newProduct: Product) => void
 }
 
-const categories = ["padel", "tenis-mesa"]
+const categories = ["padel", "tenis-mesa", "tenis"]
+const categoryNames: { [key: string]: string } = {
+  padel: "Padel",
+  "tenis-mesa": "Tenis de Mesa", 
+  tenis: "Tenis",
+}
 const subcategories: { [key: string]: string[] } = {
   padel: ["palas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
   "tenis-mesa": ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"],
+  tenis: ["raquetas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
 }
 
 const initialFormData = {
@@ -68,6 +74,8 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
       in_stock: formData.get("in_stock") === "true",
+      in_offer: inOffer,
+      offer_percent: offerPercent,
       image: uploadedImageUrl || "",
     }
     const result = await createProductAction(productData)
@@ -90,6 +98,8 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
     price: 0,
     description: "",
     in_stock: true,
+    in_offer: false,
+    offer_percent: 0,
   }
 
   return (
@@ -134,7 +144,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
                 <SelectContent>
                   {categories.map((cat) => (
                     <SelectItem key={cat} value={cat}>
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      {categoryNames[cat]}
                     </SelectItem>
                   ))}
                 </SelectContent>

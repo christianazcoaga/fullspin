@@ -34,10 +34,16 @@ interface ProductEditFormProps {
   product: Product
 }
 
-const categories = ["padel", "tenis-mesa"]
+const categories = ["padel", "tenis-mesa", "tenis"]
+const categoryNames: { [key: string]: string } = {
+  padel: "Padel",
+  "tenis-mesa": "Tenis de Mesa", 
+  tenis: "Tenis",
+}
 const subcategories: { [key: string]: string[] } = {
   padel: ["palas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
   "tenis-mesa": ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"],
+  tenis: ["raquetas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
 }
 
 function SubmitButton() {
@@ -156,7 +162,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
               <SelectContent>
                 {categories.map((cat) => (
                   <SelectItem key={cat} value={cat}>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    {categoryNames[cat]}
                   </SelectItem>
                 ))}
               </SelectContent>

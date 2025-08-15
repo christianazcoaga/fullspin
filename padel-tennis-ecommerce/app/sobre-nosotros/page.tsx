@@ -80,6 +80,13 @@ export default function SobreNosotrosPage() {
                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </Link>
               <Link
+                href="/tenis"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                <span className="relative z-10">Tenis</span>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </Link>
+              <Link
                 href="/ofertas"
                 className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
               >
@@ -132,6 +139,13 @@ export default function SobreNosotrosPage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tenis de Mesa
+              </Link>
+              <Link
+                href="/tenis"
+                className="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Tenis
               </Link>
               <Link
                 href="/ofertas"
@@ -193,6 +207,15 @@ export default function SobreNosotrosPage() {
                   className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
                 >
                   Productos de Tenis de Mesa
+                  <ArrowLeft className="ml-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
+              <Link href="/tenis">
+                <Button
+                  variant="outline"
+                  className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                >
+                  Productos de Tenis
                   <ArrowLeft className="ml-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -469,6 +492,14 @@ export default function SobreNosotrosPage() {
                     className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
                   >
                     Tenis de Mesa
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/tenis"
+                    className="hover:text-white transition-colors hover:translate-x-1 transform duration-300 inline-block"
+                  >
+                    Tenis
                   </Link>
                 </li>
               </ul>

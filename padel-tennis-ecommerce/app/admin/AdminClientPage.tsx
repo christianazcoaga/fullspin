@@ -278,6 +278,7 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                 <option value="all">Todas las categorías</option>
                 <option value="padel">Padel</option>
                 <option value="tenis-mesa">Tenis de Mesa</option>
+                <option value="tenis">Tenis</option>
               </select>
               
               <Button
@@ -306,7 +307,7 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                   Productos ({filteredProducts.length})
                 </CardTitle>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
-                  {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : "Tenis de Mesa"}
+                  {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : categoryFilter === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
                 </Badge>
               </div>
             </CardHeader>
@@ -495,7 +496,7 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                     Productos ({filteredProducts.length})
                   </CardTitle>
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                    {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : "Tenis de Mesa"}
+                    {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : categoryFilter === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
                   </Badge>
                 </div>
               </CardHeader>
