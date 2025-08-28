@@ -94,7 +94,8 @@ export default function PadelPage() {
     try {
       const data = await getProductsByCategory("padel");
       setProducts(data);
-      setFilteredProducts(data);
+      // Aplicar filtros iniciales inmediatamente
+      applyFilters(data);
     } catch (error) {
       console.error("Error loading products:", error);
     } finally {
@@ -104,29 +105,38 @@ export default function PadelPage() {
 
   // Filtrar productos cuando cambian los filtros
   useEffect(() => {
-    filterProducts();
-  }, [products, selectedSubcategory, searchQuery, priceFilter, sortBy, selectedBrand]);
+    if (products.length > 0) {
+      applyFilters(products);
+    }
+  }, [selectedSubcategory, searchQuery, priceFilter, sortBy, selectedBrand]);
 
-  const filterProducts = async () => {
-    let filtered = [...products];
+  const applyFilters = async (productList: Product[]) => {
+    let filtered = [...productList];
 
     // Filtro por búsqueda
     if (searchQuery.trim()) {
-      const searchResults = await searchProducts(searchQuery.trim());
-      filtered = searchResults.filter(
-        (product) => product.category === "padel"
-      );
+      try {
+        const searchResults = await searchProducts(searchQuery.trim());
+        filtered = searchResults.filter(
+          (product) => product.category === "padel"
+        );
+      } catch (error) {
+        console.error("Error searching products:", error);
+        filtered = [];
+      }
     } else {
       // Filtro por subcategoría
       if (selectedSubcategory !== "all") {
-        const subcategoryResults = await getProductsBySubcategory(
-          "padel",
-          selectedSubcategory
-        );
-        filtered = subcategoryResults;
-      } else {
-        const categoryResults = await getProductsByCategory("padel");
-        filtered = categoryResults;
+        try {
+          const subcategoryResults = await getProductsBySubcategory(
+            "padel",
+            selectedSubcategory
+          );
+          filtered = subcategoryResults;
+        } catch (error) {
+          console.error("Error filtering by subcategory:", error);
+          filtered = [];
+        }
       }
     }
 
@@ -149,6 +159,11 @@ export default function PadelPage() {
 
     // Ordenamiento
     filtered.sort((a, b) => {
+      // Primero ordenar por ofertas (los que están en oferta van primero)
+      if (a.in_offer && !b.in_offer) return -1;
+      if (!a.in_offer && b.in_offer) return 1;
+      
+      // Si ambos están en oferta o ambos no están en oferta, aplicar el ordenamiento seleccionado
       switch (sortBy) {
         case "price-asc":
           return a.price - b.price;
@@ -239,7 +254,7 @@ export default function PadelPage() {
                 height={50}
                 className="rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300"
               />
-              <h1 className="text-2xl font-bold gradient-text group-hover:scale-105 transition-transform duration-300">
+              <h1 className="text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
                 FullSpin
               </h1>
             </Link>
@@ -365,7 +380,7 @@ export default function PadelPage() {
             Catálogo de Pádel
           </h1>
           <p className="text-white text-xl drop-shadow">
-            Somos especialistas en pádel en Argentina. Enviamos a todo el país.
+            Somos especialistas en pádel en Argentina. Envíos a todo el país.
           </p>
         </div>
       </div>
@@ -619,10 +634,6 @@ export default function PadelPage() {
                       {product.name}
                     </h3>
 
-                    <p className="text-gray-600 text-xs">
-                      {product.description}
-                    </p>
-
                     <div className="h-8 flex items-center justify-start mb-2">
                       {product.marca && brandLogos[product.marca] && (
                         <Image
@@ -840,7 +851,7 @@ export default function PadelPage() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-4 mb-6">
                 <Image src="/fullspin-logo.png" alt="FullSpin Logo" width={40} height={40} className="rounded-lg" />
-                <h3 className="text-2xl font-bold gradient-text">FullSpin</h3>
+                <h3 className="text-2xl font-bold text-white">FullSpin</h3>
               </div>
               <p className="text-gray-400 text-lg leading-relaxed mb-6">
                 Tu tienda especializada en equipamiento deportivo de primera calidad.

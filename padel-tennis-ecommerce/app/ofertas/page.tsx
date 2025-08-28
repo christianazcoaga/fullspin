@@ -146,7 +146,7 @@ export default function OfertasPage() {
                 />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h1 className="text-2xl font-bold gradient-text group-hover:scale-105 transition-transform duration-300">
+              <h1 className="text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
                 FullSpin
               </h1>
             </Link>
@@ -531,7 +531,7 @@ export default function OfertasPage() {
                   height={40} 
                   className="rounded-lg shadow-lg" 
                 />
-                <h3 className="text-2xl font-bold gradient-text">FullSpin</h3>
+                <h3 className="text-2xl font-bold text-white">FullSpin</h3>
               </div>
               <p className="text-gray-400 text-lg leading-relaxed mb-6">
                 Tu tienda especializada en equipamiento deportivo de primera calidad.

@@ -52,7 +52,7 @@ export default function SobreNosotrosPage() {
                 />
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h1 className="text-2xl font-bold gradient-text group-hover:scale-105 transition-transform duration-300">
+              <h1 className="text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
                 FullSpin
               </h1>
             </Link>
@@ -179,19 +179,20 @@ export default function SobreNosotrosPage() {
           <div className="text-center animate-fade-in-up">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
               Sobre{" "}
-              <span className="gradient-text relative">
+              <span className="text-blue-600 relative">
                 Nosotros
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                <div className="absolute -bottom-2 left-0 w-full h-1 bg-blue-600 rounded-full"></div>
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
               Somos una tienda argentina, especialistas en{" "}
-              <span className="font-semibold text-blue-600">Padel</span> y{" "}
-              <span className="font-semibold text-purple-600">
+              <span className="font-semibold text-blue-600">Padel</span>,{" "}
+              <span className="font-semibold text-blue-600">
                 Tenis de Mesa
-              </span>
-              . Enviamos a todo el país.
+              </span>{" "}
+              y <span className="font-semibold text-blue-600">Tenis</span>{" "}
+              en Argentina. Envíos a todo el país.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -202,13 +203,13 @@ export default function SobreNosotrosPage() {
                 </Button>
               </Link>
               <Link href="/tenis-mesa">
-                <Button className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                   Productos de Tenis de Mesa
                   <ArrowLeft className="ml-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
               <Link href="/tenis">
-                <Button className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                   Productos de Tenis
                   <ArrowLeft className="ml-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
                 </Button>
@@ -275,7 +276,7 @@ export default function SobreNosotrosPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 animate-fade-in-up">
             <Card className="card-modern hover-lift text-center p-6 animate-scale-in">
               <CardContent className="p-0">
-                <div className="text-4xl font-bold gradient-text mb-2">
+                <div className="text-4xl font-bold text-blue-600 mb-2">
                   100+
                 </div>
                 <div className="text-gray-600 font-medium">Productos</div>
@@ -286,7 +287,7 @@ export default function SobreNosotrosPage() {
               style={{ animationDelay: "0.1s" }}
             >
               <CardContent className="p-0">
-                <div className="text-4xl font-bold gradient-text mb-2">5+</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">5+</div>
                 <div className="text-gray-600 font-medium">Marcas Premium</div>
               </CardContent>
             </Card>
@@ -295,7 +296,7 @@ export default function SobreNosotrosPage() {
               style={{ animationDelay: "0.2s" }}
             >
               <CardContent className="p-0">
-                <div className="text-4xl font-bold gradient-text mb-2">
+                <div className="text-4xl font-bold text-blue-600 mb-2">
                   24/7
                 </div>
                 <div className="text-gray-600 font-medium">
@@ -308,7 +309,7 @@ export default function SobreNosotrosPage() {
               style={{ animationDelay: "0.3s" }}
             >
               <CardContent className="p-0">
-                <div className="text-4xl font-bold gradient-text mb-2">
+                <div className="text-4xl font-bold text-blue-600 mb-2">
                   100%
                 </div>
                 <div className="text-gray-600 font-medium">
@@ -462,7 +463,7 @@ export default function SobreNosotrosPage() {
                   height={40}
                   className="rounded-lg"
                 />
-                <h3 className="text-2xl font-bold gradient-text">FullSpin</h3>
+                <h3 className="text-2xl font-bold text-white">FullSpin</h3>
               </div>
               <p className="text-gray-400 text-lg leading-relaxed mb-6">
                 Tu tienda especializada en equipamiento deportivo de primera
