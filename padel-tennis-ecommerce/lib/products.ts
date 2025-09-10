@@ -12,6 +12,7 @@ export type Product = {
   in_stock: boolean
   in_offer: boolean
   offer_percent: number
+  created_at: string
 }
 
 // Client-safe functions
@@ -21,7 +22,7 @@ export async function getProducts() {
     .from("productos_fullspin")
     .select("*")
     .eq("in_stock", true)
-    .order("name", { ascending: true })
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error fetching products:", error)
@@ -36,7 +37,7 @@ export async function getAllProducts() {
   const { data, error } = await supabase
     .from("productos_fullspin")
     .select("*")
-    .order("name", { ascending: true })
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error fetching all products:", error)
@@ -52,7 +53,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     .select("*")
     .eq("category", category)
     .eq("in_stock", true)
-    .order("name")
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error fetching products by category:", error)
@@ -69,7 +70,7 @@ export async function getProductsBySubcategory(category: string, subcategory: st
     .eq("category", category)
     .eq("subcategory", subcategory)
     .eq("in_stock", true)
-    .order("name")
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error fetching products by subcategory:", error)
@@ -87,7 +88,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
     .select("*")
     .or(`name.ilike.%${query}%,marca.ilike.%${query}%,category.ilike.%${query}%`)
     .eq("in_stock", true)
-    .order("name")
+    .order("created_at", { ascending: false })
 
   if (error) {
     console.error("Error searching products:", error)

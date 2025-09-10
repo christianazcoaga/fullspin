@@ -69,7 +69,7 @@ export default function PadelPage() {
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceFilter, setPriceFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("newest");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -170,8 +170,10 @@ export default function PadelPage() {
         case "price-desc":
           return b.price - a.price;
         case "name":
-        default:
           return a.name.localeCompare(b.name);
+        case "newest":
+        default:
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       }
     });
 
@@ -461,6 +463,7 @@ export default function PadelPage() {
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="newest">Más recientes</SelectItem>
                   <SelectItem value="name">Nombre A-Z</SelectItem>
                   <SelectItem value="price-asc">
                     Precio: Menor a Mayor
@@ -541,6 +544,7 @@ export default function PadelPage() {
                         <SelectValue placeholder="Ordenar por" />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="newest">Más recientes</SelectItem>
                         <SelectItem value="name">Nombre A-Z</SelectItem>
                         <SelectItem value="price-asc">
                           Precio: Menor a Mayor
