@@ -7,6 +7,7 @@ import {
   Menu,
   X,
   ArrowRight,
+  MessageCircle,
   Star,
   Users,
   Award,
@@ -49,6 +50,8 @@ export default function HomePage() {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [subscriptionMessage, setSubscriptionMessage] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState<"idle" | "success" | "error">("idle");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showProductModal, setShowProductModal] = useState(false);
 
   // Ocultar mensaje de éxito o error después de 5 segundos
   useEffect(() => {
@@ -124,6 +127,44 @@ export default function HomePage() {
       setIsSearching(false);
     }
   };
+
+  const openProductModal = (product: Product) => {
+    setSelectedProduct(product);
+    setShowProductModal(true);
+    setShowSearchResults(false);
+    setSearchQuery("");
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeProductModal = () => {
+    setShowProductModal(false);
+    setSelectedProduct(null);
+    document.body.style.overflow = 'unset';
+  };
+
+  const handleWhatsAppClick = (product: Product) => {
+    const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+    const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const formatPrice = (price: number): string => {
+    return `$${price.toLocaleString("es-AR", { minimumFractionDigits: 0 }).replace(/,/g, ".")}`;
+  };
+
+  // Cerrar modal con tecla Escape
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showProductModal) {
+        closeProductModal();
+      }
+    };
+
+    if (showProductModal) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [showProductModal]);
 
   // Debounce para la búsqueda
   useEffect(() => {
@@ -300,13 +341,7 @@ export default function HomePage() {
                         <div
                           key={product.id}
                           className="px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200 flex items-center space-x-3"
-                          onClick={() => {
-                            const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
-                            const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
-                            window.open(whatsappUrl, "_blank");
-                            setShowSearchResults(false);
-                            setSearchQuery("");
-                          }}
+                          onClick={() => openProductModal(product)}
                         >
                           <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                             <Image
@@ -534,13 +569,7 @@ export default function HomePage() {
                       <div
                         key={product.id}
                         className="px-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors duration-200 flex items-center space-x-3 border-b border-gray-100 last:border-b-0"
-                        onClick={() => {
-                          const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
-                          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
-                          window.open(whatsappUrl, "_blank");
-                          setShowSearchResults(false);
-                          setSearchQuery("");
-                        }}
+                        onClick={() => openProductModal(product)}
                       >
                         <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Image
@@ -693,6 +722,68 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Promotional Image Carousel Section */}
+      <section className="py-10 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full mb-10"
+          >
+            <CarouselContent>
+              {/* Slide 1 - Adidas Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/optimized/adidas-banner.webp"
+                    alt="Adidas Banner"
+                    className="object-contain bg-neutral-100 w-full h-full"
+                    style={{ borderRadius: "1rem" }}
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 2 - Butterfly Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/optimized/butterfly-banner.webp"
+                    alt="Butterfly Banner"
+                    className="object-contain bg-neutral-100 w-full h-full"
+                    style={{ borderRadius: "1rem" }}
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 3 - DHS Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/optimized/dhs-banner.webp"
+                    alt="DHS Banner"
+                    className="object-contain bg-neutral-100 w-full h-full"
+                    style={{ borderRadius: "1rem" }}
+                  />
+                </div>
+              </CarouselItem>
+              {/* Slide 4 - Wilson Banner */}
+              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
+                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/optimized/wilson-banner.webp"
+                    alt="Wilson Banner"
+                    className="object-contain bg-neutral-100 w-full h-full"
+                    style={{ borderRadius: "1rem" }}
+                  />
+                </div>
+              </CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious className="left-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
+            <CarouselNext className="right-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
+          </Carousel>
         </div>
       </section>
 
@@ -897,67 +988,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Promotional Image Carousel Section */}
-      <section className="py-10 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full mb-10"
-          >
-            <CarouselContent>
-              {/* Slide 1 - Adidas Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/adidas-banner.webp"
-                    alt="Adidas Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 2 - Butterfly Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/butterfly-banner.webp"
-                    alt="Butterfly Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 3 - DHS Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/dhs-banner.webp"
-                    alt="DHS Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 4 - Wilson Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/wilson-banner.webp"
-                    alt="Wilson Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselPrevious className="left-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
-            <CarouselNext className="right-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
-          </Carousel>
-        </div>
-      </section>
 
       {/* Banner Carousel Section (Brand Logos) */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -1739,6 +1769,112 @@ export default function HomePage() {
           OFERTAS
         </button>
       </Link>
+
+      {/* Product Modal */}
+      {showProductModal && selectedProduct && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fade-in"
+          onClick={closeProductModal}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
+              <h2 className="text-xl font-bold text-gray-900">Detalles del Producto</h2>
+              <button
+                onClick={closeProductModal}
+                className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors duration-200"
+              >
+                <X className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6">
+              <div className="grid lg:grid-cols-2 gap-8">
+                {/* Product Image */}
+                <div className="space-y-4">
+                  <div className="bg-gray-100 rounded-2xl p-8 flex items-center justify-center aspect-square">
+                    <img
+                      src={selectedProduct.image || "/placeholder.svg"}
+                      alt={selectedProduct.name}
+                      className="w-full h-full object-contain max-w-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="space-y-6">
+                  {/* Product Name & Brand */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {selectedProduct.name}
+                    </h3>
+                    <p className="text-lg text-gray-600 font-medium">
+                      {selectedProduct.marca}
+                    </p>
+                    <p className="text-sm text-gray-500 capitalize mt-1">
+                      {selectedProduct.category === "padel" ? "Padel" : selectedProduct.category === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
+                      {selectedProduct.subcategory && ` • ${selectedProduct.subcategory}`}
+                    </p>
+                  </div>
+
+
+                  {/* Description */}
+                  {selectedProduct.description && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Descripción</h4>
+                      <p className="text-gray-600 leading-relaxed">
+                        {selectedProduct.description}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Price */}
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    {selectedProduct.in_offer && selectedProduct.offer_percent > 0 ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-2xl text-gray-400 line-through">
+                            {formatPrice(selectedProduct.price)}
+                          </span>
+                          <span className="bg-red-100 text-red-600 font-bold px-3 py-1 rounded-full text-sm">
+                            -{selectedProduct.offer_percent}%
+                          </span>
+                        </div>
+                        <div className="text-3xl font-bold text-red-600">
+                          {formatPrice(Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}
+                        </div>
+                        <p className="text-green-600 font-medium">
+                          ¡Ahorrás {formatPrice(selectedProduct.price - Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-3xl font-bold text-blue-600">
+                        {formatPrice(selectedProduct.price)}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    <Button
+                      onClick={() => handleWhatsAppClick(selectedProduct)}
+                      className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    >
+                      <MessageCircle className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                      Consultar por WhatsApp
+                      <ArrowRight className="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* WhatsApp Floating Button */}
       <button
