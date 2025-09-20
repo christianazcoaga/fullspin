@@ -726,65 +726,59 @@ export default function HomePage() {
       </section>
 
       {/* Promotional Image Carousel Section */}
-      <section className="py-10 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full mb-10"
-          >
-            <CarouselContent>
-              {/* Slide 1 - Adidas Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/adidas-banner.webp"
-                    alt="Adidas Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 2 - Butterfly Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/butterfly-banner.webp"
-                    alt="Butterfly Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 3 - DHS Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/dhs-banner.webp"
-                    alt="DHS Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-              {/* Slide 4 - Wilson Banner */}
-              <CarouselItem className="md:basis-1/1 flex items-center justify-center">
-                <div className="relative h-96 md:h-[32rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/optimized/wilson-banner.webp"
-                    alt="Wilson Banner"
-                    className="object-contain bg-neutral-100 w-full h-full"
-                    style={{ borderRadius: "1rem" }}
-                  />
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselPrevious className="left-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
-            <CarouselNext className="right-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg" />
-          </Carousel>
-        </div>
+      <section className="w-full bg-gradient-to-br from-gray-50 to-blue-50">
+        <Carousel
+          opts={{
+            align: "center",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-0">
+            {/* Slide 1 - Adidas Banner */}
+            <CarouselItem className="pl-0 basis-full">
+              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  src="/optimized/adidas-banner.webp"
+                  alt="Adidas Banner"
+                  className="w-full h-full object-cover sm:object-contain"
+                />
+              </div>
+            </CarouselItem>
+            {/* Slide 2 - Butterfly Banner */}
+            <CarouselItem className="pl-0 basis-full">
+              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  src="/optimized/butterfly-banner.webp"
+                  alt="Butterfly Banner"
+                  className="w-full h-full object-cover sm:object-contain"
+                />
+              </div>
+            </CarouselItem>
+            {/* Slide 3 - DHS Banner */}
+            <CarouselItem className="pl-0 basis-full">
+              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  src="/optimized/dhs-banner.webp"
+                  alt="DHS Banner"
+                  className="w-full h-full object-cover sm:object-contain"
+                />
+              </div>
+            </CarouselItem>
+            {/* Slide 4 - Wilson Banner */}
+            <CarouselItem className="pl-0 basis-full">
+              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  src="/optimized/wilson-banner.webp"
+                  alt="Wilson Banner"
+                  className="w-full h-full object-cover sm:object-contain"
+                />
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious className="left-2 sm:left-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg transition-all duration-300 hover:scale-110" />
+          <CarouselNext className="right-2 sm:right-4 bg-white/80 hover:bg-white text-gray-800 border-0 shadow-lg transition-all duration-300 hover:scale-110" />
+        </Carousel>
       </section>
 
       {/* Padel Offers Section */}
