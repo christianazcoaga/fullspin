@@ -737,41 +737,41 @@ export default function HomePage() {
           <CarouselContent className="-ml-0">
             {/* Slide 1 - Adidas Banner */}
             <CarouselItem className="pl-0 basis-full">
-              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
                 <img
                   src="/optimized/adidas-banner.webp"
                   alt="Adidas Banner"
-                  className="w-full h-full object-cover sm:object-contain"
+                  className="w-full h-full object-contain max-w-full max-h-full"
                 />
               </div>
             </CarouselItem>
             {/* Slide 2 - Butterfly Banner */}
             <CarouselItem className="pl-0 basis-full">
-              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
                 <img
                   src="/optimized/butterfly-banner.webp"
                   alt="Butterfly Banner"
-                  className="w-full h-full object-cover sm:object-contain"
+                  className="w-full h-full object-contain max-w-full max-h-full"
                 />
               </div>
             </CarouselItem>
             {/* Slide 3 - DHS Banner */}
             <CarouselItem className="pl-0 basis-full">
-              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
                 <img
                   src="/optimized/dhs-banner.webp"
                   alt="DHS Banner"
-                  className="w-full h-full object-cover sm:object-contain"
+                  className="w-full h-full object-contain max-w-full max-h-full"
                 />
               </div>
             </CarouselItem>
             {/* Slide 4 - Wilson Banner */}
             <CarouselItem className="pl-0 basis-full">
-              <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
                 <img
                   src="/optimized/wilson-banner.webp"
                   alt="Wilson Banner"
-                  className="w-full h-full object-cover sm:object-contain"
+                  className="w-full h-full object-contain max-w-full max-h-full"
                 />
               </div>
             </CarouselItem>
