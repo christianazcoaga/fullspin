@@ -86,15 +86,14 @@ export default function HomePage() {
           .filter(product => product.category === "tenis-mesa" && product.in_offer)
           .slice(0, 4);
         
-        // Filtrar productos de tenis en oferta - PRÓXIMAMENTE
-        // const tenisProducts = allProducts
-        //   .filter(product => product.category === "tenis" && product.in_offer)
-        //   .slice(0, 4);
+        // Filtrar productos de tenis en oferta
+        const tenisProducts = allProducts
+          .filter(product => product.category === "tenis" && product.in_offer)
+          .slice(0, 4);
         
         setPadelOffers(padelProducts);
         setTenisMesaOffers(tenisMesaProducts);
-        // setTenisOffers(tenisProducts);
-        setTenisOffers([]); // Sin productos de tenis por ahora
+        setTenisOffers(tenisProducts);
       } catch (error) {
         console.error("Error fetching offered products:", error);
       } finally {
@@ -709,17 +708,12 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
               </Link>
-              <div className="relative">
-                <Button 
-                  disabled
-                  className="bg-gradient-to-r from-gray-400 to-gray-500 text-white px-8 py-4 text-lg rounded-xl shadow-lg cursor-not-allowed opacity-60"
-                >
+              <Link href="/tenis">
+                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                   Productos de Tenis
-                  <span className="ml-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded-full font-bold">
-                    PRÓXIMAMENTE
-                  </span>
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -963,7 +957,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tenis Offers Section - PRÓXIMAMENTE */}
+      {/* Tenis Offers Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -973,11 +967,83 @@ export default function HomePage() {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Productos de tenis con descuentos especiales
             </p>
-            <div className="mt-8">
-              <span className="bg-yellow-500 text-black text-lg px-6 py-3 rounded-full font-bold">
-                PRÓXIMAMENTE
-              </span>
-            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="group hover-lift card-modern border-0 overflow-hidden animate-pulse">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gray-200 overflow-hidden">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
+                          <div className="h-4 bg-gray-300 rounded w-24 mx-auto mb-2"></div>
+                          <div className="h-3 bg-gray-300 rounded w-16 mx-auto"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : tenisOffers.length > 0 ? (
+              tenisOffers.map((product) => (
+                <Card key={product.id} className="group hover-lift card-modern border-0 overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            width={80}
+                            height={80}
+                            className="object-contain w-20 h-20"
+                          />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 text-center group-hover:text-blue-600 transition-colors">{product.name}</h3>
+                        <p className="text-sm text-gray-600 text-center">{product.marca}</p>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
+                        <span className="text-lg text-gray-500 line-through">
+                          ${product.price.toLocaleString().replace(/,/g, ".")}
+                        </span>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+                          const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
+                          window.open(whatsappUrl, "_blank");
+                        }}
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group"
+                      >
+                        Consultar Stock
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              // No tenis offers found
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-600 text-lg">No hay ofertas de tenis disponibles en este momento.</p>
+                <Link href="/tenis" className="inline-block mt-4">
+                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl">
+                    Ver Productos de Tenis
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -1177,14 +1243,14 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            {/* Tenis Card - PRÓXIMAMENTE */}
+            {/* Tenis Card */}
             <Card
-              className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in opacity-60"
+              className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in"
               style={{ animationDelay: "0.4s" }}
             >
               <CardContent className="p-0">
-                <div className="relative h-80 bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/40"></div>
+                <div className="relative h-80 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
                   <div className="absolute top-4 right-4">
                     <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                       <TrendingUp className="w-6 h-6 text-white" />
@@ -1193,25 +1259,35 @@ export default function HomePage() {
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <h3 className="text-4xl font-bold mb-2 text-white">TENIS</h3>
                     <p className="text-xl opacity-90 mb-6 text-white">Raquetas, zapatillas, pelotas y más</p>
-                    <div className="mt-4">
-                      <span className="bg-yellow-500 text-black text-lg px-4 py-2 rounded-full font-bold">
-                        PRÓXIMAMENTE
-                      </span>
+                    {/* Brand Logos */}
+                    <div className="flex justify-center items-center gap-x-12">
+                      <img
+                        src="/optimized/wilson-logo.webp"
+                        alt="Wilson Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
+                      <img
+                        src="/optimized/head-logo.webp"
+                        alt="Head Logo"
+                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
+                        style={{ maxWidth: '100px' }}
+                      />
                     </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-gray-400 to-gray-500"></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
                 </div>
                 <div className="p-8">
                   <p className="text-gray-600 mb-6 text-lg leading-relaxed">
                     Equipamiento profesional de tenis con las mejores
                     marcas como Wilson y Head.
                   </p>
-                  <Button 
-                    disabled
-                    className="w-full bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-xl py-3 cursor-not-allowed"
-                  >
-                    PRÓXIMAMENTE
-                  </Button>
+                  <Link href="/tenis">
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group">
+                      Explorar Tenis
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>

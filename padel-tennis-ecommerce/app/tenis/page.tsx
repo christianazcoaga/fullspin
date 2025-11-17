@@ -68,7 +68,7 @@ export default function TenisPage() {
   const [selectedSubcategory, setSelectedSubcategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceFilter, setPriceFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("newest");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(12);
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
@@ -169,8 +169,10 @@ export default function TenisPage() {
         case "price-desc":
           return b.price - a.price;
         case "name":
-        default:
           return a.name.localeCompare(b.name);
+        case "newest":
+        default:
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       }
     });
 
@@ -384,10 +386,11 @@ export default function TenisPage() {
         </div>
       </div>
 
-      {/* Filters - PRÓXIMAMENTE */}
-      {/* <div className="bg-white/80 backdrop-blur-sm border-b sticky top-16 z-40">
+      {/* Filters */}
+      <div className="bg-white/80 backdrop-blur-sm border-b sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search */}
             <div className="flex-1">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -401,41 +404,302 @@ export default function TenisPage() {
                 />
               </div>
             </div>
+
+            {/* Desktop Filters */}
+            <div className="hidden lg:flex flex-col sm:flex-row gap-4">
+              {/* Subcategory Filter */}
+              <Select
+                value={selectedSubcategory}
+                onValueChange={setSelectedSubcategory}
+              >
+                <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
+                  <SelectValue placeholder="Subcategoría" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las subcategorías</SelectItem>
+                  {subcategories.map((sub) => (
+                    <SelectItem key={sub} value={sub}>
+                      {subcategoryNames[sub]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Price Filter */}
+              <Select value={priceFilter} onValueChange={setPriceFilter}>
+                <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
+                  <SelectValue placeholder="Precio" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los precios</SelectItem>
+                  <SelectItem value="0-50000">Hasta $50.000</SelectItem>
+                  <SelectItem value="50000-100000">
+                    $50.000 - $100.000
+                  </SelectItem>
+                  <SelectItem value="100000-200000">
+                    $100.000 - $200.000
+                  </SelectItem>
+                  <SelectItem value="200000-999999">Más de $200.000</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Brand Filter */}
+              <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
+                  <SelectValue placeholder="Marca" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las marcas</SelectItem>
+                  {brands.map((brand) => (
+                    <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Sort */}
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full sm:w-48 rounded-xl border-gray-200">
+                  <SelectValue placeholder="Ordenar por" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Más recientes</SelectItem>
+                  <SelectItem value="name">Nombre A-Z</SelectItem>
+                  <SelectItem value="price-asc">
+                    Precio: Menor a Mayor
+                  </SelectItem>
+                  <SelectItem value="price-desc">
+                    Precio: Mayor a Menor
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Mobile Filters */}
+            <div className="lg:hidden flex gap-2">
+               <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="flex-1">
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtros y Orden
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Filtros y Orden</SheetTitle>
+                  </SheetHeader>
+                  <div className="py-4 space-y-4">
+                     {/* Subcategory Filter */}
+                    <Select
+                      value={selectedSubcategory}
+                      onValueChange={setSelectedSubcategory}
+                    >
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Subcategoría" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas las subcategorías</SelectItem>
+                        {subcategories.map((sub) => (
+                          <SelectItem key={sub} value={sub}>
+                            {subcategoryNames[sub]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Price Filter */}
+                    <Select value={priceFilter} onValueChange={setPriceFilter}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Precio" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos los precios</SelectItem>
+                        <SelectItem value="0-50000">Hasta $50.000</SelectItem>
+                        <SelectItem value="50000-100000">
+                          $50.000 - $100.000
+                        </SelectItem>
+                        <SelectItem value="100000-200000">
+                          $100.000 - $200.000
+                        </SelectItem>
+                        <SelectItem value="200000-999999">Más de $200.000</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Brand Filter */}
+                    <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Marca" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todas las marcas</SelectItem>
+                        {brands.map((brand) => (
+                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {/* Sort */}
+                    <Select value={sortBy} onValueChange={setSortBy}>
+                      <SelectTrigger className="w-full rounded-xl border-gray-200">
+                        <SelectValue placeholder="Ordenar por" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest">Más recientes</SelectItem>
+                        <SelectItem value="name">Nombre A-Z</SelectItem>
+                        <SelectItem value="price-asc">
+                          Precio: Menor a Mayor
+                        </SelectItem>
+                        <SelectItem value="price-desc">
+                          Precio: Mayor a Menor
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
-      </div> */}
+      </div>
 
-      {/* Products Grid - PRÓXIMAMENTE */}
+      {/* Products Grid */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 text-center">
+        <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Catálogo de Tenis
+            {searchQuery
+              ? `Resultados para "${searchQuery}"`
+              : selectedSubcategory !== "all"
+              ? subcategoryNames[selectedSubcategory]
+              : "Todos los productos de Tenis"}
           </h2>
           <p className="text-gray-600 text-lg">
-            Próximamente disponible
+            {filteredProducts.length} producto
+            {filteredProducts.length !== 1 ? "s" : ""} encontrado
+            {filteredProducts.length !== 1 ? "s" : ""}
           </p>
         </div>
 
-        <div className="text-center py-20">
-          <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-8">
-            <div className="text-6xl">🎾</div>
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-12 h-12 text-gray-400" />
+            </div>
+            <p className="text-gray-500 text-xl mb-2">No se encontraron productos</p>
+            <p className="text-gray-400">
+              Intenta ajustar los filtros de búsqueda
+            </p>
           </div>
-          <h3 className="text-4xl font-bold text-gray-900 mb-4">
-            ¡Próximamente!
-          </h3>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Estamos preparando nuestro catálogo completo de productos de tenis con las mejores marcas como Wilson, Head y más.
-          </p>
-          <div className="flex justify-center">
-            <span className="bg-yellow-500 text-black text-xl px-8 py-4 rounded-full font-bold">
-              PRÓXIMAMENTE
-            </span>
+        ) : (
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filteredProducts.slice(0, visibleCount).map((product, index) => (
+              <Card
+                key={product.id}
+                className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in cursor-pointer"
+                style={{animationDelay: `${index * 0.05}s`}}
+                onClick={() => openProductModal(product)}
+              >
+                <CardContent className="p-0">
+                  <div className="relative bg-gray-100 overflow-hidden aspect-square mb-4 flex items-center justify-center">
+                    <img
+                      src={product.image || "/placeholder.svg"}
+                      alt={product.name}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(product.id);
+                        }}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                          favorites.has(product.id)
+                            ? 'bg-red-500 text-white'
+                            : 'bg-white/80 text-gray-600 hover:bg-white'
+                        }`}
+                      >
+                        <Heart className={`w-4 h-4 ${favorites.has(product.id) ? 'fill-current' : ''}`} />
+                      </button>
+                      <button 
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center text-gray-600 transition-colors"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <div className="absolute bottom-3 left-3">
+                      <Badge variant="secondary" className="bg-white/90 text-gray-800 font-medium">
+                        {subcategoryNames[product.subcategory]}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3 p-4 flex flex-col h-full">
+                    <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors text-sm min-h-[2.5rem]">
+                      {product.name}
+                    </h3>
+
+                    <div className="h-8 flex items-center justify-start mb-2">
+                      {product.marca && (
+                        <img
+                          src={`/${product.marca.toLowerCase()}-logo.png`}
+                          alt={product.marca + ' Logo'}
+                          width={60}
+                          height={24}
+                          className="object-contain max-h-6"
+                        />
+                      )}
+                    </div>
+
+                    <div className="mt-auto space-y-3">
+                      {product.in_offer && product.offer_percent > 0 ? (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 line-through text-base">{formatPrice(product.price)}</span>
+                            <span className="bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded text-xs">-{product.offer_percent}%</span>
+                          </div>
+                          <div className="font-bold text-red-600 text-lg">
+                            {formatPrice(Math.round(product.price * (1 - product.offer_percent / 100)))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="font-bold text-blue-600 text-lg">
+                          {formatPrice(product.price)}
+                        </div>
+                      )}
+
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleWhatsAppClick(product);
+                        }}
+                        className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                        size="sm"
+                      >
+                        <MessageCircle className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                        Consultar por WhatsApp
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </div>
+        )}
+        
+        {visibleCount < filteredProducts.length && (
+          <div className="flex justify-center mt-12">
+            <Button
+              onClick={() => setVisibleCount((prev) => prev + 8)}
+              variant="outline"
+              className="px-8 py-3 text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all duration-300 hover:scale-105"
+            >
+              Cargar más productos
+            </Button>
+          </div>
+        )}
       </main>
 
-      {/* Product Modal - PRÓXIMAMENTE */}
-      {/* {showProductModal && selectedProduct && (
+      {/* Product Modal */}
+      {showProductModal && selectedProduct && (
         <div 
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fade-in"
           onClick={closeProductModal}
@@ -444,6 +708,7 @@ export default function TenisPage() {
             className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Modal Header */}
             <div className="sticky top-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
               <h2 className="text-xl font-bold text-gray-900">Detalles del Producto</h2>
               <button
@@ -453,19 +718,134 @@ export default function TenisPage() {
                 <X className="w-5 h-5 text-gray-600" />
               </button>
             </div>
+
+            {/* Modal Content */}
             <div className="p-6">
-              <div className="text-center py-12">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  ¡Próximamente!
-                </h3>
-                <p className="text-gray-600">
-                  Los productos de tenis estarán disponibles próximamente.
-                </p>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Product Image */}
+                <div className="space-y-4">
+                  <div className="relative bg-gray-50 rounded-xl overflow-hidden aspect-square flex items-center justify-center group">
+                    <img
+                      src={selectedProduct.image || "/placeholder.svg"}
+                      alt={selectedProduct.name}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {selectedProduct.in_offer && selectedProduct.offer_percent > 0 && (
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-red-500 text-white font-bold px-3 py-1 rounded-full text-sm">
+                          -{selectedProduct.offer_percent}% OFF
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Category Badge */}
+                  <div className="text-center">
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 font-medium text-sm px-4 py-2">
+                      {subcategoryNames[selectedProduct.subcategory]} • Tenis
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Product Details */}
+                <div className="space-y-6">
+                  {/* Product Name */}
+                  <div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-2">
+                      {selectedProduct.name}
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      ID: {selectedProduct.id}
+                    </p>
+                  </div>
+
+                  {/* Brand Logo */}
+                  <div className="flex items-center">
+                    {selectedProduct.marca && (() => {
+                      const normalizedMarca = selectedProduct.marca.trim();
+                      const brandKey = Object.keys(brandLogos).find(
+                        key => key.toLowerCase() === normalizedMarca.toLowerCase()
+                      );
+                      
+                      if (brandKey && brandLogos[brandKey]) {
+                        return (
+                          <div className="flex items-center space-x-3">
+                            <span className="text-gray-600 font-medium">Marca:</span>
+                            <Image
+                              src={brandLogos[brandKey].src}
+                              alt={brandLogos[brandKey].alt}
+                              width={80}
+                              height={32}
+                              className="object-contain max-h-8"
+                            />
+                          </div>
+                        );
+                      }
+                      
+                      return (
+                        <div className="flex items-center space-x-3">
+                          <span className="text-gray-600 font-medium">Marca:</span>
+                          <span className="text-lg font-semibold text-gray-800">
+                            {normalizedMarca}
+                          </span>
+                        </div>
+                      );
+                    })()}
+                  </div>
+
+                  {/* Description */}
+                  {selectedProduct.description && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Descripción</h4>
+                      <p className="text-gray-600 leading-relaxed">
+                        {selectedProduct.description}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Price */}
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    {selectedProduct.in_offer && selectedProduct.offer_percent > 0 ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-2xl text-gray-400 line-through">
+                            {formatPrice(selectedProduct.price)}
+                          </span>
+                          <span className="bg-red-100 text-red-600 font-bold px-3 py-1 rounded-full text-sm">
+                            -{selectedProduct.offer_percent}%
+                          </span>
+                        </div>
+                        <div className="text-3xl font-bold text-red-600">
+                          {formatPrice(Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}
+                        </div>
+                        <p className="text-green-600 font-medium">
+                          ¡Ahorrás {formatPrice(selectedProduct.price - Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}!
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-3xl font-bold text-blue-600">
+                        {formatPrice(selectedProduct.price)}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    <Button
+                      onClick={() => handleWhatsAppClick(selectedProduct)}
+                      className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    >
+                      <MessageCircle className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
+                      Consultar por WhatsApp
+                      <ArrowRight className="h-5 w-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
