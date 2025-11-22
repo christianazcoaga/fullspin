@@ -1,8 +1,10 @@
-import { getAllProducts } from "@/lib/products"
+import { getAllProducts } from "@/lib/products.server"
 import AdminClientPage from "./AdminClientPage"
 import { Suspense } from "react"
 import { Metadata } from "next"
 import { getConversionRate } from "@/lib/settings.server"
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: "Panel de Administración - FullSpin",

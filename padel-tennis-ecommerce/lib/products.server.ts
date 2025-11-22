@@ -80,4 +80,20 @@ export async function getProductsOnOffer(category?: string, limit: number = 4) {
     return []
   }
   return data
-} 
+}
+
+export async function getAllProducts() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+  
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("*")
+    .order("created_at", { ascending: false })
+
+  if (error) {
+    console.error("Error fetching all products:", error)
+    return []
+  }
+  return data
+}
