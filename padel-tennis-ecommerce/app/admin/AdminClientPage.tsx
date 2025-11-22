@@ -7,6 +7,7 @@ import { ProductEditForm } from "@/components/ProductEditForm"
 import { ProductCreateForm } from "@/components/ProductCreateForm"
 import { AdminStats } from "@/components/AdminStats"
 import { AdminLoading } from "@/components/AdminLoading"
+import { ConversionRateManager } from "@/components/ConversionRateManager"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -47,9 +48,10 @@ type ViewMode = "grid" | "list"
 
 interface AdminClientPageProps {
   initialProducts: Product[]
+  conversionRate: number
 }
 
-export default function AdminClientPage({ initialProducts }: AdminClientPageProps) {
+export default function AdminClientPage({ initialProducts, conversionRate }: AdminClientPageProps) {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialProducts)
@@ -253,6 +255,14 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
             </div>
           </div>
 
+          {/* Conversion Rate Manager */}
+          <div className="mb-4">
+            <ConversionRateManager 
+              initialRate={conversionRate} 
+              productCount={products.length}
+            />
+          </div>
+
           {/* Statistics Dashboard */}
           <AdminStats products={products} />
 
@@ -447,7 +457,8 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
               />
               
               <ProductEditForm 
-                product={view.selectedProduct} 
+                product={view.selectedProduct}
+                conversionRate={conversionRate}
               />
             </div>
           )}
@@ -461,7 +472,10 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <ProductCreateForm onProductCreated={handleProductCreated} />
+                <ProductCreateForm 
+                  onProductCreated={handleProductCreated}
+                  conversionRate={conversionRate}
+                />
               </CardContent>
             </Card>
           )}
@@ -640,7 +654,8 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                 />
                 
                 <ProductEditForm 
-                  product={view.selectedProduct} 
+                  product={view.selectedProduct}
+                  conversionRate={conversionRate}
                 />
               </div>
             )}
@@ -654,7 +669,10 @@ export default function AdminClientPage({ initialProducts }: AdminClientPageProp
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <ProductCreateForm onProductCreated={handleProductCreated} />
+                  <ProductCreateForm 
+                    onProductCreated={handleProductCreated}
+                    conversionRate={conversionRate}
+                  />
                 </CardContent>
               </Card>
             )}

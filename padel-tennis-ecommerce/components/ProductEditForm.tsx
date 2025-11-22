@@ -29,9 +29,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { updateProductAction, deleteProductAction } from "@/app/admin/actions"
 import { useRouter } from "next/navigation"
+import { convertUsdToArs } from "@/lib/price-utils"
 
 interface ProductEditFormProps {
   product: Product
+  conversionRate: number
 }
 
 const categories = ["padel", "tenis-mesa", "tenis"]
@@ -55,7 +57,7 @@ function SubmitButton() {
   )
 }
 
-export function ProductEditForm({ product }: ProductEditFormProps) {
+export function ProductEditForm({ product, conversionRate }: ProductEditFormProps) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -68,7 +70,17 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
   const [name, setName] = useState(product.name)
   const [marca, setMarca] = useState(product.marca)
   const [price, setPrice] = useState(product.price)
+  const [priceUsd, setPriceUsd] = useState(product.price_usd || 0)
+  const [calculatedArsPrice, setCalculatedArsPrice] = useState(product.price)
   const [description, setDescription] = useState(product.description)
+
+  const handlePriceUsdChange = (value: number) => {
+    setPriceUsd(value)
+    if (value > 0) {
+      const arsPrice = convertUsdToArs(value, conversionRate)
+      setCalculatedArsPrice(arsPrice)
+    }
+  }
 
   // Sincroniza los estados locales con el producto seleccionado
   useEffect(() => {
@@ -89,6 +101,8 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
     setName(product.name)
     setMarca(product.marca)
     setPrice(product.price)
+    setPriceUsd(product.price_usd || 0)
+    setCalculatedArsPrice(product.price)
     setDescription(product.description)
   }, [product])
 
@@ -98,6 +112,8 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
     formData.set("in_stock", inStock ? "true" : "false")
     formData.set("in_offer", inOffer ? "true" : "false")
     formData.set("offer_percent", offerPercent.toString())
+    formData.set("price", calculatedArsPrice.toString())
+    formData.set("price_usd", priceUsd.toString())
     const result = await updateProductAction(product.id, formData)
     if (result.success) {
       setSuccess(true)
@@ -136,9 +152,29 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
             <Input id="marca" name="marca" value={marca} onChange={e => setMarca(e.target.value)} className="h-9" />
           </div>
 
-          <div>
-            <Label htmlFor="price" className="text-sm">Precio (ARS)</Label>
-            <Input id="price" name="price" type="number" step="0.01" value={price} onChange={e => setPrice(Number(e.target.value))} required className="h-9" />
+          <div className="space-y-2">
+            <Label htmlFor="price_usd" className="text-sm">Precio Base (USD)</Label>
+            <Input 
+              id="price_usd" 
+              name="price_usd" 
+              type="number" 
+              step="0.01" 
+              value={priceUsd}
+              onChange={(e) => handlePriceUsdChange(Number(e.target.value))}
+              required 
+              className="h-9" 
+            />
+            {calculatedArsPrice > 0 && (
+              <div className="bg-blue-50 rounded-lg p-2 border border-blue-200">
+                <p className="text-xs text-blue-900">
+                  <span className="font-semibold">Precio en ARS:</span>{" "}
+                  ${calculatedArsPrice.toLocaleString('es-AR')}
+                </p>
+                <p className="text-xs text-blue-700">
+                  Tasa: 1 USD = {conversionRate.toLocaleString('es-AR')} ARS
+                </p>
+              </div>
+            )}
           </div>
 
           <div>

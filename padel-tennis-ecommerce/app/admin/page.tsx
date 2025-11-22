@@ -2,6 +2,7 @@ import { getAllProducts } from "@/lib/products"
 import AdminClientPage from "./AdminClientPage"
 import { Suspense } from "react"
 import { Metadata } from "next"
+import { getConversionRate } from "@/lib/settings.server"
 
 export const metadata: Metadata = {
   title: "Panel de Administración - FullSpin",
@@ -127,11 +128,14 @@ function AdminErrorBoundary({ error }: { error: Error }) {
 
 export default async function AdminPage() {
   try {
-    const products = await getAllProducts()
+    const [products, conversionRate] = await Promise.all([
+      getAllProducts(),
+      getConversionRate()
+    ])
 
     return (
       <Suspense fallback={<AdminPageSkeleton />}>
-        <AdminClientPage initialProducts={products} />
+        <AdminClientPage initialProducts={products} conversionRate={conversionRate} />
       </Suspense>
     )
   } catch (error) {

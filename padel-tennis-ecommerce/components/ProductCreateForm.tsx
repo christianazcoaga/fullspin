@@ -18,9 +18,11 @@ import {
 } from "@/components/ui/select"
 import { ImageUpload } from "@/components/image-upload"
 import { createProductAction } from "@/app/admin/actions"
+import { convertUsdToArs } from "@/lib/price-utils"
 
 interface ProductCreateFormProps {
   onProductCreated: (newProduct: Product) => void
+  conversionRate: number
 }
 
 const categories = ["padel", "tenis-mesa", "tenis"]
@@ -53,13 +55,26 @@ function SubmitButton() {
   )
 }
 
-export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) {
+export function ProductCreateForm({ onProductCreated, conversionRate }: ProductCreateFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [currentCategory, setCurrentCategory] = useState(initialFormData.category)
   const [inStock, setInStock] = useState(initialFormData.in_stock)
   const [inOffer, setInOffer] = useState(false)
   const [offerPercent, setOfferPercent] = useState(0)
+  const [priceUsd, setPriceUsd] = useState<string>("")
+  const [calculatedArsPrice, setCalculatedArsPrice] = useState<number>(0)
+
+  const handlePriceUsdChange = (value: string) => {
+    setPriceUsd(value)
+    const parsedUsd = parseFloat(value)
+    if (!isNaN(parsedUsd) && parsedUsd > 0) {
+      const arsPrice = convertUsdToArs(parsedUsd, conversionRate)
+      setCalculatedArsPrice(arsPrice)
+    } else {
+      setCalculatedArsPrice(0)
+    }
+  }
 
   const handleCreateAction = async (formData: FormData) => {
     setError(null)
@@ -69,7 +84,8 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
     const productData = {
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
-      price: parseFloat(formData.get("price") as string),
+      price: calculatedArsPrice,
+      price_usd: parseFloat(priceUsd),
       description: formData.get("description") as string,
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
@@ -77,6 +93,7 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
       in_offer: inOffer,
       offer_percent: offerPercent,
       image: uploadedImageUrl || "",
+      created_at: new Date().toISOString(),
     }
     const result = await createProductAction(productData)
     if (result.success && result.data) {
@@ -96,10 +113,12 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
     category: currentCategory,
     subcategory: "",
     price: 0,
+    price_usd: 0,
     description: "",
     in_stock: true,
     in_offer: false,
     offer_percent: 0,
+    created_at: new Date().toISOString(),
   }
 
   return (
@@ -120,9 +139,30 @@ export function ProductCreateForm({ onProductCreated }: ProductCreateFormProps) 
               <Input id="marca" name="marca" />
             </div>
 
-            <div>
-              <Label htmlFor="price">Precio (ARS)</Label>
-              <Input id="price" name="price" type="number" step="0.01" required />
+            <div className="space-y-2">
+              <Label htmlFor="price_usd">Precio Base (USD)</Label>
+              <Input 
+                id="price_usd" 
+                name="price_usd" 
+                type="number" 
+                step="0.01" 
+                value={priceUsd}
+                onChange={(e) => handlePriceUsdChange(e.target.value)}
+                placeholder="Ej: 100.00"
+                required 
+              />
+              {calculatedArsPrice > 0 && (
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                  <p className="text-sm text-blue-900">
+                    <span className="font-semibold">Precio calculado en ARS:</span>{" "}
+                    ${calculatedArsPrice.toLocaleString('es-AR')}
+                  </p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    Tasa: 1 USD = {conversionRate.toLocaleString('es-AR')} ARS
+                    (redondeado al millar más cercano)
+                  </p>
+                </div>
+              )}
             </div>
 
             <div>

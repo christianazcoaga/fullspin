@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache"
 import { createProduct, updateProduct, deleteProduct } from "@/lib/products.server"
 import type { Product } from "@/lib/products"
 import { deleteProductImage, uploadProductImage, updateProductImage } from "@/lib/storage"
+import { updateConversionRateAndRecalculate } from "@/lib/settings.server"
 
 export async function updateProductAction(productId: number, formData: FormData) {
   try {
@@ -11,6 +12,7 @@ export async function updateProductAction(productId: number, formData: FormData)
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
       price: parseFloat(formData.get("price") as string),
+      price_usd: parseFloat(formData.get("price_usd") as string),
       description: formData.get("description") as string,
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
@@ -92,5 +94,26 @@ export async function createProductAction(
   } catch (error) {
     console.error(error)
     return { success: false, error: "An error occurred while creating the product." }
+  }
+}
+
+export async function updateConversionRateAction(newRate: number): Promise<{ 
+  success: boolean; 
+  updatedCount?: number;
+  error?: string 
+}> {
+  try {
+    const result = await updateConversionRateAndRecalculate(newRate)
+    if (result.success) {
+      revalidatePath("/admin")
+      revalidatePath("/padel")
+      revalidatePath("/tenis-mesa")
+      revalidatePath("/tenis")
+      revalidatePath("/ofertas")
+    }
+    return result
+  } catch (error) {
+    console.error("Error in updateConversionRateAction:", error)
+    return { success: false, error: "Error inesperado al actualizar la tasa de conversión" }
   }
 } 

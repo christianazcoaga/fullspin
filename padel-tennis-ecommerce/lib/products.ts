@@ -7,6 +7,7 @@ export type Product = {
   category: string
   subcategory: string
   price: number
+  price_usd: number
   image: string
   description: string
   in_stock: boolean
