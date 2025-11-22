@@ -37,9 +37,9 @@ export default function OptimizedImage({
 
   // Configuración de calidad según el tipo de imagen
   const getQuality = () => {
-    if (src.includes('logo')) return 90; // Logos necesitan alta calidad
-    if (src.includes('banner')) return 80; // Banners pueden ser un poco más comprimidos
-    if (src.includes('product')) return 85; // Productos balance calidad/tamaño
+    if (src.includes('logo')) return 85; // Logos con 85% es suficiente para WebP
+    if (src.includes('banner')) return 75; // Banners a 75% para reducir peso
+    if (src.includes('product')) return 80; // Productos a 80%
     return quality;
   };
 

@@ -712,6 +712,7 @@ export default function HomePageClient({
                   src="/optimized/adidas-banner.webp"
                   alt="Adidas Banner"
                   fill
+                  sizes="100vw"
                   className="w-full h-full"
                   style={{ objectFit: 'contain' }}
                   priority
@@ -725,6 +726,7 @@ export default function HomePageClient({
                   src="/optimized/butterfly-banner.webp"
                   alt="Butterfly Banner"
                   fill
+                  sizes="100vw"
                   className="w-full h-full"
                   style={{ objectFit: 'contain' }}
                 />
@@ -737,6 +739,7 @@ export default function HomePageClient({
                   src="/optimized/dhs-banner.webp"
                   alt="DHS Banner"
                   fill
+                  sizes="100vw"
                   className="w-full h-full"
                   style={{ objectFit: 'contain' }}
                 />
@@ -749,6 +752,7 @@ export default function HomePageClient({
                   src="/optimized/wilson-banner.webp"
                   alt="Wilson Banner"
                   fill
+                  sizes="100vw"
                   className="w-full h-full"
                   style={{ objectFit: 'contain' }}
                 />
@@ -802,7 +806,7 @@ export default function HomePageClient({
                     <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                          <Image
+                          <OptimizedImage
                             src={product.image}
                             alt={product.name}
                             width={80}
@@ -893,7 +897,7 @@ export default function HomePageClient({
                     <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                          <Image
+                          <OptimizedImage
                             src={product.image}
                             alt={product.name}
                             width={80}
@@ -984,7 +988,7 @@ export default function HomePageClient({
                     <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                          <Image
+                          <OptimizedImage
                             src={product.image}
                             alt={product.name}
                             width={80}
