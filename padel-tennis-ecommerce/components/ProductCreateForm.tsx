@@ -62,17 +62,17 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
   const [inStock, setInStock] = useState(initialFormData.in_stock)
   const [inOffer, setInOffer] = useState(false)
   const [offerPercent, setOfferPercent] = useState(0)
-  const [priceUsd, setPriceUsd] = useState<string>("")
-  const [calculatedArsPrice, setCalculatedArsPrice] = useState<number>(0)
+  const [priceArs, setPriceArs] = useState<string>("")
+  const [calculatedUsdPrice, setCalculatedUsdPrice] = useState<number>(0)
 
-  const handlePriceUsdChange = (value: string) => {
-    setPriceUsd(value)
-    const parsedUsd = parseFloat(value)
-    if (!isNaN(parsedUsd) && parsedUsd > 0) {
-      const arsPrice = convertUsdToArs(parsedUsd, conversionRate)
-      setCalculatedArsPrice(arsPrice)
+  const handlePriceArsChange = (value: string) => {
+    setPriceArs(value)
+    const parsedArs = parseFloat(value)
+    if (!isNaN(parsedArs) && parsedArs > 0) {
+      const usdPrice = parsedArs / conversionRate
+      setCalculatedUsdPrice(usdPrice)
     } else {
-      setCalculatedArsPrice(0)
+      setCalculatedUsdPrice(0)
     }
   }
 
@@ -84,8 +84,8 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
     const productData = {
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
-      price: calculatedArsPrice,
-      price_usd: parseFloat(priceUsd),
+      price: parseFloat(priceArs),
+      price_usd: calculatedUsdPrice,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
@@ -140,26 +140,25 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="price_usd">Precio Base (USD)</Label>
+              <Label htmlFor="price_ars">Precio Base (ARS)</Label>
               <Input 
-                id="price_usd" 
-                name="price_usd" 
+                id="price_ars" 
+                name="price_ars" 
                 type="number" 
                 step="0.01" 
-                value={priceUsd}
-                onChange={(e) => handlePriceUsdChange(e.target.value)}
-                placeholder="Ej: 100.00"
+                value={priceArs}
+                onChange={(e) => handlePriceArsChange(e.target.value)}
+                placeholder="Ej: 150000.00"
                 required 
               />
-              {calculatedArsPrice > 0 && (
+              {calculatedUsdPrice > 0 && (
                 <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
                   <p className="text-sm text-blue-900">
-                    <span className="font-semibold">Precio calculado en ARS:</span>{" "}
-                    ${calculatedArsPrice.toLocaleString('es-AR')}
+                    <span className="font-semibold">Precio calculado en USD:</span>{" "}
+                    ${calculatedUsdPrice.toFixed(2)}
                   </p>
                   <p className="text-xs text-blue-700 mt-1">
                     Tasa: 1 USD = {conversionRate.toLocaleString('es-AR')} ARS
-                    (redondeado al millar más cercano)
                   </p>
                 </div>
               )}
