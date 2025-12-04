@@ -704,7 +704,21 @@ export default function HomePageClient({
           className="w-full"
         >
           <CarouselContent className="-ml-0">
-            {/* Slide 1 - Adidas Banner */}
+            {/* Slide 1 - Edición 2026 Promotional Banner */}
+            <CarouselItem className="pl-0 basis-full">
+              <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
+                <OptimizedImage
+                  src="/optimized/adidas_2026.webp"
+                  alt="Metalbone Edición 2026 - Power of Nature"
+                  fill
+                  sizes="100vw"
+                  className="w-full h-full"
+                  style={{ objectFit: 'contain' }}
+                  priority
+                />
+              </div>
+            </CarouselItem>
+            {/* Slide 2 - Adidas Banner */}
             <CarouselItem className="pl-0 basis-full">
               <div className="relative w-full h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] bg-white flex items-center justify-center overflow-hidden">
                 <OptimizedImage
@@ -714,7 +728,6 @@ export default function HomePageClient({
                   sizes="100vw"
                   className="w-full h-full"
                   style={{ objectFit: 'contain' }}
-                  priority
                 />
               </div>
             </CarouselItem>

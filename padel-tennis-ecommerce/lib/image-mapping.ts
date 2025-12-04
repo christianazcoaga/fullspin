@@ -13,6 +13,7 @@ export const imageMapping = {
   '/head-logo.png': '/optimized/head-logo.webp',
   
   // Banners
+  '/images/edicion-2026.jpg': '/optimized/edicion-2026.webp',
   '/adidas-banner.png': '/optimized/adidas-banner.webp',
   '/Adidas_Padel_Banner.png': '/optimized/Adidas_Padel_Banner.webp',
   '/banner_adidas_ord_993f8af2-99ec-47e9-9a35-6f60ec805bdd.png': '/optimized/banner_adidas_ord_993f8af2-99ec-47e9-9a35-6f60ec805bdd.webp',
