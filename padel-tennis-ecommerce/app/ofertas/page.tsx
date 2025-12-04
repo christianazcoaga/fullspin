@@ -322,7 +322,6 @@ export default function OfertasPage() {
                     <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-red-600 transition-colors text-sm min-h-[2.5rem]">
                       {product.name}
                     </h3>
-                    <p className="text-gray-600 text-xs">{product.description}</p>
                     <div className="h-8 flex items-center justify-start mb-2">
                       {product.marca && (
                         <img
