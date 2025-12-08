@@ -8,9 +8,6 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   // Especificar la raíz del proyecto para evitar advertencias de lockfiles múltiples
   outputFileTracingRoot: __dirname,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -24,8 +21,14 @@ const nextConfig = {
     // Configuración adicional para optimización
     loader: 'default',
     path: '/_next/image',
-    domains: ['itllufoljyibrrzlwapm.supabase.co'],
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'itllufoljyibrrzlwapm.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
@@ -37,6 +40,8 @@ const nextConfig = {
   poweredByHeader: false,
   // Configuración de cache
   generateEtags: true,
+  // Configuración de turbopack (requerido en Next.js 16)
+  turbopack: {},
   // Configuración de webpack para resolver advertencias de Supabase
   webpack: (config, { isServer }) => {
     // Resolver advertencia de Supabase Realtime
