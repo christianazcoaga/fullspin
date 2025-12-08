@@ -362,6 +362,11 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                                 Sin Stock
                               </Badge>
                             )}
+                            {product.coming_soon && (
+                              <Badge className="bg-purple-100 text-purple-700 text-xs">
+                                Proximamente
+                              </Badge>
+                            )}
                           </div>
                           <p className="text-xs text-gray-600 mb-1">{product.marca}</p>
                           <div className="flex items-center gap-2">
@@ -553,6 +558,11 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                               {!product.in_stock && (
                                 <Badge variant="outline" className="text-xs">
                                   Sin Stock
+                                </Badge>
+                              )}
+                              {product.coming_soon && (
+                                <Badge className="bg-purple-100 text-purple-700 text-xs">
+                                  Proximamente
                                 </Badge>
                               )}
                             </div>

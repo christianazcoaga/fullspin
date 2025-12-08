@@ -13,6 +13,7 @@ export type Product = {
   in_stock: boolean
   in_offer: boolean
   offer_percent: number
+  coming_soon: boolean
   created_at: string
 }
 

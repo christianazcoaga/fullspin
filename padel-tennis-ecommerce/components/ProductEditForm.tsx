@@ -65,6 +65,7 @@ export function ProductEditForm({ product, conversionRate }: ProductEditFormProp
   const [inStock, setInStock] = useState(product.in_stock)
   const [inOffer, setInOffer] = useState(product.in_offer ?? false)
   const [offerPercent, setOfferPercent] = useState(product.offer_percent ?? 0)
+  const [comingSoon, setComingSoon] = useState(product.coming_soon ?? false)
   const [category, setCategory] = useState(product.category)
   const [subcategory, setSubcategory] = useState(product.subcategory)
   const [name, setName] = useState(product.name)
@@ -86,6 +87,7 @@ export function ProductEditForm({ product, conversionRate }: ProductEditFormProp
     setInStock(product.in_stock)
     setInOffer(product.in_offer ?? false)
     setOfferPercent(product.offer_percent ?? 0)
+    setComingSoon(product.coming_soon ?? false)
     setCategory(product.category)
     // Si la subcategoría del producto no es válida para la categoría, selecciona la primera subcategoría
     if (product.category && subcategories[product.category] && subcategories[product.category].length > 0) {
@@ -110,6 +112,7 @@ export function ProductEditForm({ product, conversionRate }: ProductEditFormProp
     formData.set("in_stock", inStock ? "true" : "false")
     formData.set("in_offer", inOffer ? "true" : "false")
     formData.set("offer_percent", offerPercent.toString())
+    formData.set("coming_soon", comingSoon ? "true" : "false")
     formData.set("price", priceArs.toString())
     formData.set("price_usd", calculatedUsdPrice.toString())
     const result = await updateProductAction(product.id, formData)
@@ -251,6 +254,13 @@ export function ProductEditForm({ product, conversionRate }: ProductEditFormProp
               <span className="text-gray-500 text-sm">%</span>
             </div>
           )}
+
+          <div className="flex items-center space-x-2 pt-1">
+            <Switch id="coming_soon" name="coming_soon" checked={comingSoon} onCheckedChange={setComingSoon} />
+            <Label htmlFor="coming_soon" className="cursor-pointer text-purple-600 font-semibold text-sm">
+              Proximamente
+            </Label>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-2 pt-2">
             <SubmitButton />

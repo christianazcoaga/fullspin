@@ -37,11 +37,13 @@ import { ProductOfferSection } from "@/components/home/ProductOfferSection";
 export default function HomePageClient({
   initialPadelOffers = [],
   initialTenisMesaOffers = [],
-  initialTenisOffers = []
+  initialTenisOffers = [],
+  initialComingSoonProducts = []
 }: {
   initialPadelOffers: Product[];
   initialTenisMesaOffers: Product[];
   initialTenisOffers: Product[];
+  initialComingSoonProducts: Product[];
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -117,7 +119,9 @@ export default function HomePageClient({
   };
 
   const handleWhatsAppClick = (product: Product) => {
-    const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+    const message = product.coming_soon 
+      ? `Hola! Quiero consultar sobre la ${product.name} de ${product.marca} que estará disponible próximamente.`
+      : `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
     const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -776,6 +780,19 @@ export default function HomePageClient({
         </Carousel>
       </section>
 
+      {/* Coming Soon Products Section */}
+      {initialComingSoonProducts.length > 0 && (
+        <ProductOfferSection
+          title="Proximamente"
+          subtitle="Productos que estarán disponibles muy pronto"
+          products={initialComingSoonProducts}
+          categoryLink="/padel"
+          categoryName="Productos"
+          isComingSoon={true}
+          onProductClick={openProductModal}
+        />
+      )}
+
       {/* Padel Offers Section */}
       <ProductOfferSection
         title="Ofertas de Padel"
@@ -783,6 +800,7 @@ export default function HomePageClient({
         products={initialPadelOffers}
         categoryLink="/padel"
         categoryName="Padel"
+        onProductClick={openProductModal}
       />
 
       {/* Tenis de Mesa Offers Section */}
@@ -792,6 +810,7 @@ export default function HomePageClient({
         products={initialTenisMesaOffers}
         categoryLink="/tenis-mesa"
         categoryName="Tenis de Mesa"
+        onProductClick={openProductModal}
       />
 
       {/* Tenis Offers Section */}
@@ -801,8 +820,8 @@ export default function HomePageClient({
         products={initialTenisOffers}
         categoryLink="/tenis"
         categoryName="Tenis"
+        onProductClick={openProductModal}
       />
-
 
       {/* Banner Carousel Section (Brand Logos) */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -1657,31 +1676,42 @@ export default function HomePageClient({
                     </div>
                   )}
 
-                  {/* Price */}
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    {selectedProduct.in_offer && selectedProduct.offer_percent > 0 ? (
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl text-gray-400 line-through">
-                            {formatPrice(selectedProduct.price)}
-                          </span>
-                          <span className="bg-red-100 text-red-600 font-bold px-3 py-1 rounded-full text-sm">
-                            -{selectedProduct.offer_percent}%
-                          </span>
-                        </div>
-                        <div className="text-3xl font-bold text-red-600">
-                          {formatPrice(Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}
-                        </div>
-                        <p className="text-green-600 font-medium">
-                          ¡Ahorrás {formatPrice(selectedProduct.price - Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}!
-                        </p>
+                  {/* Price or Coming Soon Badge */}
+                  {selectedProduct.coming_soon ? (
+                    <div className="bg-purple-50 rounded-xl p-6 text-center">
+                      <div className="inline-flex items-center justify-center px-6 py-3 bg-purple-100 text-purple-700 rounded-lg font-bold text-xl">
+                        Proximamente
                       </div>
-                    ) : (
-                      <div className="text-3xl font-bold text-blue-600">
-                        {formatPrice(selectedProduct.price)}
-                      </div>
-                    )}
-                  </div>
+                      <p className="text-gray-600 mt-3 text-sm">
+                        Este producto estará disponible muy pronto
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 rounded-xl p-6">
+                      {selectedProduct.in_offer && selectedProduct.offer_percent > 0 ? (
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-3">
+                            <span className="text-2xl text-gray-400 line-through">
+                              {formatPrice(selectedProduct.price)}
+                            </span>
+                            <span className="bg-red-100 text-red-600 font-bold px-3 py-1 rounded-full text-sm">
+                              -{selectedProduct.offer_percent}%
+                            </span>
+                          </div>
+                          <div className="text-3xl font-bold text-red-600">
+                            {formatPrice(Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}
+                          </div>
+                          <p className="text-green-600 font-medium">
+                            ¡Ahorrás {formatPrice(selectedProduct.price - Math.round(selectedProduct.price * (1 - selectedProduct.offer_percent / 100)))}!
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="text-3xl font-bold text-blue-600">
+                          {formatPrice(selectedProduct.price)}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="space-y-3">

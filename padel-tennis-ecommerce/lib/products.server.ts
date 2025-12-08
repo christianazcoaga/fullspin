@@ -97,3 +97,30 @@ export async function getAllProducts() {
   }
   return data
 }
+
+export async function getComingSoonProducts(category?: string, limit: number = 4) {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  let query = supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("coming_soon", true)
+    .order("created_at", { ascending: false })
+
+  if (category) {
+    query = query.eq("category", category)
+  }
+  
+  if (limit) {
+    query = query.limit(limit)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error(`Error fetching coming soon products for category ${category}:`, error)
+    return []
+  }
+  return data
+}

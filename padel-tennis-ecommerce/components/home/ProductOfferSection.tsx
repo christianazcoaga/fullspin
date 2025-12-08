@@ -14,6 +14,8 @@ interface ProductOfferSectionProps {
   categoryLink: string;
   categoryName: string;
   isLoading?: boolean;
+  isComingSoon?: boolean;
+  onProductClick?: (product: Product) => void;
 }
 
 export function ProductOfferSection({
@@ -23,6 +25,8 @@ export function ProductOfferSection({
   categoryLink,
   categoryName,
   isLoading = false,
+  isComingSoon = false,
+  onProductClick,
 }: ProductOfferSectionProps) {
   return (
     <section className="py-12 md:py-20 bg-white">
@@ -61,7 +65,11 @@ export function ProductOfferSection({
             ))
           ) : products.length > 0 ? (
             products.map((product) => (
-              <Card key={product.id} className="group hover-lift card-modern border-0 overflow-hidden">
+              <Card 
+                key={product.id} 
+                className="group hover-lift card-modern border-0 overflow-hidden cursor-pointer"
+                onClick={() => onProductClick?.(product)}
+              >
                 <CardContent className="p-0">
                   <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -74,26 +82,37 @@ export function ProductOfferSection({
                           className="object-contain w-20 h-20"
                         />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-800 text-center group-hover:text-blue-600 transition-colors px-4 truncate w-full">{product.name}</h3>
+                      <h3 className="text-lg font-bold text-gray-800 text-center group-hover:text-blue-600 transition-colors px-4 w-full line-clamp-2">{product.name}</h3>
                       <p className="text-sm text-gray-600 text-center">{product.marca}</p>
                     </div>
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
-                      <span className="text-lg text-gray-500 line-through">
-                        ${product.price.toLocaleString().replace(/,/g, ".")}
-                      </span>
-                    </div>
+                    {isComingSoon ? (
+                      <div className="mb-4 text-center">
+                        <div className="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-lg font-semibold text-lg">
+                          Proximamente
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
+                        <span className="text-lg text-gray-500 line-through">
+                          ${product.price.toLocaleString().replace(/,/g, ".")}
+                        </span>
+                      </div>
+                    )}
                     <Button 
-                      onClick={() => {
-                        const message = `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const message = isComingSoon 
+                          ? `Hola! Quiero consultar sobre la ${product.name} de ${product.marca} que estará disponible próximamente.`
+                          : `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
                         const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
                         window.open(whatsappUrl, "_blank");
                       }}
                       className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group"
                     >
-                      Consultar Stock
+                      {isComingSoon ? "Consultar Disponibilidad" : "Consultar Stock"}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
                   </div>

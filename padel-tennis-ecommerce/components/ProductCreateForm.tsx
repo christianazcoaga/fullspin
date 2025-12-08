@@ -62,6 +62,7 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
   const [inStock, setInStock] = useState(initialFormData.in_stock)
   const [inOffer, setInOffer] = useState(false)
   const [offerPercent, setOfferPercent] = useState(0)
+  const [comingSoon, setComingSoon] = useState(false)
   const [priceArs, setPriceArs] = useState<string>("")
   const [calculatedUsdPrice, setCalculatedUsdPrice] = useState<number>(0)
 
@@ -81,6 +82,7 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
     formData.set("in_stock", inStock ? "true" : "false")
     formData.set("in_offer", inOffer ? "true" : "false")
     formData.set("offer_percent", offerPercent.toString())
+    formData.set("coming_soon", comingSoon ? "true" : "false")
     const productData = {
       name: formData.get("name") as string,
       marca: formData.get("marca") as string,
@@ -92,6 +94,7 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
       in_stock: formData.get("in_stock") === "true",
       in_offer: inOffer,
       offer_percent: offerPercent,
+      coming_soon: comingSoon,
       image: uploadedImageUrl || "",
       created_at: new Date().toISOString(),
     }
@@ -118,6 +121,7 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
     in_stock: true,
     in_offer: false,
     offer_percent: 0,
+    coming_soon: false,
     created_at: new Date().toISOString(),
   }
 
@@ -237,6 +241,13 @@ export function ProductCreateForm({ onProductCreated, conversionRate }: ProductC
                 <span className="text-gray-500">%</span>
               </div>
             )}
+
+            <div className="flex items-center space-x-2 pt-2">
+              <Switch id="coming_soon" name="coming_soon" checked={comingSoon} onCheckedChange={setComingSoon} />
+              <Label htmlFor="coming_soon" className="cursor-pointer text-purple-600 font-semibold">
+                Proximamente
+              </Label>
+            </div>
             
             <SubmitButton />
 

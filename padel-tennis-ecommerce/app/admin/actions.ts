@@ -19,6 +19,7 @@ export async function updateProductAction(productId: number, formData: FormData)
       in_stock: formData.get("in_stock") === "true",
       in_offer: formData.get("in_offer") === "true",
       offer_percent: Number(formData.get("offer_percent")) || 0,
+      coming_soon: formData.get("coming_soon") === "true",
     }
 
     const updatedProduct = await updateProduct(productId, updates)

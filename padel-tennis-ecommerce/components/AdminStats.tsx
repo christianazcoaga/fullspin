@@ -10,7 +10,8 @@ import {
   CheckCircle,
   DollarSign,
   ShoppingCart,
-  Eye
+  Eye,
+  Clock
 } from "lucide-react"
 import { type Product } from "@/lib/products"
 
@@ -27,6 +28,7 @@ export function AdminStats({ products }: AdminStatsProps) {
     inOffer: products.filter(p => p.in_offer).length,
     inStock: products.filter(p => p.in_stock).length,
     outOfStock: products.filter(p => !p.in_stock).length,
+    comingSoon: products.filter(p => p.coming_soon).length,
     totalValue: products.reduce((sum, p) => sum + p.price, 0),
     averagePrice: products.length > 0 ? products.reduce((sum, p) => sum + p.price, 0) / products.length : 0
   }
@@ -128,6 +130,24 @@ export function AdminStats({ products }: AdminStatsProps) {
             </div>
             <div className="p-1.5 sm:p-2 bg-red-100 rounded-full">
               <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Coming Soon */}
+      <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm hover:shadow-md transition-shadow">
+        <CardContent className="p-2 sm:p-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Proximamente</p>
+              <p className="text-lg sm:text-2xl font-bold text-purple-600">{stats.comingSoon}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {stats.total > 0 ? Math.round((stats.comingSoon / stats.total) * 100) : 0}% del catálogo
+              </p>
+            </div>
+            <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full">
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
             </div>
           </div>
         </CardContent>
