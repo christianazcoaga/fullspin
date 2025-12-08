@@ -24,6 +24,7 @@ export async function getProducts() {
     .from("productos_fullspin")
     .select("*")
     .eq("in_stock", true)
+    .eq("coming_soon", false)
     .order("created_at", { ascending: false })
 
   if (error) {
@@ -55,6 +56,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     .select("*")
     .eq("category", category)
     .eq("in_stock", true)
+    .eq("coming_soon", false)
     .order("created_at", { ascending: false })
 
   if (error) {
@@ -72,6 +74,7 @@ export async function getProductsBySubcategory(category: string, subcategory: st
     .eq("category", category)
     .eq("subcategory", subcategory)
     .eq("in_stock", true)
+    .eq("coming_soon", false)
     .order("created_at", { ascending: false })
 
   if (error) {
@@ -90,6 +93,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
     .select("*")
     .or(`name.ilike.%${query}%,marca.ilike.%${query}%,category.ilike.%${query}%`)
     .eq("in_stock", true)
+    .eq("coming_soon", false)
     .order("created_at", { ascending: false })
 
   if (error) {

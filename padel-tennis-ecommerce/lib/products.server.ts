@@ -63,6 +63,7 @@ export async function getProductsOnOffer(category?: string, limit: number = 4) {
     .select("*")
     .eq("in_stock", true)
     .eq("in_offer", true)
+    .eq("coming_soon", false)
     .order("created_at", { ascending: false })
 
   if (category) {
