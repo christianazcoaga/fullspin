@@ -16,6 +16,7 @@ interface ProductOfferSectionProps {
   isLoading?: boolean;
   isComingSoon?: boolean;
   onProductClick?: (product: Product) => void;
+  variant?: "white" | "blue";
 }
 
 export function ProductOfferSection({
@@ -27,15 +28,16 @@ export function ProductOfferSection({
   isLoading = false,
   isComingSoon = false,
   onProductClick,
+  variant = "white",
 }: ProductOfferSectionProps) {
   return (
-    <section className="py-12 md:py-20 bg-white">
+    <section className={`py-12 md:py-20 ${variant === "blue" ? "bg-blue-600" : "bg-white"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
+          <h2 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 ${variant === "blue" ? "text-white" : "text-gray-900"}`}>
             {title}
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className={`text-lg md:text-xl max-w-3xl mx-auto ${variant === "blue" ? "text-blue-100" : "text-gray-600"}`}>
             {subtitle}
           </p>
         </div>
@@ -89,7 +91,7 @@ export function ProductOfferSection({
                   <div className="p-6">
                     {isComingSoon ? (
                       <div className="mb-4 text-center">
-                        <div className="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-lg font-semibold text-lg">
+                        <div className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-semibold text-lg">
                           Proximamente
                         </div>
                       </div>
@@ -122,7 +124,7 @@ export function ProductOfferSection({
           ) : (
             // No products found
             <div className="col-span-full text-center py-12">
-              <p className="text-gray-600 text-lg">No hay ofertas de {categoryName.toLowerCase()} disponibles en este momento.</p>
+              <p className={`text-lg ${variant === "blue" ? "text-blue-100" : "text-gray-600"}`}>No hay ofertas de {categoryName.toLowerCase()} disponibles en este momento.</p>
               <Link href={categoryLink} className="inline-block mt-4">
                 <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl">
                   Ver Productos de {categoryName}

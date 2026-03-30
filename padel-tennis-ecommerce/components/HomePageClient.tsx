@@ -8,12 +8,9 @@ import {
   X,
   ArrowRight,
   MessageCircle,
-  Star,
   Users,
   Award,
   Zap,
-  Sparkles,
-  TrendingUp,
   Shield,
   Tag,
   Search,
@@ -259,28 +256,29 @@ export default function HomePageClient({
     }
   };
 
+  const isOnHero = scrollY <= 600;
+
   return (
-    <div className="min-h-screen bg-[#f6f8fb]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrollY > 50 ? "glass-effect shadow-lg" : "bg-transparent"
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+          scrollY > 50
+            ? "bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-4 group">
-              <div className="relative">
-                <OptimizedImage
-                  src="/optimized/fullspin-logo.webp"
-                  alt="FullSpin Logo"
-                  width={50}
-                  height={50}
-                  className="rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <h1 className="text-2xl font-bold text-black group-hover:scale-105 transition-transform duration-300">
+            <Link href="/" className="flex items-center space-x-3 group">
+              <OptimizedImage
+                src="/optimized/fullspin-logo.webp"
+                alt="FullSpin Logo"
+                width={44}
+                height={44}
+                className="rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300"
+              />
+              <h1 className={`text-xl font-bold transition-colors duration-300 ${isOnHero && scrollY <= 50 ? "text-white" : "text-gray-900"}`}>
                 FullSpin
               </h1>
             </Link>
@@ -366,49 +364,30 @@ export default function HomePageClient({
               )}
             </div>
 
-            <nav className="hidden md:flex space-x-8">
-              <Link
-                href="/"
-                className="text-sm font-medium text-blue-600 relative group"
-              >
-                <span className="relative z-10">Inicio</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-100 transition-transform duration-300"></div>
-              </Link>
-              <Link
-                href="/padel"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                <span className="relative z-10">Padel</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
-              <Link
-                href="/tenis-mesa"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                <span className="relative z-10">Tenis de Mesa</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
-              <Link
-                href="/tenis"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                <span className="relative z-10">Tenis</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
-              <Link
-                href="/ofertas"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                <span className="relative z-10">Ofertas</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
-              <Link
-                href="/sobre-nosotros"
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                <span className="relative z-10">Sobre nosotros</span>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </Link>
+            <nav className="hidden md:flex space-x-6">
+              {[
+                { href: "/", label: "Inicio", active: true },
+                { href: "/padel", label: "Padel" },
+                { href: "/tenis-mesa", label: "Tenis de Mesa" },
+                { href: "/tenis", label: "Tenis" },
+                { href: "/ofertas", label: "Ofertas" },
+                { href: "/sobre-nosotros", label: "Sobre nosotros" },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-semibold transition-colors duration-300 relative group ${
+                    link.active
+                      ? (isOnHero && scrollY <= 50 ? "text-white" : "text-blue-600")
+                      : (isOnHero && scrollY <= 50 ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-blue-600")
+                  }`}
+                >
+                  {link.label}
+                  <div className={`absolute -bottom-1 left-0 w-full h-0.5 transition-transform duration-300 ${
+                    link.active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  } ${isOnHero && scrollY <= 50 ? "bg-white" : "bg-blue-600"}`}></div>
+                </Link>
+              ))}
             </nav>
 
             <div className="md:hidden flex items-center space-x-2">
@@ -621,85 +600,56 @@ export default function HomePageClient({
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-pink-600/10"></div>
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl animate-float"></div>
-        <div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "2s" }}
-        ></div>
-
-        {/* Decorative Images */}
-        <div
-          className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none"
-          style={{ top: "50%" }}
-        >
-          <OptimizedImage
-            src="/optimized/padel-racket-bg.webp"
-            alt="Padel Racket"
-            width={420}
-            height={420}
-            className="transform -rotate-45"
-          />
-        </div>
-        <div
-          className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 opacity-15 drop-shadow-lg hidden lg:block pointer-events-none"
-          style={{ top: "50%" }}
-        >
-          <OptimizedImage
-            src="/optimized/tt-paddle-bg.webp"
-            alt="Table Tennis Paddle"
-            width={420}
-            height={420}
-            className="transform rotate-45"
-          />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-24">
+        <div className="absolute inset-0">
+          <img src="/BG-INICIO.png" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-blue-900/40" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center animate-fade-in-up">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Bienvenido a{" "}
-              <span className="text-blue-600 relative">
-                FullSpin
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-blue-600 rounded-full"></div>
+            <div className="inline-block mb-6 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-semibold tracking-wide uppercase">
+              Nueva Temporada 2026
+            </div>
+
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.1] mb-6">
+              ELEVA TU <br />
+              <span className="gradient-text">
+                NIVEL DE JUEGO
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Especialistas en{" "}
-              <span className="font-semibold text-blue-600">Padel</span>{" "}
-              y <span className="font-semibold text-blue-600">
-                Tenis de Mesa
-              </span>{" "}
-              en Argentina. Envíos a todo el país.
+            <p className="text-lg md:text-xl text-blue-100 mb-10 max-w-2xl mx-auto font-medium">
+              El mejor equipamiento deportivo para Padel, Tenis y Tenis de Mesa.
+              Calidad premium, marcas originales y asesoramiento personalizado.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/padel">
-                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Productos de Padel
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                <Button className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 rounded-full font-bold text-lg transition-all hover:scale-105 shadow-xl shadow-blue-900/20 hover:shadow-2xl">
+                  Ver Catalogo
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Link href="/tenis-mesa">
-                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Productos de Tenis de Mesa
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Button>
-              </Link>
-              <Link href="/tenis">
-                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                  Productos de Tenis
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+              <Link href="/ofertas">
+                <Button className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-white/30 text-white rounded-full font-bold text-lg transition-all hover:bg-white/10">
+                  Explorar Ofertas
                 </Button>
               </Link>
             </div>
           </div>
         </div>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/50 animate-fade-in-up pointer-events-none" style={{ animationDelay: "1s" }}>
+          <span className="text-[10px] font-bold uppercase tracking-widest">Explorar</span>
+          <div className="w-[2px] h-8 bg-white/20 overflow-hidden rounded-full">
+            <div className="w-full h-1/2 bg-white rounded-full animate-scroll-indicator" />
+          </div>
+        </div>
       </section>
 
       {/* Promotional Image Carousel Section */}
-      <section className="w-full bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="w-full bg-white">
         <Carousel
           opts={{
             align: "center",
@@ -790,6 +740,7 @@ export default function HomePageClient({
           categoryName="Productos"
           isComingSoon={true}
           onProductClick={openProductModal}
+          variant="blue"
         />
       )}
 
@@ -801,6 +752,7 @@ export default function HomePageClient({
         categoryLink="/padel"
         categoryName="Padel"
         onProductClick={openProductModal}
+        variant="blue"
       />
 
       {/* Tenis de Mesa Offers Section */}
@@ -811,6 +763,7 @@ export default function HomePageClient({
         categoryLink="/tenis-mesa"
         categoryName="Tenis de Mesa"
         onProductClick={openProductModal}
+        variant="white"
       />
 
       {/* Tenis Offers Section */}
@@ -821,10 +774,11 @@ export default function HomePageClient({
         categoryLink="/tenis"
         categoryName="Tenis"
         onProductClick={openProductModal}
+        variant="blue"
       />
 
       {/* Banner Carousel Section (Brand Logos) */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Carousel
             opts={{
@@ -909,229 +863,123 @@ export default function HomePageClient({
       </section>
 
       {/* Categories Section */}
-      <section className="py-24 bg-white/50">
+      <section id="categorias" className="py-24 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Nuestras Categorías
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Encuentra el equipamiento perfecto para tu deporte favorito con la
-              mejor calidad y precios
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-4">
+                NUESTRAS <span className="text-blue-200">CATEGORIAS</span>
+              </h2>
+              <p className="text-lg text-blue-100 font-medium">
+                Encuentra el equipamiento perfecto para tu deporte favorito.
+              </p>
+            </div>
+            <Link href="/padel" className="hidden md:flex items-center gap-2 text-white font-bold hover:underline mt-4 md:mt-0">
+              Ver todo el catalogo <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Padel Card */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in">
-              <CardContent className="p-0">
-                <div className="relative h-80 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <TrendingUp className="w-6 h-6 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "PADEL",
+                description: "Palas, zapatillas, pelotas y accesorios para dominar la pista.",
+                href: "/padel",
+                gradient: "from-blue-500 via-blue-600 to-blue-700",
+                logos: [
+                  { src: "/optimized/adidas-logo.webp", alt: "Adidas" },
+                  { src: "/optimized/wilson-logo.webp", alt: "Wilson" },
+                ],
+              },
+              {
+                title: "TENIS DE MESA",
+                description: "Maderas, gomas, mesas y todo lo necesario para tu juego.",
+                href: "/tenis-mesa",
+                gradient: "from-gray-700 via-gray-800 to-gray-900",
+                logos: [
+                  { src: "/optimized/butterfly-logo.webp", alt: "Butterfly" },
+                  { src: "/optimized/dhs-logo.webp", alt: "DHS" },
+                ],
+              },
+              {
+                title: "TENIS",
+                description: "Raquetas, cuerdas, indumentaria y calzado de primer nivel.",
+                href: "/tenis",
+                gradient: "from-blue-600 via-blue-700 to-blue-800",
+                logos: [
+                  { src: "/optimized/wilson-logo.webp", alt: "Wilson" },
+                  { src: "/optimized/head-logo.webp", alt: "Head" },
+                ],
+              },
+            ].map((cat, index) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="group relative h-[420px] rounded-3xl overflow-hidden block shadow-lg animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="text-3xl font-black text-white mb-2 tracking-tight">{cat.title}</h3>
+                    <p className="text-gray-200 mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {cat.description}
+                    </p>
+                    <div className="flex items-center gap-4 mb-4">
+                      {cat.logos.map((logo) => (
+                        <img
+                          key={logo.alt}
+                          src={logo.src}
+                          alt={logo.alt}
+                          className="object-contain max-h-10 w-auto bg-white/90 rounded-lg px-3 py-1 shadow-sm"
+                        />
+                      ))}
+                    </div>
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white group-hover:scale-110 transition-transform">
+                      <ArrowRight className="w-6 h-6" />
                     </div>
                   </div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <h3 className="text-4xl font-bold mb-2 text-white">PADEL</h3>
-                    <p className="text-xl opacity-90 mb-6 text-white">Palas, zapatillas, pelotas y más</p>
-                    {/* Brand Logos */}
-                    <div className="flex justify-center items-center gap-x-12">
-                      <img
-                        src="/optimized/adidas-logo.webp"
-                        alt="Adidas Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                      <img
-                        src="/optimized/wilson-logo.webp"
-                        alt="Wilson Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
                 </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    Descubre nuestra amplia selección de productos de padel de
-                    las mejores marcas como Wilson y Adidas.
-                  </p>
-                  <Link href="/padel">
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group">
-                      Explorar Padel
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tenis de Mesa Card */}
-            <Card
-              className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <CardContent className="p-0">
-                <div className="relative h-80 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Zap className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <h3 className="text-4xl font-bold mb-2 text-white">TENIS DE MESA</h3>
-                    <p className="text-xl opacity-90 mb-6 text-white">Paletas, gomas, mesas y accesorios</p>
-                    {/* Brand Logos */}
-                    <div className="flex justify-center items-center gap-x-8">
-                      <img
-                        src="/optimized/butterfly-logo.webp"
-                        alt="Butterfly Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                      <img
-                        src="/optimized/dhs-logo.webp"
-                        alt="DHS Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
-                </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    Equipamiento profesional de tenis de mesa con las mejores
-                    marcas como Butterfly y DHS.
-                  </p>
-                  <Link href="/tenis-mesa">
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group">
-                      Explorar Tenis de Mesa
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tenis Card */}
-            <Card
-              className="group hover-lift card-modern border-0 overflow-hidden animate-scale-in"
-              style={{ animationDelay: "0.4s" }}
-            >
-              <CardContent className="p-0">
-                <div className="relative h-80 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <TrendingUp className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <h3 className="text-4xl font-bold mb-2 text-white">TENIS</h3>
-                    <p className="text-xl opacity-90 mb-6 text-white">Raquetas, zapatillas, pelotas y más</p>
-                    {/* Brand Logos */}
-                    <div className="flex justify-center items-center gap-x-12">
-                      <img
-                        src="/optimized/wilson-logo.webp"
-                        alt="Wilson Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                      <img
-                        src="/optimized/head-logo.webp"
-                        alt="Head Logo"
-                        className="object-contain max-h-16 w-auto bg-white/80 rounded-lg p-2 shadow"
-                        style={{ maxWidth: '100px' }}
-                      />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
-                </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    Equipamiento profesional de tenis con las mejores
-                    marcas como Wilson y Head.
-                  </p>
-                  <Link href="/tenis">
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group">
-                      Explorar Tenis
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </Link>
+            ))}
           </div>
+
+          <Link href="/padel" className="md:hidden flex items-center justify-center gap-2 text-white font-bold mt-8 hover:underline">
+            Ver todo el catalogo <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-24 bg-blue-600 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              ¿Por qué elegir FullSpin?
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">
+              POR QUE ELEGIR <span className="text-blue-200">FULLSPIN?</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Somos tu mejor opción en equipamiento deportivo con años de
-              experiencia
+            <p className="text-lg text-blue-100 font-medium">
+              Nos apasiona el deporte tanto como a vos. Por eso te ofrecemos lo mejor.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              {
-                icon: Award,
-                title: "Calidad Premium",
-                description:
-                  "Productos originales de las mejores marcas del mercado",
-                color: "from-blue-600 to-violet-600",
-                delay: "0s",
-              },
-              {
-                icon: Zap,
-                title: "Entrega Rápida",
-                description:
-                  "Consulta disponibilidad y tiempos de entrega por WhatsApp",
-                color: "from-blue-600 to-violet-600",
-                delay: "0.1s",
-              },
-              {
-                icon: Users,
-                title: "Atención Personalizada",
-                description: "Te asesoramos para elegir el equipamiento ideal",
-                color: "from-blue-600 to-violet-600",
-                delay: "0.2s",
-              },
-              {
-                icon: Shield,
-                title: "100% Originales",
-                description:
-                  "Garantía oficial de fábrica en todos nuestros productos",
-                color: "from-blue-600 to-violet-600",
-                delay: "0.3s",
-              },
+              { icon: Award, title: "Calidad Premium", description: "Seleccionamos los mejores productos para garantizar tu maximo rendimiento." },
+              { icon: Zap, title: "Entrega Rapida", description: "Envios a todo el pais con seguimiento en tiempo real." },
+              { icon: Users, title: "Atencion Personalizada", description: "Asesoramiento experto para ayudarte a elegir tu equipamiento ideal." },
+              { icon: Shield, title: "100% Originales", description: "Trabajamos directamente con las mejores marcas del mercado." },
             ].map((feature, index) => (
               <div
                 key={index}
-                className="text-center group animate-fade-in-up"
-                style={{ animationDelay: feature.delay }}
+                className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-3xl hover:bg-white/20 transition-colors animate-fade-in-up"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div
-                  className={`w-20 h-20 bg-gradient-to-r ${feature.color} rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
-                >
-                  <feature.icon className="w-10 h-10 text-white" />
+                <div className="w-16 h-16 bg-white text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                  <feature.icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-blue-100 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -1143,123 +991,76 @@ export default function HomePageClient({
 
 
       {/* FAQ Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Preguntas Frecuentes
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter mb-4">
+              PREGUNTAS <span className="text-blue-600">FRECUENTES</span>
             </h2>
-            <p className="text-xl text-gray-600">
-              Resolvemos las dudas más comunes de nuestros clientes
+            <p className="text-lg text-gray-600 font-medium">
+              Resolvemos tus dudas para que compres con total confianza.
             </p>
           </div>
 
-          <div className="space-y-6">
-            {/* FAQ Item 1 */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    ¿Cómo puedo consultar disponibilidad de productos?
-                  </h3>
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-bold">+</span>
+          <div className="space-y-4">
+            {[
+              {
+                question: "Como puedo consultar disponibilidad de productos?",
+                answer: "Puedes contactarnos directamente por WhatsApp al +54 370 510-3672 o por Instagram @fullspinargentina. Te responderemos en menos de 24 horas con toda la informacion sobre stock y precios.",
+              },
+              {
+                question: "Realizan envios a todo el pais?",
+                answer: "Si, realizamos envios a todo el territorio argentino. Los tiempos de entrega varian segun la ubicacion, pero generalmente son de 3-7 dias habiles. Consulta los costos de envio segun tu localidad.",
+              },
+              {
+                question: "Los productos son originales?",
+                answer: "Absolutamente. Todos nuestros productos son 100% originales con garantia oficial de fabrica. Trabajamos directamente con distribuidores autorizados de las mejores marcas como Adidas, Wilson, Butterfly y DHS.",
+              },
+              {
+                question: "Pueden asesorarme para elegir el equipamiento adecuado?",
+                answer: "Por supuesto! Nuestro equipo esta especializado en padel y tenis de mesa. Te ayudaremos a elegir el equipamiento ideal segun tu nivel, estilo de juego y presupuesto.",
+              },
+              {
+                question: "Aceptan diferentes metodos de pago?",
+                answer: "Si, aceptamos transferencias bancarias, efectivo, y todas las tarjetas de credito y debito. Tambien ofrecemos opciones de pago en cuotas sin interes segun el producto y banco.",
+              },
+            ].map((faq, index) => {
+              const isOpen = index === 0;
+              return (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-2xl overflow-hidden bg-white shadow-sm animate-fade-in-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="w-full flex items-center justify-between p-6 text-left">
+                    <span className="text-lg font-bold text-gray-900 pr-8">
+                      {faq.question}
+                    </span>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-50 text-blue-600 flex-shrink-0">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100">
+                    {faq.answer}
                   </div>
                 </div>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  Puedes contactarnos directamente por WhatsApp al +54 370 510-3672 o por Instagram @fullspinargentina. Te responderemos en menos de 24 horas con toda la información sobre stock y precios.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* FAQ Item 2 */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    ¿Realizan envíos a todo el país?
-                  </h3>
-                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 font-bold">+</span>
-                  </div>
-                </div>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  Sí, realizamos envíos a todo el territorio argentino. Los tiempos de entrega varían según la ubicación, pero generalmente son de 3-7 días hábiles. Consulta los costos de envío según tu localidad.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* FAQ Item 3 */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    ¿Los productos son originales?
-                  </h3>
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-bold">+</span>
-                  </div>
-                </div>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  Absolutamente. Todos nuestros productos son 100% originales con garantía oficial de fábrica. Trabajamos directamente con distribuidores autorizados de las mejores marcas como Adidas, Wilson, Butterfly y DHS.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* FAQ Item 4 */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    ¿Pueden asesorarme para elegir el equipamiento adecuado?
-                  </h3>
-                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-600 font-bold">+</span>
-                  </div>
-                </div>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  ¡Por supuesto! Nuestro equipo está especializado en padel y tenis de mesa. Te ayudaremos a elegir el equipamiento ideal según tu nivel, estilo de juego y presupuesto. No dudes en consultarnos.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* FAQ Item 5 */}
-            <Card className="group hover-lift card-modern border-0 overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    ¿Aceptan diferentes métodos de pago?
-                  </h3>
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-bold">+</span>
-                  </div>
-                </div>
-                <p className="text-gray-600 mt-4 leading-relaxed">
-                  Sí, aceptamos transferencias bancarias, efectivo, y todas las tarjetas de crédito y débito. También ofrecemos opciones de pago en cuotas sin interés según el producto y banco.
-                </p>
-              </CardContent>
-            </Card>
+              );
+            })}
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-600 mb-4">
-              ¿No encontraste la respuesta que buscabas?
-            </p>
+            <p className="text-gray-600 mb-4">No encontraste la respuesta que buscabas?</p>
             <Button
               onClick={() => {
                 const message = "Hola! Tengo una consulta sobre sus productos.";
                 const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
                 window.open(whatsappUrl, "_blank");
               }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
             >
-              <svg
-                className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
-              </svg>
+              <MessageCircle className="w-5 h-5 mr-3" />
               Consultar por WhatsApp
             </Button>
           </div>
@@ -1267,14 +1068,14 @@ export default function HomePageClient({
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section className="py-20 bg-blue-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              ¡Mantente Informado!
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Mantente Informado!
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Recibe las últimas ofertas, novedades y consejos de equipamiento directamente en tu email
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Recibe las ultimas ofertas, novedades y consejos de equipamiento directamente en tu email
             </p>
           </div>
 
@@ -1291,7 +1092,7 @@ export default function HomePageClient({
                       Ofertas especiales antes que nadie
                     </li>
                     <li className="flex items-center">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                       Consejos de equipamiento personalizado
                     </li>
                     <li className="flex items-center">
@@ -1299,7 +1100,7 @@ export default function HomePageClient({
                       Novedades de productos
                     </li>
                     <li className="flex items-center">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                       Descuentos exclusivos
                     </li>
                   </ul>
@@ -1373,8 +1174,8 @@ export default function HomePageClient({
                         disabled={isSubscribing}
                         className={`w-full px-6 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed ${
                           subscriptionType === "email"
-                            ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                            : "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
+                            ? "bg-blue-600 hover:bg-blue-700 text-white"
+                            : "bg-green-600 hover:bg-green-700 text-white"
                         }`}
                       >
                         {isSubscribing ? (
@@ -1430,62 +1231,42 @@ export default function HomePageClient({
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
+      <section className="py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/5"></div>
+        <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
-          <div
-            className="absolute bottom-10 right-10 w-48 h-48 bg-white/10 rounded-full blur-xl animate-float"
-            style={{ animationDelay: "3s" }}
-          ></div>
+          <div className="absolute bottom-10 right-10 w-48 h-48 bg-white/10 rounded-full blur-xl animate-float" style={{ animationDelay: "3s" }}></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            ¿Listo para mejorar tu juego?
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-6">
+            LISTO PARA MEJORAR TU JUEGO?
           </h2>
-          <p className="text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Contáctanos por WhatsApp y te ayudaremos a encontrar el equipamiento
-            perfecto para ti
+          <p className="text-xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+            Contactanos por WhatsApp y te ayudaremos a encontrar el equipamiento perfecto para ti.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               onClick={() => {
-                const message =
-                  "Hola! Me gustaría obtener más información sobre sus productos.";
-                const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(
-                  message
-                )}`;
+                const message = "Hola! Me gustaria obtener mas informacion sobre sus productos.";
+                const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
                 window.open(whatsappUrl, "_blank");
               }}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-4 text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
             >
-              <svg
-                className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
-              </svg>
+              <MessageCircle className="w-5 h-5 mr-3" />
               Contactar por WhatsApp
             </Button>
             <Button
               onClick={() => {
-                window.open(
-                  "https://www.instagram.com/fullspinargentina/",
-                  "_blank"
-                );
+                window.open("https://www.instagram.com/fullspinargentina/", "_blank");
               }}
-              className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-10 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
+              className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 px-10 py-4 text-lg font-bold rounded-full transition-all duration-300 hover:scale-105"
             >
-              <svg
-                className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.75a5.75 5.75 0 1 1-5.75 5.75 5.75 5.75 0 0 1 5.75-5.75zm0 1.5a4.25 4.25 0 1 0 4.25 4.25A4.25 4.25 0 0 0 12 5.75zm5.25 1.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
               </svg>
-              Contactar por Instagram
+              Seguinos en Instagram
             </Button>
           </div>
         </div>
@@ -1548,7 +1329,7 @@ export default function HomePageClient({
                     href="https://wa.me/543705103672"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center hover:text-pink-500 transition-colors"
+                    className="flex items-center hover:text-blue-400 transition-colors"
                   >
                     <svg
                       className="w-5 h-5 mr-3 text-green-500"
@@ -1584,13 +1365,13 @@ export default function HomePageClient({
                     className="flex items-center"
                   >
                     <svg
-                      className="w-5 h-5 mr-3 text-pink-500"
+                      className="w-5 h-5 mr-3 text-blue-400"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
                       <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.75a5.75 5.75 0 1 1-5.75 5.75 5.75 5.75 0 0 1 5.75-5.75zm0 1.5a4.25 4.25 0 1 0 4.25 4.25A4.25 4.25 0 0 0 12 5.75zm5.25 1.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
                     </svg>
-                    <span className="text-gray-400 hover:text-pink-500 transition-colors">
+                    <span className="text-gray-400 hover:text-blue-400 transition-colors">
                       @fullspinargentina
                     </span>
                   </a>
@@ -1678,8 +1459,8 @@ export default function HomePageClient({
 
                   {/* Price or Coming Soon Badge */}
                   {selectedProduct.coming_soon ? (
-                    <div className="bg-purple-50 rounded-xl p-6 text-center">
-                      <div className="inline-flex items-center justify-center px-6 py-3 bg-purple-100 text-purple-700 rounded-lg font-bold text-xl">
+                    <div className="bg-blue-50 rounded-xl p-6 text-center">
+                      <div className="inline-flex items-center justify-center px-6 py-3 bg-blue-100 text-blue-700 rounded-lg font-bold text-xl">
                         Proximamente
                       </div>
                       <p className="text-gray-600 mt-3 text-sm">

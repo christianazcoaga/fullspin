@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Analytics } from "@vercel/analytics/next"
+import Preloader from "@/components/Preloader"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     siteName: 'FullSpin',
     images: [
       {
-        url: '/fullspin-logo.png', // Ruta desde /public
+        url: '/fullspin-logo.png',
         width: 400,
         height: 400,
         alt: 'Logo FullSpin',
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
+        <Preloader />
         {children}
         <Analytics />
       </body>

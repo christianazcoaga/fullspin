@@ -240,10 +240,10 @@ export default function TenisMesaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f6f8fb]">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
       <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrollY > 50 ? 'glass-effect shadow-lg' : 'bg-white/80 backdrop-blur-sm'
+        scrollY > 50 ? 'bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100' : 'bg-white/80 backdrop-blur-sm'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -370,24 +370,26 @@ export default function TenisMesaPage() {
       </header>
 
       {/* Page Header */}
-      <div className="pt-20 pb-12 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
-          <div className="absolute bottom-5 left-10 w-24 h-24 bg-white/10 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
+      <div className="pt-24 pb-16 bg-blue-600 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-blue-500/30 blur-3xl" />
+          <div className="absolute bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-700/40 blur-3xl" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Catálogo de Tenis de Mesa
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide uppercase">
+            Catalogo Tenis de Mesa
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-4">
+            TENIS DE MESA
           </h1>
-          <p className="text-white text-xl drop-shadow">
-            Somos especialistas en tenis de mesa en Argentina. Envíos a todo el país.
+          <p className="text-blue-100 text-lg md:text-xl font-medium max-w-2xl">
+            Somos especialistas en tenis de mesa en Argentina. Las mejores marcas, envios a todo el pais.
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white/80 backdrop-blur-sm border-b sticky top-16 z-40">
+      <div className="bg-white/95 backdrop-blur-xl border-b border-gray-100 sticky top-16 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
@@ -564,7 +566,7 @@ export default function TenisMesaPage() {
       {/* Products Grid */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
             {searchQuery
               ? `Resultados para "${searchQuery}"`
               : selectedSubcategory !== "all"
@@ -598,7 +600,7 @@ export default function TenisMesaPage() {
                 onClick={() => openProductModal(product)}
               >
                 <CardContent className="p-0">
-                  <div className="relative bg-gray-100 overflow-hidden aspect-square mb-4 flex items-center justify-center">
+                  <div className="relative bg-gradient-to-br from-slate-50 to-blue-50/30 overflow-hidden aspect-square mb-4 flex items-center justify-center">
                     <img
                       src={product.image || "/placeholder.svg"}
                       alt={product.name}
@@ -661,7 +663,7 @@ export default function TenisMesaPage() {
                           </div>
                         </>
                       ) : (
-                        <div className="font-bold text-purple-600 text-lg">
+                        <div className="font-bold text-blue-600 text-lg">
                           {formatPrice(product.price)}
                         </div>
                       )}
@@ -690,7 +692,7 @@ export default function TenisMesaPage() {
             <Button
               onClick={() => setVisibleCount((prev) => prev + 8)}
               variant="outline"
-              className="px-8 py-3 text-purple-600 border-purple-600 hover:bg-purple-600 hover:text-white rounded-xl transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-full font-bold transition-all duration-300 hover:scale-105 shadow-lg"
             >
               Cargar más productos
             </Button>
@@ -741,7 +743,7 @@ export default function TenisMesaPage() {
                   
                   {/* Category Badge */}
                   <div className="text-center">
-                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 font-medium text-sm px-4 py-2">
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 font-medium text-sm px-4 py-2">
                       {subcategoryNames[selectedProduct.subcategory]} • Tenis de Mesa
                     </Badge>
                   </div>
@@ -823,7 +825,7 @@ export default function TenisMesaPage() {
                         </p>
                       </div>
                     ) : (
-                      <div className="text-3xl font-bold text-purple-600">
+                      <div className="text-3xl font-bold text-blue-600">
                         {formatPrice(selectedProduct.price)}
                       </div>
                     )}
@@ -884,7 +886,7 @@ export default function TenisMesaPage() {
               <h3 className="text-lg font-semibold mb-6">Contacto</h3>
               <div className="space-y-3 text-gray-400">
                 <p className="flex items-center">
-                  <a href="https://wa.me/543705103672" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-pink-500 transition-colors">
+                  <a href="https://wa.me/543705103672" target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-blue-400 transition-colors">
                     <svg className="w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
                     </svg>
@@ -899,10 +901,10 @@ export default function TenisMesaPage() {
                 </p>
                 <p className="flex items-center">
                   <a href="https://www.instagram.com/fullspinargentina/" target="_blank" rel="noopener noreferrer" className="flex items-center">
-                    <svg className="w-5 h-5 mr-3 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 mr-3 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.75a5.75 5.75 0 1 1-5.75 5.75 5.75 5.75 0 0 1 5.75-5.75zm0 1.5a4.25 4.25 0 1 0 4.25 4.25A4.25 4.25 0 0 0 12 5.75zm5.25 1.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" />
                     </svg>
-                    <span className="text-gray-400 hover:text-pink-500 transition-colors">@fullspinargentina</span>
+                    <span className="text-gray-400 hover:text-blue-400 transition-colors">@fullspinargentina</span>
                   </a>
                 </p>
               </div>
