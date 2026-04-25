@@ -140,7 +140,7 @@ export default function Preloader() {
       aria-live="polite"
       aria-label="Cargando"
     >
-      <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-10 px-6">
         <div
           ref={logoWrapRef}
           data-preloader-logo
@@ -150,17 +150,17 @@ export default function Preloader() {
           <Logo
             variant="stacked"
             color="light"
-            className="h-24 w-auto sm:h-28"
+            className="h-40 w-auto sm:h-56 lg:h-64"
           />
           <span
             ref={accentRef}
             aria-hidden="true"
-            className="mt-4 h-1 w-32 rounded-full bg-brand-neon"
+            className="mt-6 h-1.5 w-48 rounded-full bg-brand-neon sm:w-64 lg:w-72"
           />
         </div>
         <p
           ref={captionRef}
-          className="text-sm font-semibold uppercase tracking-[0.3em] text-brand-cream/70"
+          className="text-xs font-semibold uppercase tracking-[0.4em] text-brand-cream/70 sm:text-sm"
         >
           Equipamiento deportivo
         </p>
