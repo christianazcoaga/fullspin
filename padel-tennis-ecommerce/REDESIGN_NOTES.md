@@ -19,7 +19,12 @@ Bitácora de decisiones, pendientes y bloqueos durante el rediseño guiado por `
   - [x] `SiteChrome.tsx` wrapper que oculta header/footer en `/admin*` y `/login`.
   - [x] `app/layout.tsx` cableado con `<SiteChrome>{children}</SiteChrome>`.
   - [x] Header/footer inline removidos de padel, tenis, tenis-mesa, ofertas, sobre-nosotros, buscar y HomePageClient.
-- **Fase 3 — Refactor de Home**: pendiente.
+- **Fase 3 — Refactor de Home**: completada.
+  - [x] `components/home/ProductQuickView.tsx` — modal compartido con shadcn/dialog-like a11y, body-scroll lock + Escape internos.
+  - [x] `HomeHero.tsx`, `PromoCarousel.tsx`, `BrandLogosCarousel.tsx`, `FeaturedCategories.tsx`, `TrustBlock.tsx`, `FaqSection.tsx`, `NewsletterCTA.tsx`, `HomeFinalCta.tsx`, `FloatingActions.tsx`.
+  - [x] `HomePageClient.tsx` reescrito como orquestador (~95 líneas).
+  - **Pendiente**: `ProductOfferSection.tsx` todavía tiene la variant `"blue"` con `bg-blue-600` (off-brand). En la home ya no se usa, pero el componente sigue exponiendo la opción. Limpiar en Fase 4.
+- **Fase 4 — Refactor páginas catálogo**: pendiente.
 - **Fase 4 — Refactor páginas catálogo**: pendiente.
 - **Fase 5 — PDP `/producto/[id]`**: pendiente.
 - **Fase 6 — Polish**: pendiente.
