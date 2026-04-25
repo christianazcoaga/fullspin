@@ -24,8 +24,12 @@ Bitácora de decisiones, pendientes y bloqueos durante el rediseño guiado por `
   - [x] `HomeHero.tsx`, `PromoCarousel.tsx`, `BrandLogosCarousel.tsx`, `FeaturedCategories.tsx`, `TrustBlock.tsx`, `FaqSection.tsx`, `NewsletterCTA.tsx`, `HomeFinalCta.tsx`, `FloatingActions.tsx`.
   - [x] `HomePageClient.tsx` reescrito como orquestador (~95 líneas).
   - **Pendiente**: `ProductOfferSection.tsx` todavía tiene la variant `"blue"` con `bg-blue-600` (off-brand). En la home ya no se usa, pero el componente sigue exponiendo la opción. Limpiar en Fase 4.
-- **Fase 4 — Refactor páginas catálogo**: pendiente.
-- **Fase 4 — Refactor páginas catálogo**: pendiente.
+- **Fase 4 — Refactor páginas catálogo**: completada.
+  - [x] `lib/catalog.ts` — única fuente de verdad (CATEGORIES, OFFERS_CONFIG, SUBCATEGORY_LABELS, BRAND_LOGOS, PRICE_RANGES, SORT_OPTIONS, formatPrice).
+  - [x] `hooks/useCategoryFilters.ts` — filtrado client-side (sin round-trip a Supabase por cada keystroke), ofertas siempre primero.
+  - [x] `components/catalog/ProductCard.tsx`, `CategoryFilters.tsx`, `CategoryHero.tsx`, `CategoryPage.tsx`.
+  - [x] Las 4 páginas (`padel`, `tenis`, `tenis-mesa`, `ofertas`) ahora son one-liners de 5 líneas (server components).
+  - [x] `ProductOfferSection` reescrito flat sin variant `"blue"` ni gradientes.
 - **Fase 5 — PDP `/producto/[id]`**: pendiente.
 - **Fase 6 — Polish**: pendiente.
 
