@@ -1,6 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+
+import { gsap } from "@/lib/gsap"
+import { useScrubReveal } from "@/hooks/useScrubReveal"
 
 type CategoryLogo = { src: string; alt: string }
 type CategoryCard = {
@@ -46,8 +51,25 @@ const CATEGORIES: CategoryCard[] = [
 ]
 
 export default function FeaturedCategories() {
+  const ref = useScrubReveal<HTMLElement>((scope, tl) => {
+    const heading = scope.querySelector("[data-cat='heading']")
+    const lede = scope.querySelector("[data-cat='lede']")
+    const cards = scope.querySelectorAll("[data-cat='card']")
+
+    if (heading) gsap.set(heading, { x: -40, opacity: 0 })
+    if (lede) gsap.set(lede, { y: 20, opacity: 0 })
+    if (cards.length) gsap.set(cards, { y: 40, opacity: 0 })
+
+    if (heading) tl.to(heading, { x: 0, opacity: 1, duration: 1 })
+    if (lede) tl.to(lede, { y: 0, opacity: 1, duration: 1 }, "<")
+    if (cards.length) {
+      tl.to(cards, { y: 0, opacity: 1, stagger: 0.1, duration: 1 })
+    }
+  })
+
   return (
     <section
+      ref={ref}
       id="categorias"
       className="bg-brand-cream py-24"
       aria-labelledby="featured-categories-heading"
@@ -57,11 +79,15 @@ export default function FeaturedCategories() {
           <div className="max-w-2xl">
             <h2
               id="featured-categories-heading"
+              data-cat="heading"
               className="text-balance text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.1] tracking-tight text-brand-black"
             >
               Nuestras categorías
             </h2>
-            <p className="mt-3 text-base text-brand-black/70 sm:text-lg">
+            <p
+              data-cat="lede"
+              className="mt-3 text-base text-brand-black/70 sm:text-lg"
+            >
               Encontrá el equipamiento perfecto para tu deporte favorito.
             </p>
           </div>
@@ -79,7 +105,8 @@ export default function FeaturedCategories() {
             <Link
               key={cat.href}
               href={cat.href}
-              className={`group relative flex h-[400px] flex-col justify-end overflow-hidden rounded-xl ${cat.bg} p-8 text-brand-cream transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
+              data-cat="card"
+              className={`group relative flex h-[400px] flex-col justify-end overflow-hidden rounded-xl ${cat.bg} p-8 text-brand-cream transition-shadow duration-200 hover:shadow-lg`}
             >
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold tracking-tight">

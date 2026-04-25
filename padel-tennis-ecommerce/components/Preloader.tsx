@@ -5,9 +5,14 @@ import { usePathname } from "next/navigation"
 import { gsap } from "gsap"
 
 import Logo from "@/components/layout/Logo"
+import { setPreloaderActive } from "@/lib/preloader-state"
 
-const FIRST_RENDER_HOLD_MS = 2200
-const NAV_HOLD_MS = 900
+// The GSAP entrance choreography (logo pop → path stagger → accent bar →
+// caption) finishes around t≈1.6s. Both holds must be ≥ that, otherwise the
+// fade-out kicks in mid-animation. First-render adds ~1s of "fully shown"
+// dwell on top so users can register the brand splash.
+const FIRST_RENDER_HOLD_MS = 3200
+const NAV_HOLD_MS = 2200
 const FADE_OUT_MS = 500
 
 export default function Preloader() {
@@ -27,18 +32,24 @@ export default function Preloader() {
   useEffect(() => {
     if (isAdmin) {
       setIsVisible(false)
+      setPreloaderActive(false)
       return
     }
 
     const hold = isFirstRender.current ? FIRST_RENDER_HOLD_MS : NAV_HOLD_MS
     isFirstRender.current = false
 
+    setPreloaderActive(true)
     setIsVisible(true)
     setIsFading(false)
 
     const timer = window.setTimeout(() => {
       setIsFading(true)
-      window.setTimeout(() => setIsVisible(false), FADE_OUT_MS)
+      window.setTimeout(() => {
+        setIsVisible(false)
+        // Notify any home-section animations waiting on the splash.
+        setPreloaderActive(false)
+      }, FADE_OUT_MS)
     }, hold)
 
     return () => window.clearTimeout(timer)

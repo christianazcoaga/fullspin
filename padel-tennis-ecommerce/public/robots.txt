@@ -2,8 +2,13 @@
 User-agent: *
 Allow: /
 
+# *
+User-agent: *
+Disallow: /admin
+Disallow: /login
+
 # Host
-Host: https://fullspinarg.com
+Host: https://www.fullspinarg.com
 
 # Sitemaps
-Sitemap: https://fullspinarg.com/sitemap.xml
+Sitemap: https://www.fullspinarg.com/sitemap.xml

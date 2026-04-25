@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git --no-pager log --oneline main..HEAD)",
+      "Bash(node -e \"const c = require\\('./next-sitemap.config.js'\\); console.log\\('keys:', Object.keys\\(c\\)\\); console.log\\('siteUrl:', c.siteUrl\\); console.log\\('exclude:', c.exclude\\); console.log\\('additionalPaths is fn:', typeof c.additionalPaths === 'function'\\)\")",
+      "Bash(npm run *)"
+    ]
+  }
+}

@@ -1,10 +1,14 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowRight, MessageCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import OptimizedImage from "@/components/OptimizedImage"
+import { gsap } from "@/lib/gsap"
 import { formatPrice } from "@/lib/catalog"
 import type { Product } from "@/lib/products"
+import { useScrubReveal } from "@/hooks/useScrubReveal"
 
 interface ProductOfferSectionProps {
   title: string
@@ -32,14 +36,36 @@ export function ProductOfferSection({
   isLoading = false,
   isComingSoon = false,
 }: ProductOfferSectionProps) {
+  const ref = useScrubReveal<HTMLElement>((scope, tl) => {
+    const heading = scope.querySelector("[data-offer='heading']")
+    const lede = scope.querySelector("[data-offer='lede']")
+    const cards = scope.querySelectorAll("[data-offer='card']")
+
+    if (heading) gsap.set(heading, { y: 24, opacity: 0 })
+    if (lede) gsap.set(lede, { y: 16, opacity: 0 })
+    if (cards.length) gsap.set(cards, { y: 30, opacity: 0 })
+
+    if (heading) tl.to(heading, { y: 0, opacity: 1, duration: 1 })
+    if (lede) tl.to(lede, { y: 0, opacity: 1, duration: 1 }, "<")
+    if (cards.length) {
+      tl.to(cards, { y: 0, opacity: 1, stagger: 0.08, duration: 1 })
+    }
+  })
+
   return (
-    <section className="bg-brand-cream py-16 md:py-20">
+    <section ref={ref} className="bg-brand-cream py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight tracking-tight text-brand-black">
+          <h2
+            data-offer="heading"
+            className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight tracking-tight text-brand-black"
+          >
             {title}
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base text-brand-black/70 sm:text-lg">
+          <p
+            data-offer="lede"
+            className="mx-auto mt-3 max-w-2xl text-base text-brand-black/70 sm:text-lg"
+          >
             {subtitle}
           </p>
         </div>
@@ -90,7 +116,10 @@ function OfferCard({
   const productHref = `/producto/${product.id}`
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-brand-black/10 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+    <article
+      data-offer="card"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-brand-black/10 bg-white transition-shadow duration-200 hover:shadow-md"
+    >
       <Link
         href={productHref}
         aria-label={`Ver detalles de ${product.name}`}
