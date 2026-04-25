@@ -8,9 +8,6 @@ const __dirname = path.dirname(__filename);
 const nextConfig = {
   // Especificar la raíz del proyecto para evitar advertencias de lockfiles múltiples
   outputFileTracingRoot: __dirname,
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
