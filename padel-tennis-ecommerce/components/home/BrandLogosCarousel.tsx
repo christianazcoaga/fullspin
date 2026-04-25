@@ -28,23 +28,23 @@ const SLIDES: LogoSlide[] = [
   {
     title: "Tenis de Mesa",
     logos: [
-      { src: "/optimized/butterfly-logo.webp", alt: "Butterfly", width: 120, height: 80 },
-      { src: "/optimized/dhs-logo.webp", alt: "DHS", width: 100, height: 80 },
-      { src: "/optimized/sanwei-logo.webp", alt: "Sanwei", width: 100, height: 80 },
+      { src: "/optimized/butterfly-logo.webp", alt: "Butterfly", width: 240, height: 160 },
+      { src: "/optimized/dhs-logo.webp", alt: "DHS", width: 200, height: 160 },
+      { src: "/optimized/sanwei-logo.webp", alt: "Sanwei", width: 200, height: 160 },
     ],
   },
   {
     title: "Padel",
     logos: [
-      { src: "/optimized/adidas-logo.webp", alt: "Adidas", width: 80, height: 80 },
-      { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 100, height: 80 },
+      { src: "/optimized/adidas-logo.webp", alt: "Adidas", width: 160, height: 160 },
+      { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 200, height: 160 },
     ],
   },
   {
     title: "Tenis",
     logos: [
-      { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 100, height: 80 },
-      { src: "/optimized/head-logo.webp", alt: "Head", width: 100, height: 80 },
+      { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 200, height: 160 },
+      { src: "/optimized/head-logo.webp", alt: "Head", width: 200, height: 160 },
     ],
   },
 ]
@@ -76,7 +76,7 @@ export default function BrandLogosCarousel() {
 
   return (
     <section
-      className="bg-white py-16"
+      className="bg-white py-20 lg:py-24"
       aria-label="Marcas que vendemos"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -92,11 +92,11 @@ export default function BrandLogosCarousel() {
           <CarouselContent>
             {SLIDES.map((slide) => (
               <CarouselItem key={slide.title}>
-                <div className="flex flex-col items-center gap-6 py-6">
-                  <h3 className="text-xs font-semibold uppercase tracking-widest text-brand-black/60">
+                <div className="flex flex-col items-center gap-10 py-6 sm:gap-12">
+                  <h3 className="text-sm font-semibold uppercase tracking-widest text-brand-black/60 sm:text-base">
                     {slide.title}
                   </h3>
-                  <div className="flex flex-wrap items-center justify-center gap-10 sm:gap-16">
+                  <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-20 lg:gap-x-24">
                     {slide.logos.map((logo) => (
                       <div
                         key={`${slide.title}-${logo.alt}`}
@@ -107,7 +107,7 @@ export default function BrandLogosCarousel() {
                           alt={logo.alt}
                           width={logo.width}
                           height={logo.height}
-                          className="h-12 w-auto object-contain sm:h-16"
+                          className="h-20 w-auto object-contain sm:h-24 lg:h-28"
                         />
                       </div>
                     ))}
