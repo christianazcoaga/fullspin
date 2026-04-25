@@ -1,10 +1,22 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Hanken_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 import { Analytics } from "@vercel/analytics/next"
 import Preloader from "@/components/Preloader"
 
-const inter = Inter({ subsets: ['latin'] })
+const hankenGrotesk = Hanken_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-hanken',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.fullspinarg.com'),
@@ -40,8 +52,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
+    <html lang="es" className={`${hankenGrotesk.variable} ${inter.variable}`}>
+      <body className="font-sans">
         <Preloader />
         {children}
         <Analytics />
