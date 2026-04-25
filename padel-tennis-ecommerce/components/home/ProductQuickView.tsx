@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect } from "react"
 import { ArrowRight, MessageCircle, X } from "lucide-react"
 
@@ -85,11 +86,13 @@ export default function ProductQuickView({ product, open, onClose }: ProductQuic
 
         <div className="p-6">
           <div className="grid gap-8 lg:grid-cols-2">
-            <div className="aspect-square flex items-center justify-center rounded-2xl bg-white border border-brand-black/10 p-8">
-              <img
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-white border border-brand-black/10 p-8">
+              <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
-                className="h-full w-full max-w-sm object-contain"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-contain p-2"
               />
             </div>
 

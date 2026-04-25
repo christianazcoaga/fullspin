@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
@@ -7,11 +8,14 @@ export default function HomeHero() {
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden py-24">
       <div className="absolute inset-0">
-        <img
+        <Image
           src="/BG-INICIO.png"
           alt=""
           aria-hidden="true"
-          className="h-full w-full object-cover"
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-brand-black/55" />
       </div>

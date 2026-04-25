@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { MessageCircle } from "lucide-react"
 
@@ -43,11 +44,12 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         aria-label={`Ver detalles de ${product.name}`}
         className="relative block aspect-square w-full overflow-hidden bg-white"
       >
-        <img
+        <Image
           src={product.image || "/placeholder.svg"}
           alt={product.name}
-          className="h-full w-full object-contain p-6 transition-transform duration-300 group-hover:scale-[1.03]"
-          loading="lazy"
+          fill
+          sizes="(min-width: 1280px) 23vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+          className="object-contain p-6 transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </Link>
 

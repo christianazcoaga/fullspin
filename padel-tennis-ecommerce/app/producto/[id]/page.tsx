@@ -1,5 +1,6 @@
 import { ArrowRight, MessageCircle } from "lucide-react"
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -167,16 +168,19 @@ export default async function ProductoPage({
           </nav>
 
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
-            <div className="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-brand-black/10 bg-white">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-brand-black/10 bg-white">
               {product.in_offer && product.offer_percent > 0 && (
                 <span className="absolute left-4 top-4 z-10 rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black shadow-sm">
                   -{product.offer_percent}% OFF
                 </span>
               )}
-              <img
+              <Image
                 src={product.image || "/placeholder.svg"}
                 alt={product.name}
-                className="h-full w-full max-w-[80%] object-contain p-6"
+                fill
+                sizes="(min-width: 1024px) 50vw, 90vw"
+                priority
+                className="object-contain p-8"
               />
             </div>
 
