@@ -8,12 +8,13 @@ export type SubcategorySlug =
   | "palas"
   | "paletas"
   | "raquetas"
-  | "zapatillas"
   | "pelotas"
   | "bolsos"
   | "ropa"
   | "accesorios"
   | "gomas"
+  // legacy slugs kept for type compatibility — not in current inventory
+  | "zapatillas"
   | "mesas"
 
 export type CategoryConfig = {
@@ -29,6 +30,9 @@ export type CategoryConfig = {
   subcategories: SubcategorySlug[]
 }
 
+// Subcategories listed match what actually exists in productos_fullspin —
+// validated against the live DB on 2026-04-25. If new ones appear in
+// inventory, add them here so the filter dropdown picks them up.
 export const CATEGORIES: Record<CategorySlug, CategoryConfig> = {
   padel: {
     slug: "padel",
@@ -37,7 +41,7 @@ export const CATEGORIES: Record<CategorySlug, CategoryConfig> = {
     heroTitle: "Equipamiento de padel",
     heroDescription:
       "Somos especialistas en padel en Argentina. Las mejores marcas, envíos a todo el país.",
-    subcategories: ["palas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
+    subcategories: ["palas", "bolsos", "pelotas", "ropa", "accesorios"],
   },
   tenis: {
     slug: "tenis",
@@ -45,8 +49,8 @@ export const CATEGORIES: Record<CategorySlug, CategoryConfig> = {
     heroEyebrow: "Catálogo Tenis",
     heroTitle: "Equipamiento de tenis",
     heroDescription:
-      "Raquetas, pelotas, indumentaria y calzado de las mejores marcas.",
-    subcategories: ["raquetas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
+      "Raquetas y bolsos de las mejores marcas, con envíos a todo el país.",
+    subcategories: ["raquetas", "bolsos"],
   },
   "tenis-mesa": {
     slug: "tenis-mesa",
@@ -54,8 +58,8 @@ export const CATEGORIES: Record<CategorySlug, CategoryConfig> = {
     heroEyebrow: "Catálogo Tenis de Mesa",
     heroTitle: "Equipamiento de tenis de mesa",
     heroDescription:
-      "Maderas, gomas, mesas, pelotas y todo para tu juego.",
-    subcategories: ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"],
+      "Paletas, gomas, pelotas y accesorios para todos los niveles.",
+    subcategories: ["paletas", "gomas", "pelotas", "ropa", "accesorios"],
   },
 }
 
@@ -88,15 +92,23 @@ export type BrandLogo = {
   height: number
 }
 
+// Brands actually present in productos_fullspin as of 2026-04-25:
+// Adidas (67), Wilson (48), Butterfly (43), DHS (10), Nox (2), Nassau (1).
+// Logos for brands that do not (yet) ship in inventory are kept around
+// because they are referenced by the home BrandLogosCarousel — adding
+// them here is harmless (BRAND_LOGOS is a registry, not an enum).
 export const BRAND_LOGOS: Record<string, BrandLogo> = {
   Adidas: { src: "/optimized/adidas-logo.webp", alt: "Adidas", width: 60, height: 24 },
   Wilson: { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 80, height: 24 },
-  Babolat: { src: "/babolat-logo.png", alt: "Babolat", width: 80, height: 24 },
-  Bullpadel: { src: "/optimized/bullpadel-logo.webp", alt: "Bullpadel", width: 90, height: 24 },
-  Dunlop: { src: "/optimized/dunlop-logo.webp", alt: "Dunlop", width: 80, height: 24 },
-  Head: { src: "/optimized/head-logo.webp", alt: "Head", width: 80, height: 24 },
   Butterfly: { src: "/optimized/butterfly-logo.webp", alt: "Butterfly", width: 80, height: 24 },
   DHS: { src: "/optimized/dhs-logo.webp", alt: "DHS", width: 80, height: 24 },
+  // Nox / Nassau: no logo asset yet; ProductCard falls back to plain text.
+  // Head / Bullpadel / Babolat / Dunlop / Sanwei: not in inventory but
+  // referenced from the home BrandLogosCarousel.
+  Head: { src: "/optimized/head-logo.webp", alt: "Head", width: 80, height: 24 },
+  Bullpadel: { src: "/optimized/bullpadel-logo.webp", alt: "Bullpadel", width: 90, height: 24 },
+  Babolat: { src: "/babolat-logo.png", alt: "Babolat", width: 80, height: 24 },
+  Dunlop: { src: "/optimized/dunlop-logo.webp", alt: "Dunlop", width: 80, height: 24 },
   Sanwei: { src: "/optimized/sanwei-logo.webp", alt: "Sanwei", width: 80, height: 24 },
 }
 

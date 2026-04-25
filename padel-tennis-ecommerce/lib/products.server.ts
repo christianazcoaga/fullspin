@@ -99,6 +99,66 @@ export async function getAllProducts() {
   return data
 }
 
+export async function getProductById(id: number): Promise<Product | null> {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (error) {
+    console.error(`Error fetching product ${id}:`, error)
+    return null
+  }
+  return data
+}
+
+export async function getRelatedProducts(
+  productId: number,
+  category: string,
+  limit: number = 4
+): Promise<Product[]> {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("category", category)
+    .eq("in_stock", true)
+    .eq("coming_soon", false)
+    .neq("id", productId)
+    .order("in_offer", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error(`Error fetching related products for ${productId}:`, error)
+    return []
+  }
+  return data ?? []
+}
+
+export async function getProductIdsForSitemap(): Promise<number[]> {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data, error } = await supabase
+    .from("productos_fullspin")
+    .select("id")
+    .eq("in_stock", true)
+    .eq("coming_soon", false)
+
+  if (error) {
+    console.error("Error fetching product ids for sitemap:", error)
+    return []
+  }
+  return (data ?? []).map((row: { id: number }) => row.id)
+}
+
 export async function getComingSoonProducts(category?: string, limit: number = 4) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
