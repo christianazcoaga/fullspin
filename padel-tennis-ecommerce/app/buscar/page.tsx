@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Search, Filter, SortAsc, SortDesc, Grid, List } from "lucide-react";
+import { Search, Filter, SortAsc, SortDesc, Grid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { searchProducts, type Product } from "@/lib/products";
@@ -91,35 +91,13 @@ export default function SearchResultsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f8fb]">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Volver
-                </Button>
-              </Link>
-              <div className="flex items-center space-x-2">
-                <Search className="h-5 w-5 text-gray-400" />
-                <h1 className="text-lg font-semibold text-gray-900">
-                  Resultados de búsqueda
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="bg-brand-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search Info */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-brand-black mb-2">
             Búsqueda: "{query}"
-          </h2>
+          </h1>
           <p className="text-gray-600">
             {isLoading ? "Buscando productos..." : `${filteredAndSortedProducts.length} productos encontrados`}
           </p>
