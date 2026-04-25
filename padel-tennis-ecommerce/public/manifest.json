@@ -1,12 +1,18 @@
 {
   "name": "FullSpin",
   "short_name": "FullSpin",
-  "description": "E-commerce de Padel y Tenis de Mesa",
+  "description": "Equipamiento deportivo para padel, tenis y tenis de mesa.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#F9F8F1",
+  "theme_color": "#1381C3",
   "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "/fullspin-logo.png",
       "sizes": "192x192",
@@ -18,4 +24,4 @@
       "type": "image/png"
     }
   ]
-} 
+}
