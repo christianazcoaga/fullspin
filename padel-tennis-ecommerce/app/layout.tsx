@@ -41,7 +41,12 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/fullspin-logo.png',
+    // SVG favicon (stacked blue mark) — modern browsers render this
+    // crisp at any tab size. Fallback PNG kept for legacy clients.
+    icon: [
+      { url: '/images/LOGOS/FullSpin-Web-02.svg', type: 'image/svg+xml' },
+      { url: '/fullspin-logo.png', type: 'image/png' },
+    ],
     apple: '/fullspin-logo.png',
   },
   manifest: "/manifest.json",

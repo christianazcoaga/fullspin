@@ -1,10 +1,20 @@
 import { cn } from "@/lib/utils"
 
 /*
- * Placeholder SVG logos until the designer delivers the final files.
- * TODO: replace these three SVGs with the official Full Spin assets
- * (full / stacked / isotype) once available. They use `currentColor`
- * so colour can be inherited from a parent text-* class.
+ * Official Full Spin logos provided by the designer
+ * (public/images/LOGOS/FullSpin-Web-01..04.svg).
+ *
+ * The path data below is inlined from those SVGs so the component can
+ * use `fill="currentColor"` and inherit color from a parent `text-*`
+ * class (instead of forcing white or blue at the asset level). This
+ * avoids round-trips to /public for a tiny shape and keeps SSR clean.
+ *
+ * The viewBox is tightened to the bounding box of the letters — the
+ * source SVGs ship with a 500×500 canvas with a lot of padding.
+ *
+ * The designer did not provide an isotype-only mark, so the
+ * "isotype" variant currently aliases to the stacked variant rendered
+ * at a smaller size.
  */
 
 type LogoColor = "dark" | "light"
@@ -19,98 +29,55 @@ interface LogoProps {
 }
 
 function colorClass(color: LogoColor) {
-  return color === "light" ? "text-brand-cream" : "text-brand-black"
+  // Light surfaces (cream/white) -> dark blue brand mark.
+  // Dark surfaces (brand-black footer) -> cream mark.
+  return color === "light" ? "text-brand-cream" : "text-brand-blue-dark"
 }
 
-function LogoFull({ className }: { className?: string }) {
+function LogoFull({ className }: LogoSvgProps) {
   return (
     <svg
-      viewBox="0 0 220 56"
+      viewBox="35 215 433 70"
       role="img"
       aria-hidden="true"
-      className={cn("h-8 w-auto", className)}
-      fill="none"
+      className={cn("h-8 w-auto lg:h-9", className)}
+      fill="currentColor"
     >
-      <circle cx="28" cy="28" r="22" stroke="currentColor" strokeWidth="3" />
-      <path
-        d="M10 28c8 12 28 12 36 0M10 28c8-12 28-12 36 0"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <text
-        x="62"
-        y="36"
-        fontFamily="var(--font-hanken), system-ui, sans-serif"
-        fontSize="26"
-        fontWeight="800"
-        letterSpacing="-0.5"
-        fill="currentColor"
-      >
-        FULL SPIN
-      </text>
+      <path d="M54.21,278.32h-12.85c-.96,0-1.7-.86-1.55-1.81l9.48-52.51c.12-.76.78-1.32,1.55-1.32h37.72c.96,0,1.7.86,1.55,1.81l-1.56,9.94c-.12.76-.78,1.32-1.55,1.32h-22.23c-.77,0-1.43.56-1.55,1.33l-.78,5.06c-.15.95.59,1.81,1.55,1.81h15.84c.96,0,1.7.86,1.55,1.81l-1.58,9.9c-.13.81-.82,1.4-1.64,1.4h-16.75c-.77,0-1.43.56-1.55,1.32l-4.11,18.62c-.12.76-.78,1.32-1.55,1.32Z" />
+      <path d="M95.24,222.68h12.36c.96,0,1.7.86,1.55,1.81l-5.04,31.95c-.94,5.86,3.61,8.81,8.48,8.81,5.16,0,10.41-3.2,11.31-8.81l5.12-32.44c.12-.76.78-1.32,1.55-1.32h12.4c.96,0,1.7.86,1.55,1.81l-5.25,33.1c-2.38,14.91-16.19,21.55-28.89,21.55-13.73,0-24.3-7.17-22-21.55l5.32-33.59c.12-.76.78-1.32,1.55-1.32Z" />
+      <path d="M181.9,278.32h-38.84c-1.02,0-1.8-.91-1.64-1.92l8.29-52.4c.12-.76.78-1.32,1.55-1.32h12.85c.96,0,1.7.86,1.55,1.81l-6.17,38.88c-.16,1.01.62,1.92,1.64,1.92h22.29c1.02,0,1.8.91,1.64,1.92l-1.53,9.71c-.13.81-.82,1.4-1.64,1.4Z" />
+      <path d="M229.11,278.32h-38.84c-1.02,0-1.8-.91-1.64-1.92l8.29-52.4c.12-.76.78-1.32,1.55-1.32h12.85c.96,0,1.7.86,1.55,1.81l-6.17,38.88c-.16,1.01.62,1.92,1.64,1.92h22.29c1.02,0,1.8.91,1.64,1.92l-1.53,9.71c-.13.81-.82,1.4-1.64,1.4Z" />
+      <path d="M298.23,227.82l-3.12,10.49c-.29.98-1.41,1.42-2.31.93-3.3-1.8-8.51-3.5-14.16-3.72-4.54-.18-8.38.44-8.53,4.04-.08,1.96,2.15,2.59,4.57,3.46l8.12,2.91c7.88,2.78,12.46,7.06,12.17,14.23-.47,11.66-11.24,19.51-26.71,18.88-9.37-.38-16.41-2.92-20.21-4.9-.64-.33-.93-1.07-.72-1.76l2.26-11.22c.28-.89,1.3-1.3,2.11-.85,3.42,1.89,10.72,4.76,18.13,5.06,4.3.17,7.7-.75,7.82-3.7.06-1.43-1-2.54-3.79-3.47l-7.93-2.62c-6.19-2.01-12.79-6.01-12.43-14.85.49-12.03,11.85-19.24,27.03-18.62,7.37.3,12.97,1.87,16.88,3.83.69.35,1.02,1.14.8,1.88Z" />
+      <path d="M313.6,264.69l-1.95,12.26c-.12.77-.79,1.34-1.57,1.34h-12.79c-.98,0-1.73-.87-1.57-1.84l8.3-52.43c.12-.77.79-1.34,1.57-1.34h26.2c12.08,0,18.35,7.41,18.35,17.04,0,12.53-9.54,23.63-24.78,23.63h-10.19c-.78,0-1.45.57-1.57,1.34ZM317.9,237.5l-1.67,10.58c-.15.97.59,1.84,1.57,1.84h6.94c5.32,0,8.93-2.87,8.93-8.15,0-3.85-2.46-5.61-6.76-5.61h-7.45c-.78,0-1.45.57-1.57,1.34Z" />
+      <path d="M362.99,278.3h-12.79c-.98,0-1.73-.87-1.57-1.84l8.3-52.43c.12-.77.79-1.34,1.57-1.34h12.79c.98,0,1.73.87,1.57,1.84l-8.3,52.43c-.12.77-.79,1.34-1.57,1.34Z" />
+      <path d="M383,278.3h-12.34c-.98,0-1.73-.87-1.57-1.84l8.3-52.43c.12-.77.79-1.34,1.57-1.34h10.8c.54,0,1.04.27,1.34.73l17.37,26.94c.74,1.14,3.44,1.42,3.98-.57l4.09-25.75c.12-.77.79-1.34,1.57-1.34h12.47c.91,0,1.61.81,1.46,1.71l-9.6,52.65c-.11.72-.73,1.25-1.46,1.25h-10.38c-.53,0-1.03-.26-1.32-.71l-17.79-26.52c-.81-1.2-2.67-.79-2.9.64l-4.02,25.25c-.12.77-.79,1.34-1.57,1.34Z" />
+      <path d="M451.97,220.86c4.43,0,8.24,3.4,8.24,7.83s-3.61,7.86-8.24,7.86-8.13-3.2-8.13-7.86c.02-4.52,3.64-7.83,8.13-7.83ZM451.97,234.54c3.44,0,6.24-2.34,6.24-5.86s-2.85-5.89-6.24-5.89-6.1,2.44-6.1,5.89,2.67,5.86,6.1,5.86ZM450.6,232.65h-2.08v-8.01h3.79c1.73,0,3.06,1.17,3.06,2.87,0,1.03-.59,1.97-1.44,2.47l2.05,2.67h-2.47l-1.71-2.28h-1.2v2.28ZM450.6,226.43v2.17h1.43c.74,0,1.2-.49,1.2-1.09,0-.65-.49-1.08-1.2-1.08h-1.43Z" />
     </svg>
   )
 }
 
-function LogoStacked({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 120 80"
-      role="img"
-      aria-hidden="true"
-      className={cn("h-12 w-auto", className)}
-      fill="none"
-    >
-      <circle cx="20" cy="40" r="16" stroke="currentColor" strokeWidth="2.5" />
-      <path
-        d="M6 40c5 9 23 9 28 0M6 40c5-9 23-9 28 0"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <text
-        x="44"
-        y="36"
-        fontFamily="var(--font-hanken), system-ui, sans-serif"
-        fontSize="20"
-        fontWeight="800"
-        letterSpacing="-0.5"
-        fill="currentColor"
-      >
-        FULL
-      </text>
-      <text
-        x="44"
-        y="60"
-        fontFamily="var(--font-hanken), system-ui, sans-serif"
-        fontSize="20"
-        fontWeight="800"
-        letterSpacing="-0.5"
-        fill="currentColor"
-      >
-        SPIN
-      </text>
-    </svg>
-  )
+interface LogoSvgProps {
+  className?: string
 }
 
-function LogoIsotype({ className }: { className?: string }) {
+function LogoStacked({ className }: LogoSvgProps) {
   return (
     <svg
-      viewBox="0 0 56 56"
+      viewBox="120 173 263 153"
       role="img"
       aria-hidden="true"
-      className={cn("h-9 w-9", className)}
-      fill="none"
+      className={cn("h-10 w-auto", className)}
+      fill="currentColor"
     >
-      <circle cx="28" cy="28" r="22" stroke="currentColor" strokeWidth="3" />
-      <path
-        d="M10 28c8 12 28 12 36 0M10 28c8-12 28-12 36 0"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
+      <path d="M153.32,243.1h-14.98c-1.12,0-1.98-1-1.8-2.11l11.05-61.23c.14-.89.91-1.54,1.8-1.54h43.99c1.12,0,1.98,1,1.8,2.11l-1.82,11.59c-.14.89-.91,1.54-1.8,1.54h-25.92c-.9,0-1.67.66-1.81,1.55l-.91,5.9c-.17,1.11.69,2.11,1.81,2.11h18.47c1.12,0,1.98,1,1.8,2.11l-1.84,11.54c-.15.94-.96,1.63-1.91,1.63h-19.53c-.9,0-1.66.65-1.8,1.54l-4.79,21.71c-.14.89-.91,1.54-1.8,1.54Z" />
+      <path d="M204.12,178.22h14.41c1.12,0,1.98,1,1.8,2.11l-5.88,37.26c-1.1,6.83,4.2,10.27,9.89,10.27,6.02,0,12.14-3.73,13.19-10.27l5.97-37.83c.14-.89.91-1.54,1.8-1.54h14.46c1.12,0,1.98,1,1.8,2.11l-6.12,38.59c-2.77,17.39-18.87,25.13-33.68,25.13-16.01,0-28.33-8.36-25.66-25.13l6.2-39.17c.14-.89.91-1.54,1.8-1.54Z" />
+      <path d="M307.91,243.1h-45.29c-1.19,0-2.1-1.06-1.91-2.24l9.67-61.1c.14-.89.91-1.54,1.8-1.54h14.98c1.12,0,1.98,1,1.8,2.11l-7.19,45.34c-.19,1.18.72,2.24,1.91,2.24h25.99c1.19,0,2.1,1.06,1.91,2.24l-1.78,11.32c-.15.94-.96,1.64-1.91,1.64Z" />
+      <path d="M362.95,243.1h-45.29c-1.19,0-2.1-1.06-1.91-2.24l9.67-61.1c.14-.89.91-1.54,1.8-1.54h14.98c1.12,0,1.98,1,1.8,2.11l-7.19,45.34c-.19,1.18.72,2.24,1.91,2.24h25.99c1.19,0,2.1,1.06,1.91,2.24l-1.78,11.32c-.15.94-.96,1.64-1.91,1.64Z" />
+      <path d="M184.91,259.41l-3.8,12.77c-.35,1.19-1.72,1.73-2.81,1.14-4.02-2.18-10.36-4.25-17.23-4.53-5.53-.22-10.2.53-10.38,4.92-.1,2.39,2.61,3.15,5.56,4.22l9.88,3.54c9.59,3.38,15.16,8.6,14.81,17.31-.58,14.19-13.68,23.74-32.51,22.98-11.41-.46-19.97-3.55-24.6-5.96-.78-.4-1.14-1.31-.87-2.14l2.75-13.65c.34-1.08,1.58-1.59,2.57-1.04,4.16,2.3,13.05,5.79,22.07,6.16,5.23.21,9.37-.92,9.51-4.5.07-1.74-1.22-3.09-4.62-4.23l-9.65-3.18c-7.53-2.45-15.57-7.32-15.13-18.07.59-14.64,14.42-23.41,32.9-22.66,8.97.36,15.79,2.27,20.55,4.66.84.42,1.25,1.39.98,2.29Z" />
+      <path d="M207.48,304.28l-2.37,14.93c-.15.94-.96,1.63-1.91,1.63h-15.56c-1.19,0-2.1-1.06-1.91-2.24l10.1-63.81c.15-.94.96-1.63,1.91-1.63h31.89c14.7,0,22.33,9.02,22.33,20.74,0,15.25-11.62,28.76-30.16,28.76h-12.4c-.95,0-1.76.69-1.91,1.63ZM212.71,271.18l-2.03,12.87c-.19,1.18.72,2.24,1.91,2.24h8.45c6.48,0,10.87-3.49,10.87-9.92,0-4.69-2.99-6.83-8.22-6.83h-9.06c-.95,0-1.77.69-1.91,1.64Z" />
+      <path d="M269.63,320.84h-15.56c-1.19,0-2.1-1.06-1.91-2.24l10.1-63.81c.15-.94.96-1.63,1.91-1.63h15.57c1.19,0,2.1,1.06,1.91,2.24l-10.1,63.81c-.15.94-.96,1.63-1.91,1.63Z" />
+      <path d="M302.41,320.84h-15.02c-1.19,0-2.1-1.06-1.91-2.24l10.1-63.81c.15-.94.96-1.63,1.91-1.63h13.14c.66,0,1.27.33,1.63.89l21.14,32.78c.9,1.39,4.19,1.73,4.84-.69l4.98-31.34c.15-.94.96-1.63,1.91-1.63h15.18c1.11,0,1.95.99,1.78,2.09l-11.69,64.08c-.14.88-.89,1.52-1.78,1.52h-12.63c-.65,0-1.25-.32-1.61-.86l-21.65-32.28c-.98-1.46-3.25-.96-3.52.77l-4.89,30.73c-.15.94-.96,1.63-1.91,1.63Z" />
+      <path d="M365.77,178.22c6.1,0,11.34,4.68,11.34,10.77s-4.97,10.82-11.34,10.82-11.19-4.41-11.19-10.82c.02-6.22,5.01-10.77,11.19-10.77ZM365.77,197.05c4.74,0,8.58-3.22,8.58-8.06s-3.93-8.1-8.58-8.1-8.39,3.36-8.39,8.1,3.67,8.06,8.39,8.06ZM363.89,194.44h-2.86v-11.02h5.22c2.38,0,4.22,1.61,4.22,3.95,0,1.42-.81,2.71-1.98,3.4l2.82,3.67h-3.4l-2.36-3.13h-1.65v3.13ZM363.89,185.88v2.99h1.96c1.02,0,1.65-.67,1.65-1.5,0-.9-.67-1.48-1.65-1.48h-1.96Z" />
     </svg>
   )
 }
@@ -121,42 +88,44 @@ export default function Logo({
   className,
   label = "Full Spin",
 }: LogoProps) {
+  const wrapper = cn("inline-flex items-center", colorClass(color), className)
+
   if (variant === "full") {
     return (
-      <span className={cn("inline-flex items-center", colorClass(color), className)} aria-label={label}>
+      <span className={wrapper} aria-label={label}>
         <LogoFull />
       </span>
     )
   }
   if (variant === "stacked") {
     return (
-      <span className={cn("inline-flex items-center", colorClass(color), className)} aria-label={label}>
+      <span className={wrapper} aria-label={label}>
         <LogoStacked />
       </span>
     )
   }
   if (variant === "isotype") {
+    // Designer hasn't shipped a separate isotype yet; render the stacked
+    // mark scaled down so it can act as an icon-only fallback.
     return (
-      <span className={cn("inline-flex items-center", colorClass(color), className)} aria-label={label}>
-        <LogoIsotype />
+      <span className={wrapper} aria-label={label}>
+        <LogoStacked className="h-9 w-auto" />
       </span>
     )
   }
 
-  // Responsive: isotype on mobile, stacked on md, full on lg+
+  // Responsive: stacked under md, full on md+ (the stacked logo is the
+  // best icon-like fallback we have until an isotype lands).
   return (
-    <span className={cn("inline-flex items-center", colorClass(color), className)} aria-label={label}>
+    <span className={wrapper} aria-label={label}>
       <span className="md:hidden">
-        <LogoIsotype />
+        <LogoStacked className="h-9 w-auto" />
       </span>
-      <span className="hidden md:inline-flex lg:hidden">
-        <LogoStacked />
-      </span>
-      <span className="hidden lg:inline-flex">
+      <span className="hidden md:inline-flex">
         <LogoFull />
       </span>
     </span>
   )
 }
 
-export { LogoFull, LogoStacked, LogoIsotype }
+export { LogoFull, LogoStacked }
