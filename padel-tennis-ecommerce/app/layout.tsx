@@ -41,11 +41,14 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    // The SVG favicon comes from app/icon.svg via Next's file-system
-    // convention (Next emits <link rel="icon" href="/icon.svg" />
-    // automatically). We only need to declare the apple-touch-icon
-    // here, which still uses the legacy raster until a 180x180 PNG
-    // export of the new mark is available.
+    // app/icon.svg is auto-served by Next's file convention at /icon.svg,
+    // but declaring it here too forces Next to emit the matching
+    // <link rel="icon"> tag — when metadata.icons exists with any field,
+    // the auto-emit for unspecified fields is suppressed.
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/fullspin-logo.png', type: 'image/png' }, // legacy fallback
+    ],
     apple: '/fullspin-logo.png',
   },
   manifest: "/manifest.json",
