@@ -13,6 +13,9 @@ const config: Config = {
   		screens: {
   			'xs': '475px',
   		},
+  		fontFamily: {
+  			sans: ['var(--font-hanken)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -47,6 +50,22 @@ const config: Config = {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
+  			brand: {
+  				black: 'hsl(var(--brand-black))',
+  				orange: 'hsl(var(--brand-orange))',
+  				cream: 'hsl(var(--brand-cream))',
+  				neon: 'hsl(var(--brand-neon))',
+  				'blue-dark': 'hsl(var(--brand-blue-dark))',
+  				'blue-light': 'hsl(var(--brand-blue-light))'
+  			},
+  			status: {
+  				'error-fg': 'hsl(var(--status-error-fg))',
+  				'error-bg': 'hsl(var(--status-error-bg))',
+  				'success-fg': 'hsl(var(--status-success-fg))',
+  				'success-bg': 'hsl(var(--status-success-bg))',
+  				info: 'hsl(var(--status-info))',
+  				warning: 'hsl(var(--status-warning))'
+  			},
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
