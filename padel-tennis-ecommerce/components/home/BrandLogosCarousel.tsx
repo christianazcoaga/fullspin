@@ -1,3 +1,7 @@
+"use client"
+
+import { useEffect, useState } from "react"
+
 import OptimizedImage from "@/components/OptimizedImage"
 import {
   Carousel,
@@ -5,6 +9,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel"
 
 type BrandLogo = {
@@ -44,11 +49,46 @@ const SLIDES: LogoSlide[] = [
   },
 ]
 
+const AUTOPLAY_INTERVAL_MS = 4000
+
 export default function BrandLogosCarousel() {
+  const [api, setApi] = useState<CarouselApi>()
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (!api) return
+    if (paused) return
+
+    // Honour reduced-motion: do not auto-advance when the user opted out.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return
+    }
+
+    const id = window.setInterval(() => {
+      api.scrollNext()
+    }, AUTOPLAY_INTERVAL_MS)
+
+    return () => window.clearInterval(id)
+  }, [api, paused])
+
   return (
-    <section className="bg-white py-16" aria-label="Marcas que vendemos">
+    <section
+      className="bg-white py-16"
+      aria-label="Marcas que vendemos"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Carousel opts={{ align: "center", loop: true }} className="w-full">
+        <Carousel
+          opts={{ align: "center", loop: true }}
+          setApi={setApi}
+          className="w-full"
+        >
           <CarouselContent>
             {SLIDES.map((slide) => (
               <CarouselItem key={slide.title}>
