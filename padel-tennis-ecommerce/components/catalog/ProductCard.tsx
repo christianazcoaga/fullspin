@@ -42,7 +42,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       <Link
         href={productHref}
         aria-label={`Ver detalles de ${product.name}`}
-        className="relative block aspect-square w-full overflow-hidden bg-white"
+        className="focus-ring relative block aspect-square w-full overflow-hidden bg-white"
       >
         <Image
           src={product.image || "/placeholder.svg"}
@@ -60,7 +60,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
         <Link
           href={productHref}
-          className="text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
+          className="focus-ring text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
         >
           {product.name}
         </Link>

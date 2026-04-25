@@ -18,7 +18,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label="Ir al inicio"
-          className="flex items-center transition-opacity duration-200 hover:opacity-80"
+          className="focus-ring flex items-center transition-opacity duration-200 hover:opacity-80"
         >
           <Logo variant="responsive" color="dark" />
         </Link>
@@ -39,7 +39,7 @@ export default function Header() {
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-200",
+                  "focus-ring relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-200",
                   isActive
                     ? "text-brand-blue-dark"
                     : "text-brand-black/80 hover:text-brand-black"
