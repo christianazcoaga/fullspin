@@ -41,12 +41,11 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    // SVG favicon (stacked blue mark) — modern browsers render this
-    // crisp at any tab size. Fallback PNG kept for legacy clients.
-    icon: [
-      { url: '/images/LOGOS/FullSpin-Web-02.svg', type: 'image/svg+xml' },
-      { url: '/fullspin-logo.png', type: 'image/png' },
-    ],
+    // The SVG favicon comes from app/icon.svg via Next's file-system
+    // convention (Next emits <link rel="icon" href="/icon.svg" />
+    // automatically). We only need to declare the apple-touch-icon
+    // here, which still uses the legacy raster until a 180x180 PNG
+    // export of the new mark is available.
     apple: '/fullspin-logo.png',
   },
   manifest: "/manifest.json",
