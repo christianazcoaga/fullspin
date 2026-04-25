@@ -30,7 +30,16 @@ Bitácora de decisiones, pendientes y bloqueos durante el rediseño guiado por `
   - [x] `components/catalog/ProductCard.tsx`, `CategoryFilters.tsx`, `CategoryHero.tsx`, `CategoryPage.tsx`.
   - [x] Las 4 páginas (`padel`, `tenis`, `tenis-mesa`, `ofertas`) ahora son one-liners de 5 líneas (server components).
   - [x] `ProductOfferSection` reescrito flat sin variant `"blue"` ni gradientes.
-- **Fase 5 — PDP `/producto/[id]`**: pendiente.
+- **Fase 5 — PDP `/producto/[id]`**: completada.
+  - [x] `lib/products.server.ts` — `getProductById`, `getRelatedProducts`, `getProductIdsForSitemap`.
+  - [x] `app/producto/[id]/page.tsx` — server component con `generateMetadata` (title/description/canonical/OG/Twitter) + JSON-LD `Product`+`Offer` (`priceCurrency: "ARS"`, availability dinámica). ISR `revalidate=3600`.
+  - [x] `not-found.tsx` y `loading.tsx` con tokens de marca.
+  - [x] `components/catalog/ProductBrandLogo.tsx` reusable (logo o fallback de texto).
+  - [x] `components/catalog/RelatedProducts.tsx` (4 ProductCards de la misma categoría).
+  - [x] Decisión: clicks navegan al PDP (no quick-view modal). `ProductQuickView` queda como helper opcional sin callers.
+  - [x] `next-sitemap.config.js` enumera `/producto/[id]` via Supabase REST + excluye `/admin` y `/login` del sitemap/robots.
+  - **Auditado contra DB live (2026-04-25, 177 productos)**: subcategorías y marcas reales reflejadas en `lib/catalog.ts`.
+- **Fase 6 — Polish**: pendiente.
 - **Fase 6 — Polish**: pendiente.
 
 ## Decisiones tomadas
