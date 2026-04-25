@@ -88,19 +88,23 @@ export default function Logo({
   className,
   label = "Full Spin",
 }: LogoProps) {
-  const wrapper = cn("inline-flex items-center", colorClass(color), className)
+  // The wrapper carries colour + a11y. Sizing classes from the caller
+  // are forwarded to the inner SVG so they actually drive the rendered
+  // mark size (the wrapper's height does not propagate to the child
+  // <svg>, which has its own h-N defaults).
+  const wrapperClass = cn("inline-flex items-center", colorClass(color))
 
   if (variant === "full") {
     return (
-      <span className={wrapper} aria-label={label}>
-        <LogoFull />
+      <span className={wrapperClass} aria-label={label}>
+        <LogoFull className={className} />
       </span>
     )
   }
   if (variant === "stacked") {
     return (
-      <span className={wrapper} aria-label={label}>
-        <LogoStacked />
+      <span className={wrapperClass} aria-label={label}>
+        <LogoStacked className={className} />
       </span>
     )
   }
@@ -108,8 +112,8 @@ export default function Logo({
     // Designer hasn't shipped a separate isotype yet; render the stacked
     // mark scaled down so it can act as an icon-only fallback.
     return (
-      <span className={wrapper} aria-label={label}>
-        <LogoStacked className="h-9 w-auto" />
+      <span className={wrapperClass} aria-label={label}>
+        <LogoStacked className={cn("h-9 w-auto", className)} />
       </span>
     )
   }
@@ -117,12 +121,12 @@ export default function Logo({
   // Responsive: stacked under md, full on md+ (the stacked logo is the
   // best icon-like fallback we have until an isotype lands).
   return (
-    <span className={wrapper} aria-label={label}>
+    <span className={wrapperClass} aria-label={label}>
       <span className="md:hidden">
-        <LogoStacked className="h-9 w-auto" />
+        <LogoStacked className={cn("h-9 w-auto", className)} />
       </span>
       <span className="hidden md:inline-flex">
-        <LogoFull />
+        <LogoFull className={className} />
       </span>
     </span>
   )
