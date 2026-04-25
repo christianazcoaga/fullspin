@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import type { gsap as gsapType } from "gsap"
 
 import { gsap, prefersReducedMotion } from "@/lib/gsap"
 
@@ -25,7 +24,7 @@ import { gsap, prefersReducedMotion } from "@/lib/gsap"
  *   their natural rendered state).
  */
 export function useScrubReveal<T extends HTMLElement = HTMLElement>(
-  build: (scope: T, tl: gsapType.core.Timeline) => void
+  build: (scope: T, tl: gsap.core.Timeline) => void
 ) {
   const ref = useRef<T>(null)
 
