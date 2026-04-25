@@ -1,5 +1,4 @@
-"use client";
-
+import type { Metadata } from "next"
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -16,6 +15,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "Sobre nosotros | FullSpin",
+  description:
+    "Conocé Full Spin: equipamiento deportivo de calidad para padel, tenis y tenis de mesa, con asesoramiento experto y envíos a toda Argentina.",
+  alternates: { canonical: "https://www.fullspinarg.com/sobre-nosotros" },
+}
 
 export default function SobreNosotrosPage() {
   return (
@@ -287,19 +293,17 @@ export default function SobreNosotrosPage() {
             Estamos aquí para ayudarte. Contáctanos por WhatsApp y te
             asesoraremos en todo lo que necesites.
           </p>
-          <Button
-            onClick={() => {
-              const message =
-                "Hola! Me gustaría obtener más información sobre sus productos.";
-              const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(
-                message
-              )}`;
-              window.open(whatsappUrl, "_blank");
-            }}
-            className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
-          >
-            <MessageCircle className="mr-2 h-5 w-5" />
-            Contactar por WhatsApp
+          <Button asChild size="lg" variant="neon">
+            <a
+              href={`https://wa.me/543705103672?text=${encodeURIComponent(
+                "Hola! Me gustaría obtener más información sobre sus productos."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MessageCircle className="h-5 w-5" />
+              Contactar por WhatsApp
+            </a>
           </Button>
         </div>
       </section>
