@@ -3,6 +3,7 @@ import { Hanken_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 import { Analytics } from "@vercel/analytics/next"
 import Preloader from "@/components/Preloader"
+import SiteChrome from "@/components/layout/SiteChrome"
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ['latin'],
@@ -55,7 +56,7 @@ export default function RootLayout({
     <html lang="es" className={`${hankenGrotesk.variable} ${inter.variable}`}>
       <body className="font-sans">
         <Preloader />
-        {children}
+        <SiteChrome>{children}</SiteChrome>
         <Analytics />
       </body>
     </html>
