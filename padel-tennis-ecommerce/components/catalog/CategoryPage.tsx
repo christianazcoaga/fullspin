@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import CategoryFilters from "@/components/catalog/CategoryFilters"
 import CategoryHero from "@/components/catalog/CategoryHero"
 import ProductCard from "@/components/catalog/ProductCard"
-import ProductQuickView from "@/components/home/ProductQuickView"
 import { Button } from "@/components/ui/button"
 import {
   CATEGORIES,
@@ -44,7 +43,6 @@ export default function CategoryPage({ category }: CategoryPageProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
-  const [quickView, setQuickView] = useState<Product | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -121,11 +119,7 @@ export default function CategoryPage({ category }: CategoryPageProps) {
         ) : (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {visibleProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onQuickView={setQuickView}
-              />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}
@@ -142,12 +136,6 @@ export default function CategoryPage({ category }: CategoryPageProps) {
           </div>
         )}
       </main>
-
-      <ProductQuickView
-        product={quickView}
-        open={quickView !== null}
-        onClose={() => setQuickView(null)}
-      />
     </div>
   )
 }

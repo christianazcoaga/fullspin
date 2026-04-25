@@ -1,20 +1,14 @@
-"use client"
-
-import Image from "next/image"
+import Link from "next/link"
 import { MessageCircle } from "lucide-react"
 
+import ProductBrandLogo from "@/components/catalog/ProductBrandLogo"
 import { Button } from "@/components/ui/button"
-import {
-  BRAND_LOGOS,
-  formatPrice,
-  subcategoryLabel,
-} from "@/lib/catalog"
+import { formatPrice, subcategoryLabel } from "@/lib/catalog"
 import type { Product } from "@/lib/products"
 import { cn } from "@/lib/utils"
 
 interface ProductCardProps {
   product: Product
-  onQuickView?: (product: Product) => void
   className?: string
 }
 
@@ -23,16 +17,13 @@ function buildWhatsAppHref(product: Product) {
   return `https://wa.me/543705103672?text=${encodeURIComponent(message)}`
 }
 
-export default function ProductCard({
-  product,
-  onQuickView,
-  className,
-}: ProductCardProps) {
-  const brand = product.marca && BRAND_LOGOS[product.marca]
+export default function ProductCard({ product, className }: ProductCardProps) {
   const finalPrice =
     product.in_offer && product.offer_percent > 0
       ? Math.round(product.price * (1 - product.offer_percent / 100))
       : product.price
+
+  const productHref = `/producto/${product.id}`
 
   return (
     <article
@@ -47,11 +38,10 @@ export default function ProductCard({
         </span>
       )}
 
-      <button
-        type="button"
-        onClick={() => onQuickView?.(product)}
+      <Link
+        href={productHref}
         aria-label={`Ver detalles de ${product.name}`}
-        className="relative aspect-square w-full overflow-hidden bg-white"
+        className="relative block aspect-square w-full overflow-hidden bg-white"
       >
         <img
           src={product.image || "/placeholder.svg"}
@@ -59,32 +49,19 @@ export default function ProductCard({
           className="h-full w-full object-contain p-6 transition-transform duration-300 group-hover:scale-[1.03]"
           loading="lazy"
         />
-      </button>
+      </Link>
 
       <div className="flex flex-1 flex-col gap-3 border-t border-brand-black/5 p-4">
         <div className="flex h-6 items-center">
-          {brand ? (
-            <Image
-              src={brand.src}
-              alt={brand.alt}
-              width={brand.width}
-              height={brand.height}
-              className="h-5 w-auto object-contain"
-            />
-          ) : product.marca ? (
-            <span className="text-xs font-semibold uppercase tracking-wide text-brand-black/60">
-              {product.marca}
-            </span>
-          ) : null}
+          <ProductBrandLogo marca={product.marca} maxHeight={20} />
         </div>
 
-        <button
-          type="button"
-          onClick={() => onQuickView?.(product)}
+        <Link
+          href={productHref}
           className="text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
         >
           {product.name}
-        </button>
+        </Link>
 
         <p className="text-xs text-brand-black/55">
           {subcategoryLabel(product.subcategory)}
@@ -111,7 +88,6 @@ export default function ProductCard({
               href={buildWhatsAppHref(product)}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
             >
               <MessageCircle className="h-4 w-4" />
               Consultar

@@ -80,9 +80,7 @@ export default function HeaderSearch({ layout = "inline", className }: HeaderSea
   }
 
   function handleResultClick(p: Product) {
-    // PDP route is added in Phase 5 — until then, route to /buscar with the
-    // exact name so the user lands on the same product in the catalog.
-    router.push(`/buscar?q=${encodeURIComponent(p.name)}`)
+    router.push(`/producto/${p.id}`)
     setOpen(false)
     setQuery("")
   }

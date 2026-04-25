@@ -1,5 +1,3 @@
-"use client"
-
 import Link from "next/link"
 import { ArrowRight, MessageCircle } from "lucide-react"
 
@@ -16,7 +14,6 @@ interface ProductOfferSectionProps {
   categoryName: string
   isLoading?: boolean
   isComingSoon?: boolean
-  onProductClick?: (product: Product) => void
 }
 
 function buildWhatsAppHref(product: Product, isComingSoon: boolean) {
@@ -34,7 +31,6 @@ export function ProductOfferSection({
   categoryName,
   isLoading = false,
   isComingSoon = false,
-  onProductClick,
 }: ProductOfferSectionProps) {
   return (
     <section className="bg-brand-cream py-16 md:py-20">
@@ -57,7 +53,6 @@ export function ProductOfferSection({
                 key={product.id}
                 product={product}
                 isComingSoon={isComingSoon}
-                onProductClick={onProductClick}
               />
             ))
           ) : (
@@ -83,24 +78,23 @@ export function ProductOfferSection({
 function OfferCard({
   product,
   isComingSoon,
-  onProductClick,
 }: {
   product: Product
   isComingSoon: boolean
-  onProductClick?: (product: Product) => void
 }) {
   const finalPrice =
     product.offer_percent > 0
       ? Math.round(product.price * (1 - product.offer_percent / 100))
       : product.price
 
+  const productHref = `/producto/${product.id}`
+
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-brand-black/10 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-      <button
-        type="button"
-        onClick={() => onProductClick?.(product)}
-        className="relative aspect-square w-full overflow-hidden bg-white"
+      <Link
+        href={productHref}
         aria-label={`Ver detalles de ${product.name}`}
+        className="relative block aspect-square w-full overflow-hidden bg-white"
       >
         {!isComingSoon && product.offer_percent > 0 && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black shadow-sm">
@@ -114,16 +108,15 @@ function OfferCard({
           height={320}
           className="h-full w-full object-contain p-8 transition-transform duration-300 group-hover:scale-[1.03]"
         />
-      </button>
+      </Link>
 
       <div className="flex flex-1 flex-col gap-3 border-t border-brand-black/5 p-4">
-        <button
-          type="button"
-          onClick={() => onProductClick?.(product)}
+        <Link
+          href={productHref}
           className="text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
         >
           {product.name}
-        </button>
+        </Link>
         {product.marca && (
           <p className="text-xs text-brand-black/55">{product.marca}</p>
         )}
@@ -153,7 +146,6 @@ function OfferCard({
               href={buildWhatsAppHref(product, isComingSoon)}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
             >
               <MessageCircle className="h-4 w-4" />
               {isComingSoon ? "Consultar disponibilidad" : "Consultar stock"}

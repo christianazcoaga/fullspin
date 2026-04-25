@@ -1,7 +1,3 @@
-"use client"
-
-import { useState } from "react"
-
 import BrandLogosCarousel from "@/components/home/BrandLogosCarousel"
 import FaqSection from "@/components/home/FaqSection"
 import FeaturedCategories from "@/components/home/FeaturedCategories"
@@ -10,7 +6,6 @@ import HomeFinalCta from "@/components/home/HomeFinalCta"
 import HomeHero from "@/components/home/HomeHero"
 import NewsletterCTA from "@/components/home/NewsletterCTA"
 import { ProductOfferSection } from "@/components/home/ProductOfferSection"
-import ProductQuickView from "@/components/home/ProductQuickView"
 import PromoCarousel from "@/components/home/PromoCarousel"
 import TrustBlock from "@/components/home/TrustBlock"
 import type { Product } from "@/lib/products"
@@ -28,11 +23,6 @@ export default function HomePageClient({
   initialTenisOffers = [],
   initialComingSoonProducts = [],
 }: HomePageClientProps) {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-
-  const openQuickView = (product: Product) => setSelectedProduct(product)
-  const closeQuickView = () => setSelectedProduct(null)
-
   return (
     <div className="bg-brand-cream">
       <HomeHero />
@@ -46,7 +36,6 @@ export default function HomePageClient({
           categoryLink="/padel"
           categoryName="Productos"
           isComingSoon
-          onProductClick={openQuickView}
         />
       )}
 
@@ -56,7 +45,6 @@ export default function HomePageClient({
         products={initialPadelOffers}
         categoryLink="/padel"
         categoryName="Padel"
-        onProductClick={openQuickView}
       />
 
       <ProductOfferSection
@@ -65,7 +53,6 @@ export default function HomePageClient({
         products={initialTenisMesaOffers}
         categoryLink="/tenis-mesa"
         categoryName="Tenis de Mesa"
-        onProductClick={openQuickView}
       />
 
       <ProductOfferSection
@@ -74,7 +61,6 @@ export default function HomePageClient({
         products={initialTenisOffers}
         categoryLink="/tenis"
         categoryName="Tenis"
-        onProductClick={openQuickView}
       />
 
       <BrandLogosCarousel />
@@ -85,12 +71,6 @@ export default function HomePageClient({
       <HomeFinalCta />
 
       <FloatingActions />
-
-      <ProductQuickView
-        product={selectedProduct}
-        open={selectedProduct !== null}
-        onClose={closeQuickView}
-      />
     </div>
   )
 }
