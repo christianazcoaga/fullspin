@@ -1,22 +1,29 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import OptimizedImage from "@/components/OptimizedImage";
-import type { Product } from "@/lib/products";
+import Link from "next/link"
+import { ArrowRight, MessageCircle } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import OptimizedImage from "@/components/OptimizedImage"
+import { formatPrice } from "@/lib/catalog"
+import type { Product } from "@/lib/products"
 
 interface ProductOfferSectionProps {
-  title: string;
-  subtitle: string;
-  products: Product[];
-  categoryLink: string;
-  categoryName: string;
-  isLoading?: boolean;
-  isComingSoon?: boolean;
-  onProductClick?: (product: Product) => void;
-  variant?: "white" | "blue";
+  title: string
+  subtitle: string
+  products: Product[]
+  categoryLink: string
+  categoryName: string
+  isLoading?: boolean
+  isComingSoon?: boolean
+  onProductClick?: (product: Product) => void
+}
+
+function buildWhatsAppHref(product: Product, isComingSoon: boolean) {
+  const message = isComingSoon
+    ? `Hola! Quiero consultar sobre la ${product.name} de ${product.marca} que estará disponible próximamente.`
+    : `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`
+  return `https://wa.me/543705103672?text=${encodeURIComponent(message)}`
 }
 
 export function ProductOfferSection({
@@ -28,113 +35,153 @@ export function ProductOfferSection({
   isLoading = false,
   isComingSoon = false,
   onProductClick,
-  variant = "white",
 }: ProductOfferSectionProps) {
   return (
-    <section className={`py-12 md:py-20 ${variant === "blue" ? "bg-blue-600" : "bg-white"}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-16">
-          <h2 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 ${variant === "blue" ? "text-white" : "text-gray-900"}`}>
+    <section className="bg-brand-cream py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 text-center">
+          <h2 className="text-balance text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight tracking-tight text-brand-black">
             {title}
           </h2>
-          <p className={`text-lg md:text-xl max-w-3xl mx-auto ${variant === "blue" ? "text-blue-100" : "text-gray-600"}`}>
+          <p className="mx-auto mt-3 max-w-2xl text-base text-brand-black/70 sm:text-lg">
             {subtitle}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {isLoading ? (
-            // Loading skeleton
-            Array.from({ length: 4 }).map((_, index) => (
-              <Card key={index} className="group hover-lift card-modern border-0 overflow-hidden animate-pulse">
-                <CardContent className="p-0">
-                  <div className="relative h-64 bg-gray-200 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
-                        <div className="h-4 bg-gray-300 rounded w-24 mx-auto mb-2"></div>
-                        <div className="h-3 bg-gray-300 rounded w-16 mx-auto"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                    <div className="h-6 bg-gray-200 rounded mb-4"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
+            <SkeletonCards />
           ) : products.length > 0 ? (
             products.map((product) => (
-              <Card 
-                key={product.id} 
-                className="group hover-lift card-modern border-0 overflow-hidden cursor-pointer"
-                onClick={() => onProductClick?.(product)}
-              >
-                <CardContent className="p-0">
-                  <div className="relative h-64 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden">
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-4">
-                        <OptimizedImage
-                          src={product.image}
-                          alt={product.name}
-                          width={80}
-                          height={80}
-                          className="object-contain w-20 h-20"
-                        />
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-800 text-center group-hover:text-blue-600 transition-colors px-4 w-full line-clamp-2">{product.name}</h3>
-                      <p className="text-sm text-gray-600 text-center">{product.marca}</p>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    {isComingSoon ? (
-                      <div className="mb-4 text-center">
-                        <div className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-semibold text-lg">
-                          Proximamente
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-bold text-gray-900">${Math.round(product.price * (1 - product.offer_percent / 100)).toLocaleString().replace(/,/g, ".")}</span>
-                        <span className="text-lg text-gray-500 line-through">
-                          ${product.price.toLocaleString().replace(/,/g, ".")}
-                        </span>
-                      </div>
-                    )}
-                    <Button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const message = isComingSoon 
-                          ? `Hola! Quiero consultar sobre la ${product.name} de ${product.marca} que estará disponible próximamente.`
-                          : `Hola! Me interesa la ${product.name} de ${product.marca}. ¿Tienen stock disponible?`;
-                        const whatsappUrl = `https://wa.me/543705103672?text=${encodeURIComponent(message)}`;
-                        window.open(whatsappUrl, "_blank");
-                      }}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 group"
-                    >
-                      {isComingSoon ? "Consultar Disponibilidad" : "Consultar Stock"}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <OfferCard
+                key={product.id}
+                product={product}
+                isComingSoon={isComingSoon}
+                onProductClick={onProductClick}
+              />
             ))
           ) : (
-            // No products found
-            <div className="col-span-full text-center py-12">
-              <p className={`text-lg ${variant === "blue" ? "text-blue-100" : "text-gray-600"}`}>No hay ofertas de {categoryName.toLowerCase()} disponibles en este momento.</p>
-              <Link href={categoryLink} className="inline-block mt-4">
-                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl">
-                  Ver Productos de {categoryName}
-                </Button>
-              </Link>
+            <div className="col-span-full py-10 text-center">
+              <p className="mb-4 text-base text-brand-black/70">
+                No hay ofertas de {categoryName.toLowerCase()} disponibles en este
+                momento.
+              </p>
+              <Button asChild variant="black">
+                <Link href={categoryLink}>
+                  Ver productos de {categoryName}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           )}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
+function OfferCard({
+  product,
+  isComingSoon,
+  onProductClick,
+}: {
+  product: Product
+  isComingSoon: boolean
+  onProductClick?: (product: Product) => void
+}) {
+  const finalPrice =
+    product.offer_percent > 0
+      ? Math.round(product.price * (1 - product.offer_percent / 100))
+      : product.price
+
+  return (
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-brand-black/10 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+      <button
+        type="button"
+        onClick={() => onProductClick?.(product)}
+        className="relative aspect-square w-full overflow-hidden bg-white"
+        aria-label={`Ver detalles de ${product.name}`}
+      >
+        {!isComingSoon && product.offer_percent > 0 && (
+          <span className="absolute left-3 top-3 z-10 rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black shadow-sm">
+            -{product.offer_percent}%
+          </span>
+        )}
+        <OptimizedImage
+          src={product.image}
+          alt={product.name}
+          width={320}
+          height={320}
+          className="h-full w-full object-contain p-8 transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      </button>
+
+      <div className="flex flex-1 flex-col gap-3 border-t border-brand-black/5 p-4">
+        <button
+          type="button"
+          onClick={() => onProductClick?.(product)}
+          className="text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
+        >
+          {product.name}
+        </button>
+        {product.marca && (
+          <p className="text-xs text-brand-black/55">{product.marca}</p>
+        )}
+
+        <div className="mt-auto space-y-3">
+          {isComingSoon ? (
+            <span className="inline-flex w-full items-center justify-center rounded-lg bg-brand-blue-light/20 px-3 py-2 text-sm font-semibold text-brand-blue-dark">
+              Próximamente
+            </span>
+          ) : product.offer_percent > 0 ? (
+            <div className="space-y-0.5">
+              <p className="text-xs text-brand-black/40 line-through">
+                {formatPrice(product.price)}
+              </p>
+              <p className="text-lg font-bold text-brand-black">
+                {formatPrice(finalPrice)}
+              </p>
+            </div>
+          ) : (
+            <p className="text-lg font-bold text-brand-black">
+              {formatPrice(product.price)}
+            </p>
+          )}
+
+          <Button asChild variant="neon" size="sm" className="w-full">
+            <a
+              href={buildWhatsAppHref(product, isComingSoon)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <MessageCircle className="h-4 w-4" />
+              {isComingSoon ? "Consultar disponibilidad" : "Consultar stock"}
+            </a>
+          </Button>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function SkeletonCards() {
+  return (
+    <>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="overflow-hidden rounded-xl border border-brand-black/10 bg-white"
+        >
+          <div className="aspect-square animate-pulse bg-brand-black/5" />
+          <div className="space-y-3 p-4">
+            <div className="h-4 w-3/4 animate-pulse rounded bg-brand-black/10" />
+            <div className="h-4 w-1/3 animate-pulse rounded bg-brand-black/10" />
+            <div className="h-6 w-1/2 animate-pulse rounded bg-brand-black/10" />
+            <div className="h-9 w-full animate-pulse rounded-lg bg-brand-black/10" />
+          </div>
+        </div>
+      ))}
+    </>
+  )
+}
