@@ -39,8 +39,13 @@ Bitácora de decisiones, pendientes y bloqueos durante el rediseño guiado por `
   - [x] Decisión: clicks navegan al PDP (no quick-view modal). `ProductQuickView` queda como helper opcional sin callers.
   - [x] `next-sitemap.config.js` enumera `/producto/[id]` via Supabase REST + excluye `/admin` y `/login` del sitemap/robots.
   - **Auditado contra DB live (2026-04-25, 177 productos)**: subcategorías y marcas reales reflejadas en `lib/catalog.ts`.
-- **Fase 6 — Polish**: pendiente.
-- **Fase 6 — Polish**: pendiente.
+- **Fase 6 — Polish**: completada.
+  - [x] Migración `<img>` → `next/image` en PDP, ProductCard, ProductQuickView y HomeHero (con `fill` + `sizes`, `priority` donde aplica).
+  - [x] Metadata por página (home, padel, tenis, tenis-mesa, ofertas, sobre-nosotros) directo en el server component. `/buscar`, `/login`, `/admin` reciben metadata + `noindex` via `layout.tsx` propio.
+  - [x] `app/error.tsx` reescrito con tokens de marca y `app/not-found.tsx` global creado.
+  - [x] `<style jsx global>` duplicados ya estaban removidos en fases previas; los keyframes y reglas viven en `globals.css` con `prefers-reduced-motion`.
+  - [x] Focus rings brand-aligned (`.focus-ring` en globals.css) aplicados a nav links, logo y links de ProductCard. Button/Input ya traen su propio focus-visible.
+  - **Pendiente del dueño**: correr Lighthouse en el deploy y verificar ≥90 en todas las métricas.
 
 ## Decisiones tomadas
 
@@ -55,10 +60,13 @@ Bitácora de decisiones, pendientes y bloqueos durante el rediseño guiado por `
 
 ## TODO / pendientes con el dueño
 
-- [ ] **SVG finales del logo** en 3 versiones (full / stacked / isotype). Mientras tanto, placeholders SVG simples cuando lleguemos a Fase 2.
+- [ ] **SVG finales del logo** en 3 versiones (full / stacked / isotype). Hoy hay placeholders en `components/layout/Logo.tsx`.
+- [ ] **Logos de marca Nox y Nassau** (presentes en DB sin asset). Caen al fallback de texto en cards y PDP.
 - [ ] **Hero / banner images** finales (¿la diseñadora los renueva o reutilizamos `/public/optimized/`?).
-- [ ] **Modal de quick view**: ¿solo PDP o se mantiene el modal como vista rápida opcional? (sugerencia: solo PDP).
-- [ ] **`/admin`**: ¿alineación visual mínima (button/input/card con tokens) o se deja tal cual?
+- [ ] **Auditoría visual de `/sobre-nosotros`**: aún tiene gradientes off-brand y `bg-blue-*` heredados. En Fase 6 solo se removió `"use client"` y la lógica de `window.open` para habilitar `metadata` server-side; el rediseño visual completo de esa página queda fuera del alcance del plan.
+- [ ] **Lighthouse ≥90** en todas las métricas (correr en deploy).
+- [ ] **`/admin`**: ¿alineación visual mínima (button/input/card con tokens) o se deja tal cual? (CLAUDE.md sugiere mínimo).
+- [x] **Modal de quick view**: decidido en Fase 5 — clicks van al PDP. El componente `ProductQuickView.tsx` queda en el repo como helper opcional sin callers.
 
 ## Bloqueos
 
