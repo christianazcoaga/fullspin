@@ -2,35 +2,33 @@
 
 import { useState, useEffect, useRef } from "react"
 import { type Product } from "@/lib/products"
+import type { Brand } from "@/lib/brands"
+import type { CarouselSlide } from "@/lib/home-carousel"
 import { ImageUpload } from "@/components/image-upload"
 import { ProductEditForm } from "@/components/ProductEditForm"
+import { ProductGalleryEditor } from "@/components/ProductGalleryEditor"
 import { ProductCreateForm } from "@/components/ProductCreateForm"
 import { AdminStats } from "@/components/AdminStats"
 import { AdminLoading } from "@/components/AdminLoading"
 import { ConversionRateManager } from "@/components/ConversionRateManager"
+import BrandsManager from "@/components/admin/BrandsManager"
+import CarouselManager from "@/components/admin/CarouselManager"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { 
-  Search, 
-  PlusCircle, 
-  LogOut, 
-  Settings, 
-  BarChart3, 
-  Package, 
-  TrendingUp, 
-  Filter,
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Search,
+  PlusCircle,
+  LogOut,
+  Package,
   Grid3X3,
   List,
   Eye,
   Edit,
-  Trash2,
-  Download,
-  Upload,
   RefreshCw,
-  AlertCircle,
-  CheckCircle,
-  Clock
+  Tag,
+  Images,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -49,9 +47,16 @@ type ViewMode = "grid" | "list"
 interface AdminClientPageProps {
   initialProducts: Product[]
   conversionRate: number
+  initialBrands: Brand[]
+  initialCarouselSlides: CarouselSlide[]
 }
 
-export default function AdminClientPage({ initialProducts, conversionRate }: AdminClientPageProps) {
+export default function AdminClientPage({
+  initialProducts,
+  conversionRate,
+  initialBrands,
+  initialCarouselSlides,
+}: AdminClientPageProps) {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialProducts)
@@ -59,15 +64,12 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
   const [view, setView] = useState<AdminView>({ mode: "list", selectedProduct: null })
   const [viewMode, setViewMode] = useState<ViewMode>("list")
   const [categoryFilter, setCategoryFilter] = useState<string>("all")
-  const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // Referencias para el scroll automático
   const productListRef = useRef<HTMLDivElement>(null)
   const selectedProductRef = useRef<HTMLDivElement>(null)
   const editPanelRef = useRef<HTMLDivElement>(null)
-  const lastScrollTop = useRef(0)
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const animationFrameRef = useRef<number | null>(null)
 
   // When the server component passes new initialProducts, update the state
@@ -121,12 +123,9 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
     }
   }
 
-  // Limpiar timeout y animation frame al desmontar
+  // Cancelar el animation frame pendiente al desmontar.
   useEffect(() => {
     return () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current)
-      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
       }
@@ -218,84 +217,102 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
-        {/* Header */}
-        <div className="mb-4 sm:mb-6">
-          <div className="flex flex-col gap-4 mb-4">
-            <div className="text-center sm:text-left">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
-              <p className="text-sm sm:text-base text-gray-600">Gestiona productos, imágenes y contenido de la tienda</p>
+    <div className="min-h-screen bg-brand-cream">
+      <div className="mx-auto max-w-7xl px-3 py-3 sm:px-4 sm:py-4 lg:px-8">
+        {/* Header — title + actions in a single row on desktop */}
+        <div className="mb-3 space-y-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-brand-black sm:text-2xl">
+                Panel de Administración
+              </h1>
+              <p className="text-xs text-brand-black/60 sm:text-sm">
+                Gestioná productos, imágenes y contenido del catálogo.
+              </p>
             </div>
-            <div className="flex flex-wrap justify-center sm:justify-end gap-2">
-              <Button 
-                onClick={handleRefreshProducts} 
-                variant="outline" 
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={handleRefreshProducts}
+                variant="outline"
                 disabled={isRefreshing}
                 size="sm"
-                className="bg-white/80 backdrop-blur-sm border-0 shadow-sm text-xs sm:text-sm"
               >
-                <RefreshCw className={`h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-                {isRefreshing ? 'Actualizando...' : 'Actualizar'}
+                <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
+                <span className="hidden sm:inline">
+                  {isRefreshing ? "Actualizando..." : "Actualizar"}
+                </span>
               </Button>
-              <Button onClick={handleShowCreateForm} size="sm" className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm">
-                <PlusCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                Nuevo Producto
+              <Button onClick={handleShowCreateForm} size="sm" variant="black">
+                <PlusCircle className="h-3.5 w-3.5" />
+                Nuevo
               </Button>
               <Link href="/">
-                <Button variant="outline" size="sm" className="text-xs sm:text-sm">
-                  <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                  Ver Tienda
+                <Button variant="outline" size="sm">
+                  <Eye className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Tienda</span>
                 </Button>
               </Link>
-              <Button variant="destructive" onClick={handleLogout} size="sm" className="text-xs sm:text-sm">
-                <LogOut className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                Cerrar Sesión
+              <Button variant="destructive" onClick={handleLogout} size="sm">
+                <LogOut className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Salir</span>
               </Button>
             </div>
           </div>
 
-          {/* Conversion Rate Manager */}
-          <div className="mb-4">
-            <ConversionRateManager 
-              initialRate={conversionRate} 
-              productCount={products.length}
-            />
-          </div>
+          <ConversionRateManager
+            initialRate={conversionRate}
+            productCount={products.length}
+          />
 
-          {/* Statistics Dashboard */}
           <AdminStats products={products} />
+        </div>
 
-          {/* Search and Filters */}
-          <div className="flex flex-col gap-3 mb-4">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <Tabs defaultValue="products" className="space-y-3">
+          <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
+            <TabsTrigger value="products" className="gap-2 text-xs sm:text-sm">
+              <Package className="h-3.5 w-3.5" />
+              Productos
+            </TabsTrigger>
+            <TabsTrigger value="brands" className="gap-2 text-xs sm:text-sm">
+              <Tag className="h-3.5 w-3.5" />
+              Marcas
+            </TabsTrigger>
+            <TabsTrigger value="carousel" className="gap-2 text-xs sm:text-sm">
+              <Images className="h-3.5 w-3.5" />
+              Carrusel
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="products" className="space-y-3">
+
+          {/* Search + filter on a single row */}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-black/40" />
               <Input
                 type="text"
-                placeholder="Buscar productos por nombre, marca o categoría..."
+                placeholder="Buscar por nombre, marca o categoría..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-white/80 backdrop-blur-sm border-0 shadow-sm text-sm"
+                className="pl-10 text-sm"
               />
             </div>
-            
             <div className="flex gap-2">
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-white/80 backdrop-blur-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                className="flex-1 rounded-md border border-brand-black/10 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-dark"
               >
                 <option value="all">Todas las categorías</option>
                 <option value="padel">Padel</option>
                 <option value="tenis-mesa">Tenis de Mesa</option>
                 <option value="tenis">Tenis</option>
               </select>
-              
               <Button
                 variant="outline"
                 onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
-                className="bg-white/80 backdrop-blur-sm border-0 shadow-sm"
                 size="sm"
+                aria-label={viewMode === "list" ? "Ver como grid" : "Ver como lista"}
               >
                 {viewMode === "list" ? (
                   <Grid3X3 className="h-4 w-4" />
@@ -305,12 +322,11 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
               </Button>
             </div>
           </div>
-        </div>
 
         {/* Mobile: Stack vertically */}
-        <div className="block lg:hidden space-y-4">
+        <div className="block lg:hidden space-y-3">
           {/* Lista de productos - Mobile */}
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+          <Card className="bg-white border border-brand-black/10">
             <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-lg font-semibold">
@@ -325,7 +341,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
               {isRefreshing ? (
                 <AdminLoading type="list" count={4} />
               ) : viewMode === "list" ? (
-                <div className="space-y-3 max-h-[40vh] overflow-y-auto" ref={productListRef}>
+                <div className="space-y-3 max-h-[60vh] overflow-y-auto" ref={productListRef}>
                   {filteredProducts.map((product) => (
                     <div
                       key={product.id}
@@ -389,7 +405,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-3 max-h-[40vh] overflow-y-auto" ref={productListRef}>
+                <div className="grid grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto" ref={productListRef}>
                   {filteredProducts.map((product) => (
                     <div
                       key={product.id}
@@ -435,7 +451,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
           {/* Panel de edición - Mobile */}
           {view.mode === 'edit' && view.selectedProduct && (
             <div className="space-y-3" ref={editPanelRef}>
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+              <Card className="bg-white border border-brand-black/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg font-semibold flex items-center gap-2">
                     <Edit className="h-5 w-5" />
@@ -460,16 +476,22 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                 product={view.selectedProduct}
                 onImageUpdated={(newImageUrl) => handleImageUpdated(view.selectedProduct!.id, newImageUrl)}
               />
-              
-              <ProductEditForm 
+
+              <ProductGalleryEditor
+                key={view.selectedProduct.id}
+                product={view.selectedProduct}
+              />
+
+              <ProductEditForm
                 product={view.selectedProduct}
                 conversionRate={conversionRate}
+                brands={initialBrands}
               />
             </div>
           )}
-          
+
           {view.mode === 'create' && (
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+            <Card className="bg-white border border-brand-black/10">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
                   <PlusCircle className="h-5 w-5" />
@@ -477,16 +499,17 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <ProductCreateForm 
+                <ProductCreateForm
                   onProductCreated={handleProductCreated}
                   conversionRate={conversionRate}
+                  brands={initialBrands}
                 />
               </CardContent>
             </Card>
           )}
-          
+
           {view.mode === 'list' && (
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+            <Card className="bg-white border border-brand-black/10">
               <CardContent className="p-6 text-center">
                 <Package className="h-12 w-12 text-gray-300 mb-3" />
                 <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -508,7 +531,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
         <div className="hidden lg:grid lg:grid-cols-5 gap-6">
           {/* Lista de productos - Desktop */}
           <div className="lg:col-span-3">
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm h-full">
+            <Card className="bg-white border border-brand-black/10">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-xl font-semibold">
@@ -523,7 +546,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                 {isRefreshing ? (
                   <AdminLoading type="list" count={4} />
                 ) : viewMode === "list" ? (
-                  <div className="space-y-3 max-h-[60vh] overflow-y-auto" ref={productListRef}>
+                  <div className="space-y-3 max-h-[calc(100vh-260px)] overflow-y-auto" ref={productListRef}>
                     {filteredProducts.map((product) => (
                       <div
                         key={product.id}
@@ -587,7 +610,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                     ))}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto" ref={productListRef}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[calc(100vh-260px)] overflow-y-auto" ref={productListRef}>
                     {filteredProducts.map((product) => (
                       <div
                         key={product.id}
@@ -637,7 +660,7 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
           <div className="lg:col-span-2">
             {view.mode === 'edit' && view.selectedProduct && (
               <div className="space-y-3 max-h-[70vh] overflow-y-auto" ref={editPanelRef}>
-                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+                <Card className="bg-white border border-brand-black/10">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg font-semibold flex items-center gap-2">
                       <Edit className="h-5 w-5" />
@@ -662,16 +685,22 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                   product={view.selectedProduct}
                   onImageUpdated={(newImageUrl) => handleImageUpdated(view.selectedProduct!.id, newImageUrl)}
                 />
-                
-                <ProductEditForm 
+
+                <ProductGalleryEditor
+                  key={view.selectedProduct.id}
+                  product={view.selectedProduct}
+                />
+
+                <ProductEditForm
                   product={view.selectedProduct}
                   conversionRate={conversionRate}
+                  brands={initialBrands}
                 />
               </div>
             )}
             
             {view.mode === 'create' && (
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm">
+              <Card className="bg-white border border-brand-black/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg font-semibold flex items-center gap-2">
                     <PlusCircle className="h-5 w-5" />
@@ -679,16 +708,17 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <ProductCreateForm 
+                  <ProductCreateForm
                     onProductCreated={handleProductCreated}
                     conversionRate={conversionRate}
+                    brands={initialBrands}
                   />
                 </CardContent>
               </Card>
             )}
             
             {view.mode === 'list' && (
-              <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-sm h-full">
+              <Card className="bg-white border border-brand-black/10 h-full">
                 <CardContent className="p-6 text-center h-full flex flex-col items-center justify-center">
                   <Package className="h-12 w-12 text-gray-300 mb-3" />
                   <h3 className="text-lg font-semibold text-gray-700 mb-2">
@@ -706,6 +736,16 @@ export default function AdminClientPage({ initialProducts, conversionRate }: Adm
             )}
           </div>
         </div>
+          </TabsContent>
+
+          <TabsContent value="brands">
+            <BrandsManager initial={initialBrands} />
+          </TabsContent>
+
+          <TabsContent value="carousel">
+            <CarouselManager initial={initialCarouselSlides} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

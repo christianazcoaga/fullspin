@@ -1,12 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, MessageCircle } from "lucide-react"
+import { ArrowRight, MessageCircle, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import OptimizedImage from "@/components/OptimizedImage"
 import { gsap } from "@/lib/gsap"
-import { formatPrice } from "@/lib/catalog"
+import {
+  creditTotalPrice,
+  formatPrice,
+  installmentPrice,
+  INSTALLMENT_COUNT,
+} from "@/lib/catalog"
 import type { Product } from "@/lib/products"
 import { useScrubReveal } from "@/hooks/useScrubReveal"
 
@@ -70,32 +75,52 @@ export function ProductOfferSection({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {isLoading ? (
-            <SkeletonCards />
-          ) : products.length > 0 ? (
-            products.map((product) => (
-              <OfferCard
-                key={product.id}
-                product={product}
-                isComingSoon={isComingSoon}
-              />
-            ))
-          ) : (
-            <div className="col-span-full py-10 text-center">
-              <p className="mb-4 text-base text-brand-black/70">
-                No hay ofertas de {categoryName.toLowerCase()} disponibles en este
-                momento.
-              </p>
-              <Button asChild variant="black">
-                <Link href={categoryLink}>
-                  Ver productos de {categoryName}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          )}
-        </div>
+        {isLoading || products.length > 0 ? (
+          // Mobile: horizontal swipe (each card 78% wide so the next one
+          // peeks, snap to start). sm+: standard responsive grid.
+          <div
+            className="
+              -mx-4 flex gap-4 overflow-x-auto px-4 pb-3 snap-x snap-mandatory
+              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+              sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none
+              lg:grid-cols-4
+            "
+          >
+            {isLoading
+              ? Array.from({ length: 4 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-auto"
+                  >
+                    <SkeletonCard />
+                  </div>
+                ))
+              : products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-auto"
+                  >
+                    <OfferCard
+                      product={product}
+                      isComingSoon={isComingSoon}
+                    />
+                  </div>
+                ))}
+          </div>
+        ) : (
+          <div className="py-10 text-center">
+            <p className="mb-4 text-base text-brand-black/70">
+              No hay ofertas de {categoryName.toLowerCase()} disponibles en este
+              momento.
+            </p>
+            <Button asChild variant="black">
+              <Link href={categoryLink}>
+                Ver productos de {categoryName}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   )
@@ -130,16 +155,22 @@ function OfferCard({
             -{product.offer_percent}%
           </span>
         )}
+        {!isComingSoon && (
+          <span className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-brand-blue-dark px-3 py-1.5 text-xs font-semibold text-brand-cream shadow-sm">
+            <Truck className="h-3.5 w-3.5" />
+            Envío gratis
+          </span>
+        )}
         <OptimizedImage
           src={product.image}
           alt={product.name}
           width={320}
           height={320}
-          className="h-full w-full object-contain p-8 transition-transform duration-300 group-hover:scale-[1.03]"
+          className="h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </Link>
 
-      <div className="flex flex-1 flex-col gap-3 border-t border-brand-black/5 p-4">
+      <div className="flex flex-1 flex-col gap-2 border-t border-brand-black/5 p-3">
         <Link
           href={productHref}
           className="text-left text-sm font-semibold leading-snug text-brand-black line-clamp-2 hover:text-brand-blue-dark min-h-[2.5rem]"
@@ -150,24 +181,38 @@ function OfferCard({
           <p className="text-xs text-brand-black/55">{product.marca}</p>
         )}
 
-        <div className="mt-auto space-y-3">
+        <div className="mt-auto space-y-1.5">
           {isComingSoon ? (
             <span className="inline-flex w-full items-center justify-center rounded-lg bg-brand-blue-light/20 px-3 py-2 text-sm font-semibold text-brand-blue-dark">
               Próximamente
             </span>
-          ) : product.offer_percent > 0 ? (
-            <div className="space-y-0.5">
-              <p className="text-xs text-brand-black/40 line-through">
-                {formatPrice(product.price)}
-              </p>
-              <p className="text-lg font-bold text-brand-black">
-                {formatPrice(finalPrice)}
-              </p>
-            </div>
           ) : (
-            <p className="text-lg font-bold text-brand-black">
-              {formatPrice(product.price)}
-            </p>
+            <>
+              {product.offer_percent > 0 && (
+                <p className="text-xs text-brand-black/40 line-through leading-none">
+                  {formatPrice(creditTotalPrice(product.price))}
+                </p>
+              )}
+              <div>
+                <p className="text-xl font-extrabold text-brand-black leading-tight">
+                  {formatPrice(creditTotalPrice(finalPrice))}
+                </p>
+                <p className="text-[11px] text-brand-black/75 leading-tight">
+                  {INSTALLMENT_COUNT} cuotas sin interés de{" "}
+                  <span className="font-bold text-brand-black">
+                    {formatPrice(installmentPrice(finalPrice))}
+                  </span>
+                </p>
+              </div>
+              <div className="rounded-md bg-brand-blue-dark/5 px-2 py-1">
+                <p className="text-sm font-bold text-brand-blue-dark leading-tight">
+                  {formatPrice(finalPrice)}
+                </p>
+                <p className="text-[10px] text-brand-black/60 leading-tight">
+                  con transferencia o efectivo
+                </p>
+              </div>
+            </>
           )}
 
           <Button asChild variant="neon" size="sm" className="w-full">
@@ -183,6 +228,20 @@ function OfferCard({
         </div>
       </div>
     </article>
+  )
+}
+
+function SkeletonCard() {
+  return (
+    <div className="w-full overflow-hidden rounded-xl border border-brand-black/10 bg-white">
+      <div className="aspect-square animate-pulse bg-brand-black/5" />
+      <div className="space-y-3 p-4">
+        <div className="h-4 w-3/4 animate-pulse rounded bg-brand-black/10" />
+        <div className="h-4 w-1/3 animate-pulse rounded bg-brand-black/10" />
+        <div className="h-6 w-1/2 animate-pulse rounded bg-brand-black/10" />
+        <div className="h-9 w-full animate-pulse rounded-lg bg-brand-black/10" />
+      </div>
+    </div>
   )
 }
 

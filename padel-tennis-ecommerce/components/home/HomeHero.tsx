@@ -117,7 +117,7 @@ export default function HomeHero() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-brand-black/55" />
+        <div className="absolute inset-0 bg-brand-black/70" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">

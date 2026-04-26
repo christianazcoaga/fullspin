@@ -3,6 +3,8 @@ import AdminClientPage from "./AdminClientPage"
 import { Suspense } from "react"
 import { Metadata } from "next"
 import { getConversionRate } from "@/lib/settings.server"
+import { getAllBrands } from "@/lib/brands.server"
+import { getCarouselSlides } from "@/lib/home-carousel.server"
 
 export const dynamic = 'force-dynamic'
 
@@ -130,14 +132,21 @@ function AdminErrorBoundary({ error }: { error: Error }) {
 
 export default async function AdminPage() {
   try {
-    const [products, conversionRate] = await Promise.all([
+    const [products, conversionRate, brands, carouselSlides] = await Promise.all([
       getAllProducts(),
-      getConversionRate()
+      getConversionRate(),
+      getAllBrands(),
+      getCarouselSlides(),
     ])
 
     return (
       <Suspense fallback={<AdminPageSkeleton />}>
-        <AdminClientPage initialProducts={products} conversionRate={conversionRate} />
+        <AdminClientPage
+          initialProducts={products}
+          conversionRate={conversionRate}
+          initialBrands={brands}
+          initialCarouselSlides={carouselSlides}
+        />
       </Suspense>
     )
   } catch (error) {

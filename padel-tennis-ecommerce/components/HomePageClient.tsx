@@ -8,6 +8,7 @@ import NewsletterCTA from "@/components/home/NewsletterCTA"
 import { ProductOfferSection } from "@/components/home/ProductOfferSection"
 import PromoCarousel from "@/components/home/PromoCarousel"
 import TrustBlock from "@/components/home/TrustBlock"
+import { getAllBrands } from "@/lib/brands.server"
 import type { Product } from "@/lib/products"
 
 interface HomePageClientProps {
@@ -17,12 +18,13 @@ interface HomePageClientProps {
   initialComingSoonProducts?: Product[]
 }
 
-export default function HomePageClient({
+export default async function HomePageClient({
   initialPadelOffers = [],
   initialTenisMesaOffers = [],
   initialTenisOffers = [],
   initialComingSoonProducts = [],
 }: HomePageClientProps) {
+  const brands = await getAllBrands()
   return (
     <div className="bg-brand-cream">
       <HomeHero />
@@ -63,7 +65,7 @@ export default function HomePageClient({
         categoryName="Tenis"
       />
 
-      <BrandLogosCarousel />
+      <BrandLogosCarousel brands={brands} />
       <FeaturedCategories />
       <TrustBlock />
       <FaqSection />

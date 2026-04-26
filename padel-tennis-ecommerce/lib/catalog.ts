@@ -140,6 +140,25 @@ export function formatPrice(value: number): string {
   return `$${value.toLocaleString("es-AR", { minimumFractionDigits: 0 }).replace(/,/g, ".")}`
 }
 
+// Pricing rules:
+// - `product.price` in the DB is the cash / bank-transfer price (the cheaper
+//   number — no surcharge).
+// - The HEADLINE price shown in the UI is the credit-card total: cash + 25%,
+//   payable in 3 cuotas sin interés. The cash price is shown below as the
+//   discounted alternative.
+export const INSTALLMENT_SURCHARGE = 0.25
+export const INSTALLMENT_COUNT = 3
+
+/** Total payable in 3 installments — cash price + 25% surcharge. */
+export function creditTotalPrice(cashPrice: number): number {
+  return Math.round(cashPrice * (1 + INSTALLMENT_SURCHARGE))
+}
+
+/** Per-installment amount for the 3 cuotas option. Rounded to whole pesos. */
+export function installmentPrice(cashPrice: number): number {
+  return Math.round((cashPrice * (1 + INSTALLMENT_SURCHARGE)) / INSTALLMENT_COUNT)
+}
+
 export function categoryLabel(category: string): string {
   if (category === "padel") return "Padel"
   if (category === "tenis-mesa") return "Tenis de Mesa"

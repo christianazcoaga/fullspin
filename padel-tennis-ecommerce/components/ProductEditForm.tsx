@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useFormStatus } from "react-dom"
+import type { Brand } from "@/lib/brands"
 import type { Product } from "@/lib/products"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,12 +29,19 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { updateProductAction, deleteProductAction } from "@/app/admin/actions"
-import { useRouter } from "next/navigation"
-import { convertUsdToArs } from "@/lib/price-utils"
 
 interface ProductEditFormProps {
   product: Product
   conversionRate: number
+  /** Catalog of registered brands; the marca field is a select over these. */
+  brands: Brand[]
+}
+
+/** Sorted, deduplicated brand names for the marca <Select>. */
+function uniqueBrandNames(brands: Brand[]): string[] {
+  return Array.from(new Set(brands.map((b) => b.name)))
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, "es"))
 }
 
 const categories = ["padel", "tenis-mesa", "tenis"]
@@ -57,8 +65,21 @@ function SubmitButton() {
   )
 }
 
-export function ProductEditForm({ product, conversionRate }: ProductEditFormProps) {
-  const router = useRouter()
+export function ProductEditForm({
+  product,
+  conversionRate,
+  brands,
+}: ProductEditFormProps) {
+  const brandOptions = useMemo(() => {
+    const names = uniqueBrandNames(brands)
+    // If the product has a legacy marca that's no longer in the catalog,
+    // surface it as a synthetic option so editing doesn't silently overwrite
+    // it. The admin can then re-pick from the canonical list if they want.
+    if (product.marca && !names.includes(product.marca)) {
+      return [product.marca, ...names]
+    }
+    return names
+  }, [brands, product.marca])
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -150,7 +171,25 @@ export function ProductEditForm({ product, conversionRate }: ProductEditFormProp
 
           <div>
             <Label htmlFor="marca" className="text-sm">Marca</Label>
-            <Input id="marca" name="marca" value={marca} onChange={e => setMarca(e.target.value)} className="h-9" />
+            <Select value={marca || ""} onValueChange={setMarca} name="marca">
+              <SelectTrigger id="marca" className="h-9">
+                <SelectValue placeholder="Elegí una marca" />
+              </SelectTrigger>
+              <SelectContent>
+                {brandOptions.length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-brand-black/55">
+                    No hay marcas cargadas. Agregalas desde la pestaña{" "}
+                    <strong>Marcas</strong>.
+                  </div>
+                ) : (
+                  brandOptions.map((b) => (
+                    <SelectItem key={b} value={b}>
+                      {b}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">

@@ -1,15 +1,18 @@
-import { ArrowRight, MessageCircle } from "lucide-react"
+import { ArrowRight, MessageCircle, Truck } from "lucide-react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import ProductBrandLogo from "@/components/catalog/ProductBrandLogo"
+import ProductGallery from "@/components/catalog/ProductGallery"
 import RelatedProducts from "@/components/catalog/RelatedProducts"
 import { Button } from "@/components/ui/button"
 import {
   categoryLabel,
+  creditTotalPrice,
   formatPrice,
+  installmentPrice,
+  INSTALLMENT_COUNT,
   subcategoryLabel,
 } from "@/lib/catalog"
 import {
@@ -168,21 +171,29 @@ export default async function ProductoPage({
           </nav>
 
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-brand-black/10 bg-white">
-              {product.in_offer && product.offer_percent > 0 && (
-                <span className="absolute left-4 top-4 z-10 rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black shadow-sm">
-                  -{product.offer_percent}% OFF
-                </span>
-              )}
-              <Image
-                src={product.image || "/placeholder.svg"}
-                alt={product.name}
-                fill
-                sizes="(min-width: 1024px) 50vw, 90vw"
-                priority
-                className="object-contain p-8"
-              />
-            </div>
+            <ProductGallery
+              alt={product.name}
+              images={[
+                product.image || "/placeholder.svg",
+                ...(product.additional_images ?? []),
+              ].filter(Boolean)}
+              badge={
+                product.in_offer && product.offer_percent > 0 ? (
+                  <span className="rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black shadow-sm">
+                    -{product.offer_percent}% OFF
+                  </span>
+                ) : null
+              }
+              topRightPill={
+                !product.coming_soon ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-blue-dark px-3 py-1.5 text-xs font-semibold text-brand-cream shadow-sm">
+                    <Truck className="h-3.5 w-3.5" />
+                    Envío gratis
+                  </span>
+                ) : null
+              }
+            />
+
 
             <div className="flex flex-col gap-6">
               <div className="flex h-7 items-center">
@@ -210,31 +221,45 @@ export default async function ProductoPage({
                   </p>
                 </div>
               ) : (
-                <div className="rounded-xl bg-white p-5 ring-1 ring-brand-black/10">
-                  {product.in_offer && product.offer_percent > 0 ? (
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="text-base text-brand-black/40 line-through">
-                          {formatPrice(product.price)}
-                        </span>
-                        <span className="rounded-full bg-brand-orange px-3 py-1 text-xs font-bold text-brand-black">
-                          -{product.offer_percent}%
-                        </span>
-                      </div>
-                      <p className="text-3xl font-bold text-brand-black">
-                        {formatPrice(finalPrice)}
-                      </p>
-                      {savings > 0 && (
-                        <p className="text-sm text-brand-black/70">
-                          Ahorrás {formatPrice(savings)}
-                        </p>
-                      )}
+                <div className="space-y-4 rounded-2xl bg-white p-6 ring-1 ring-brand-black/10 sm:p-7">
+                  {product.in_offer && product.offer_percent > 0 && (
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-lg text-brand-black/40 line-through">
+                        {formatPrice(creditTotalPrice(product.price))}
+                      </span>
+                      <span className="rounded-full bg-brand-orange px-3 py-1 text-sm font-bold text-brand-black">
+                        -{product.offer_percent}%
+                      </span>
                     </div>
-                  ) : (
-                    <p className="text-3xl font-bold text-brand-black">
-                      {formatPrice(product.price)}
+                  )}
+                  <div>
+                    <p className="text-[clamp(2.25rem,5vw,3rem)] font-extrabold text-brand-black leading-[1.05]">
+                      {formatPrice(creditTotalPrice(finalPrice))}
+                    </p>
+                    <p className="mt-1 text-base text-brand-black/75">
+                      en {INSTALLMENT_COUNT} cuotas sin interés de{" "}
+                      <span className="font-bold text-brand-black">
+                        {formatPrice(installmentPrice(finalPrice))}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-brand-blue-dark/20 bg-brand-blue-dark/5 px-4 py-3">
+                    <p className="text-2xl font-extrabold text-brand-blue-dark leading-tight">
+                      {formatPrice(finalPrice)}
+                    </p>
+                    <p className="text-sm font-medium text-brand-black/70">
+                      con transferencia o efectivo
+                    </p>
+                  </div>
+                  {product.in_offer && product.offer_percent > 0 && savings > 0 && (
+                    <p className="text-sm font-medium text-brand-black/70">
+                      Ahorrás {formatPrice(creditTotalPrice(product.price) - creditTotalPrice(finalPrice))} sobre el precio original
                     </p>
                   )}
+                  <div className="flex items-center gap-2.5 rounded-xl bg-brand-blue-dark/10 px-4 py-3 text-base font-semibold text-brand-blue-dark">
+                    <Truck className="h-5 w-5" />
+                    Envío gratis a todo el país
+                  </div>
                 </div>
               )}
 

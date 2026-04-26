@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { getCarouselSlides } from "@/lib/home-carousel.server"
 
 type Slide = {
   src: string
@@ -13,7 +14,9 @@ type Slide = {
   priority?: boolean
 }
 
-const SLIDES: Slide[] = [
+// Fallback used while the `home_carousel` table is empty so the home never
+// renders a blank section. As soon as the admin adds slides, those take over.
+const FALLBACK_SLIDES: Slide[] = [
   {
     src: "/optimized/adidas_2026.webp",
     alt: "Metalbone Edición 2026 — Power of Nature",
@@ -25,13 +28,23 @@ const SLIDES: Slide[] = [
   { src: "/optimized/wilson-banner.webp", alt: "Wilson" },
 ]
 
-export default function PromoCarousel() {
+export default async function PromoCarousel() {
+  const dbSlides = await getCarouselSlides()
+  const slides: Slide[] =
+    dbSlides.length > 0
+      ? dbSlides.map((s, i) => ({
+          src: s.image_url,
+          alt: s.alt,
+          priority: i === 0,
+        }))
+      : FALLBACK_SLIDES
+
   return (
     <section className="w-full bg-white" aria-label="Banners promocionales">
       <Carousel opts={{ align: "center", loop: true }} className="w-full">
         <CarouselContent className="-ml-0">
-          {SLIDES.map((slide) => (
-            <CarouselItem key={slide.src} className="basis-full pl-0">
+          {slides.map((slide, idx) => (
+            <CarouselItem key={`${slide.src}-${idx}`} className="basis-full pl-0">
               <div className="relative flex h-[200px] w-full items-center justify-center overflow-hidden bg-white xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px]">
                 <OptimizedImage
                   src={slide.src}

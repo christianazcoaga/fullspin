@@ -9,6 +9,8 @@ export type Product = {
   price: number
   price_usd: number
   image: string
+  /** Up to 4 extra image URLs. Together with `image` forms a gallery (max 5). */
+  additional_images: string[]
   description: string
   in_stock: boolean
   in_offer: boolean
@@ -16,6 +18,9 @@ export type Product = {
   coming_soon: boolean
   created_at: string
 }
+
+/** Maximum extra images stored in `additional_images` (gallery cap = MAX_ADDITIONAL_IMAGES + 1). */
+export const MAX_ADDITIONAL_IMAGES = 4
 
 // Client-safe functions
 export async function getProducts() {
