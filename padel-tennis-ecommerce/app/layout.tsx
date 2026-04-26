@@ -31,14 +31,23 @@ export const metadata: Metadata = {
     siteName: 'FullSpin',
     images: [
       {
-        url: '/fullspin-logo.png',
-        width: 400,
-        height: 400,
-        alt: 'Logo FullSpin',
+        // Brand-blue-dark canvas with the new white wordmark, sized 1200x630
+        // (the dimensions WhatsApp / Twitter / FB scrapers expect). Generated
+        // by scripts/generate-og-image.mjs from public/images/LOGOS/FullSpin-Web-01.svg.
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Full Spin — Equipamiento deportivo',
       },
     ],
     locale: 'es_AR',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FullSpin',
+    description: 'FullSpin - El mejor equipamiento deportivo',
+    images: ['/og-image.png'],
   },
   icons: {
     // app/icon.svg is auto-served by Next's file convention at /icon.svg,
@@ -47,9 +56,9 @@ export const metadata: Metadata = {
     // the auto-emit for unspecified fields is suppressed.
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/fullspin-logo.png', type: 'image/png' }, // legacy fallback
+      { url: '/og-image.png', type: 'image/png' }, // raster fallback
     ],
-    apple: '/fullspin-logo.png',
+    apple: '/og-image.png',
   },
   manifest: "/manifest.json",
 }
