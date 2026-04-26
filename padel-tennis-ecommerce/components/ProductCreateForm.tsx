@@ -107,6 +107,9 @@ export function ProductCreateForm({
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
       in_stock: formData.get("in_stock") === "true",
+      // Local-store availability is managed from a dedicated admin tab,
+      // never from the create/edit forms — defaults to false on creation.
+      in_local_stock: false,
       in_offer: inOffer,
       offer_percent: offerPercent,
       coming_soon: comingSoon,
@@ -136,6 +139,7 @@ export function ProductCreateForm({
     price_usd: 0,
     description: "",
     in_stock: true,
+    in_local_stock: false,
     in_offer: false,
     offer_percent: 0,
     coming_soon: false,

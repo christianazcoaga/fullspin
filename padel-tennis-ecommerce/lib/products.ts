@@ -13,6 +13,8 @@ export type Product = {
   additional_images: string[]
   description: string
   in_stock: boolean
+  /** Marked when the product is physically available at the storefront. */
+  in_local_stock: boolean
   in_offer: boolean
   offer_percent: number
   coming_soon: boolean

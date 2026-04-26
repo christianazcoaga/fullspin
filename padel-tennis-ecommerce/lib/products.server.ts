@@ -159,6 +159,40 @@ export async function getProductIdsForSitemap(): Promise<number[]> {
   return (data ?? []).map((row: { id: number }) => row.id)
 }
 
+/**
+ * Products physically available at the local store. Excludes coming-soon
+ * items and respects `in_stock`. Optionally filtered by category.
+ */
+export async function getLocalStockProducts(category?: string, limit: number = 8) {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  let query = supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("in_local_stock", true)
+    .eq("in_stock", true)
+    .eq("coming_soon", false)
+    .order("in_offer", { ascending: false })
+    .order("created_at", { ascending: false })
+
+  if (category) {
+    query = query.eq("category", category)
+  }
+
+  if (limit) {
+    query = query.limit(limit)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error("Error fetching local-stock products:", error)
+    return []
+  }
+  return data ?? []
+}
+
 export async function getComingSoonProducts(category?: string, limit: number = 4) {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)

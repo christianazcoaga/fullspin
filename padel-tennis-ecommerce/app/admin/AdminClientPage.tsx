@@ -13,6 +13,7 @@ import { AdminLoading } from "@/components/AdminLoading"
 import { ConversionRateManager } from "@/components/ConversionRateManager"
 import BrandsManager from "@/components/admin/BrandsManager"
 import CarouselManager from "@/components/admin/CarouselManager"
+import LocalStockManager from "@/components/admin/LocalStockManager"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -29,6 +30,7 @@ import {
   RefreshCw,
   Tag,
   Images,
+  Store,
 } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -268,10 +270,14 @@ export default function AdminClientPage({
         </div>
 
         <Tabs defaultValue="products" className="space-y-3">
-          <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
+          <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-flex sm:grid-cols-none">
             <TabsTrigger value="products" className="gap-2 text-xs sm:text-sm">
               <Package className="h-3.5 w-3.5" />
               Productos
+            </TabsTrigger>
+            <TabsTrigger value="local-stock" className="gap-2 text-xs sm:text-sm">
+              <Store className="h-3.5 w-3.5" />
+              Stock local
             </TabsTrigger>
             <TabsTrigger value="brands" className="gap-2 text-xs sm:text-sm">
               <Tag className="h-3.5 w-3.5" />
@@ -736,6 +742,10 @@ export default function AdminClientPage({
             )}
           </div>
         </div>
+          </TabsContent>
+
+          <TabsContent value="local-stock">
+            <LocalStockManager initialProducts={products} />
           </TabsContent>
 
           <TabsContent value="brands">
