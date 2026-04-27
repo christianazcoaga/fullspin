@@ -7,7 +7,8 @@ const __dirname = path.dirname(__filename);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Especificar la raíz del proyecto para evitar advertencias de lockfiles múltiples
-  outputFileTracingRoot: __dirname,
+  // Comentado: en Vercel rompe la generación de routes-manifest-deterministic.json
+  // outputFileTracingRoot: __dirname,
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
