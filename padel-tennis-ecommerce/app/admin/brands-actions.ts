@@ -18,7 +18,7 @@ export async function createBrandAction(formData: FormData): Promise<
     const file = formData.get("logo") as File | null
 
     if (!name) return { success: false, error: "Falta el nombre de la marca." }
-    if (!sport || !["padel", "tenis", "tenis-mesa"].includes(sport)) {
+    if (!sport || !["padel", "tenis-mesa"].includes(sport)) {
       return { success: false, error: "Deporte inválido." }
     }
 
@@ -62,7 +62,7 @@ export async function updateBrandAction(
 
     const patch: Partial<Pick<Brand, "name" | "sport" | "display_order" | "logo_url">> = {}
     if (name) patch.name = name
-    if (sport && ["padel", "tenis", "tenis-mesa"].includes(sport)) patch.sport = sport
+    if (sport && ["padel", "tenis-mesa"].includes(sport)) patch.sport = sport
     if (orderRaw !== null && orderRaw !== "") patch.display_order = Number(orderRaw) || 0
 
     if (file && file.size > 0) {

@@ -38,16 +38,6 @@ const CATEGORIES: CategoryCard[] = [
       { src: "/optimized/dhs-logo.webp", alt: "DHS" },
     ],
   },
-  {
-    title: "TENIS",
-    description: "Raquetas, cuerdas, indumentaria y calzado de primer nivel.",
-    href: "/tenis",
-    bg: "bg-brand-blue-light",
-    logos: [
-      { src: "/optimized/wilson-logo.webp", alt: "Wilson" },
-      { src: "/optimized/head-logo.webp", alt: "Head" },
-    ],
-  },
 ]
 
 export default function FeaturedCategories() {
@@ -100,7 +90,7 @@ export default function FeaturedCategories() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.href}

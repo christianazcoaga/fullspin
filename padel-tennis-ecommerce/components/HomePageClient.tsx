@@ -14,7 +14,6 @@ import type { Product } from "@/lib/products"
 interface HomePageClientProps {
   initialPadelOffers?: Product[]
   initialTenisMesaOffers?: Product[]
-  initialTenisOffers?: Product[]
   initialComingSoonProducts?: Product[]
   /** Products flagged "Novedad" — shown right after the promo carousel. */
   initialNoveltyProducts?: Product[]
@@ -23,7 +22,6 @@ interface HomePageClientProps {
 export default async function HomePageClient({
   initialPadelOffers = [],
   initialTenisMesaOffers = [],
-  initialTenisOffers = [],
   initialComingSoonProducts = [],
   initialNoveltyProducts = [],
 }: HomePageClientProps) {
@@ -57,14 +55,6 @@ export default async function HomePageClient({
         products={initialTenisMesaOffers}
         categoryLink="/tenis-mesa"
         categoryName="Tenis de Mesa"
-      />
-
-      <ProductOfferSection
-        title="Ofertas de Tenis"
-        subtitle="Productos de tenis con descuentos especiales"
-        products={initialTenisOffers}
-        categoryLink="/tenis"
-        categoryName="Tenis"
       />
 
       {initialComingSoonProducts.length > 0 && (

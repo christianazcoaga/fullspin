@@ -17,7 +17,6 @@ interface AdminStatsProps {
 export function AdminStats({ products }: AdminStatsProps) {
   const total = products.length
   const padel = products.filter((p) => p.category === "padel").length
-  const tenis = products.filter((p) => p.category === "tenis").length
   const tenisMesa = products.filter((p) => p.category === "tenis-mesa").length
   const inStock = products.filter((p) => p.in_stock).length
   const outOfStock = total - inStock
@@ -35,7 +34,7 @@ export function AdminStats({ products }: AdminStatsProps) {
         accent="blue-dark"
         footer={
           <span className="text-[11px] text-brand-black/60">
-            Padel {padel} · Tenis {tenis} · TM {tenisMesa}
+            Padel {padel} · TM {tenisMesa}
           </span>
         }
       />

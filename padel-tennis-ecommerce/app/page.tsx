@@ -21,13 +21,11 @@ export default async function Page() {
   const [
     padelOffers,
     tenisMesaOffers,
-    tenisOffers,
     comingSoonProducts,
     noveltyProducts,
   ] = await Promise.all([
     getProductsOnOffer("padel"),
     getProductsOnOffer("tenis-mesa"),
-    getProductsOnOffer("tenis"),
     getComingSoonProducts(undefined, 8),
     getNoveltyProducts(undefined, 8),
   ]);
@@ -36,7 +34,6 @@ export default async function Page() {
     <HomePageClient
       initialPadelOffers={padelOffers || []}
       initialTenisMesaOffers={tenisMesaOffers || []}
-      initialTenisOffers={tenisOffers || []}
       initialComingSoonProducts={comingSoonProducts || []}
       initialNoveltyProducts={noveltyProducts || []}
     />

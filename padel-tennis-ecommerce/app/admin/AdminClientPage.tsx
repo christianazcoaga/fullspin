@@ -312,7 +312,6 @@ export default function AdminClientPage({
                 <option value="all">Todas las categorías</option>
                 <option value="padel">Padel</option>
                 <option value="tenis-mesa">Tenis de Mesa</option>
-                <option value="tenis">Tenis</option>
               </select>
               <Button
                 variant="outline"
@@ -339,7 +338,7 @@ export default function AdminClientPage({
                   Productos ({filteredProducts.length})
                 </CardTitle>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
-                  {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : categoryFilter === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
+                  {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : "Tenis de Mesa"}
                 </Badge>
               </div>
             </CardHeader>
@@ -393,7 +392,7 @@ export default function AdminClientPage({
                           <p className="text-xs text-gray-600 mb-1">{product.marca}</p>
                           <div className="flex items-center gap-2">
                             <Badge variant="outline" className="text-xs">
-                              {product.category === "padel" ? "Padel" : product.category === "tenis" ? "Tenis" : "Tenis de Mesa"}
+                              {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
                             </Badge>
                             <span className="text-sm font-medium text-gray-900">
                               {formatPrice(product.price)}
@@ -441,7 +440,7 @@ export default function AdminClientPage({
                       <p className="text-xs text-gray-600 mb-2">{product.marca}</p>
                       <div className="flex items-center justify-between">
                         <Badge variant="outline" className="text-xs">
-                          {product.category === "padel" ? "Padel" : product.category === "tenis" ? "Tenis" : "Tenis de Mesa"}
+                          {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
                         </Badge>
                         <span className="text-xs font-medium text-gray-900">
                           {formatPrice(product.price)}
@@ -544,7 +543,7 @@ export default function AdminClientPage({
                     Productos ({filteredProducts.length})
                   </CardTitle>
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                    {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : categoryFilter === "tenis-mesa" ? "Tenis de Mesa" : "Tenis"}
+                    {categoryFilter === "all" ? "Todas" : categoryFilter === "padel" ? "Padel" : "Tenis de Mesa"}
                   </Badge>
                 </div>
               </CardHeader>
@@ -598,7 +597,7 @@ export default function AdminClientPage({
                             <p className="text-xs text-gray-600 mb-1">{product.marca}</p>
                             <div className="flex items-center gap-2">
                               <Badge variant="outline" className="text-xs">
-                                {product.category === "padel" ? "Padel" : product.category === "tenis" ? "Tenis" : "Tenis de Mesa"}
+                                {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
                               </Badge>
                               <span className="text-sm font-medium text-gray-900">
                                 {formatPrice(product.price)}
@@ -648,7 +647,7 @@ export default function AdminClientPage({
                         <p className="text-xs text-gray-600 mb-2">{product.marca}</p>
                         <div className="flex items-center justify-between">
                           <Badge variant="outline" className="text-xs">
-                            {product.category === "padel" ? "Padel" : product.category === "tenis" ? "Tenis" : "Tenis de Mesa"}
+                            {product.category === "padel" ? "Padel" : "Tenis de Mesa"}
                           </Badge>
                           <span className="text-sm font-medium text-gray-900">
                             {formatPrice(product.price)}

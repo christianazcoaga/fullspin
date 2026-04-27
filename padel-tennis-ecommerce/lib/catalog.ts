@@ -1,19 +1,19 @@
-// Single source of truth for catalog metadata used by the four catalog
-// pages (/padel, /tenis, /tenis-mesa, /ofertas) and by the home page.
+// Single source of truth for catalog metadata used by the catalog pages
+// (/padel, /tenis-mesa, /ofertas) and by the home page.
 
-export type CategorySlug = "padel" | "tenis" | "tenis-mesa"
+export type CategorySlug = "padel" | "tenis-mesa"
 export type CatalogSlug = CategorySlug | "ofertas"
 
 export type SubcategorySlug =
   | "palas"
   | "paletas"
-  | "raquetas"
   | "pelotas"
   | "bolsos"
   | "ropa"
   | "accesorios"
   | "gomas"
   // legacy slugs kept for type compatibility — not in current inventory
+  | "raquetas"
   | "zapatillas"
   | "mesas"
 
@@ -43,15 +43,6 @@ export const CATEGORIES: Record<CategorySlug, CategoryConfig> = {
       "Somos especialistas en padel en Argentina. Las mejores marcas, envíos a todo el país.",
     subcategories: ["palas", "bolsos", "pelotas", "ropa", "accesorios"],
   },
-  tenis: {
-    slug: "tenis",
-    label: "Tenis",
-    heroEyebrow: "Catálogo Tenis",
-    heroTitle: "Equipamiento de tenis",
-    heroDescription:
-      "Raquetas y bolsos de las mejores marcas, con envíos a todo el país.",
-    subcategories: ["raquetas", "bolsos"],
-  },
   "tenis-mesa": {
     slug: "tenis-mesa",
     label: "Tenis de Mesa",
@@ -69,7 +60,7 @@ export const OFFERS_CONFIG = {
   heroEyebrow: "Descuentos especiales",
   heroTitle: "Ofertas",
   heroDescription:
-    "Productos con descuento en padel, tenis y tenis de mesa. Stock limitado.",
+    "Productos con descuento en padel y tenis de mesa. Stock limitado.",
 }
 
 export const SUBCATEGORY_LABELS: Record<SubcategorySlug, string> = {
@@ -162,7 +153,6 @@ export function installmentPrice(cashPrice: number): number {
 export function categoryLabel(category: string): string {
   if (category === "padel") return "Padel"
   if (category === "tenis-mesa") return "Tenis de Mesa"
-  if (category === "tenis") return "Tenis"
   return category
 }
 

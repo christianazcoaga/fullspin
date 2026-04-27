@@ -195,7 +195,6 @@ export async function updateConversionRateAction(newRate: number): Promise<{
       revalidatePath("/admin")
       revalidatePath("/padel")
       revalidatePath("/tenis-mesa")
-      revalidatePath("/tenis")
       revalidatePath("/ofertas")
     }
     return result

@@ -44,16 +44,14 @@ function uniqueBrandNames(brands: Brand[]): string[] {
     .sort((a, b) => a.localeCompare(b, "es"))
 }
 
-const categories = ["padel", "tenis-mesa", "tenis"]
+const categories = ["padel", "tenis-mesa"]
 const categoryNames: { [key: string]: string } = {
   padel: "Padel",
-  "tenis-mesa": "Tenis de Mesa", 
-  tenis: "Tenis",
+  "tenis-mesa": "Tenis de Mesa",
 }
 const subcategories: { [key: string]: string[] } = {
   padel: ["palas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
   "tenis-mesa": ["paletas", "gomas", "pelotas", "mesas", "ropa", "accesorios"],
-  tenis: ["raquetas", "zapatillas", "pelotas", "bolsos", "ropa", "accesorios"],
 }
 
 function SubmitButton() {

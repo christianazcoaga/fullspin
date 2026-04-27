@@ -27,7 +27,7 @@ interface CategoryPageProps {
   category: CatalogSlug
 }
 
-const ALL_CATEGORIES: CategorySlug[] = ["padel", "tenis", "tenis-mesa"]
+const ALL_CATEGORIES: CategorySlug[] = ["padel", "tenis-mesa"]
 
 async function loadProducts(category: CatalogSlug): Promise<Product[]> {
   if (category === "ofertas") {

@@ -1,7 +1,7 @@
 // Types and constants shared by both server and client code. Server-only
 // queries live in `./brands.server.ts`.
 
-export type BrandSport = "padel" | "tenis" | "tenis-mesa"
+export type BrandSport = "padel" | "tenis-mesa"
 
 export type Brand = {
   id: number
@@ -12,10 +12,9 @@ export type Brand = {
   created_at: string
 }
 
-export const BRAND_SPORTS: BrandSport[] = ["padel", "tenis", "tenis-mesa"]
+export const BRAND_SPORTS: BrandSport[] = ["padel", "tenis-mesa"]
 
 export const BRAND_SPORT_LABELS: Record<BrandSport, string> = {
   padel: "Padel",
-  tenis: "Tenis",
   "tenis-mesa": "Tenis de Mesa",
 }

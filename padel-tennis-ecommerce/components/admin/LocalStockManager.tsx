@@ -17,10 +17,9 @@ interface LocalStockManagerProps {
   initialProducts: Product[]
 }
 
-const CATEGORY_FILTERS: { value: "all" | "padel" | "tenis" | "tenis-mesa"; label: string }[] = [
+const CATEGORY_FILTERS: { value: "all" | "padel" | "tenis-mesa"; label: string }[] = [
   { value: "all", label: "Todas" },
   { value: "padel", label: "Padel" },
-  { value: "tenis", label: "Tenis" },
   { value: "tenis-mesa", label: "Tenis de Mesa" },
 ]
 

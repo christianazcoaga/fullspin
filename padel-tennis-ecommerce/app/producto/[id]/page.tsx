@@ -78,7 +78,6 @@ export async function generateMetadata({
 
 function categoryHref(category: string) {
   if (category === "padel") return "/padel"
-  if (category === "tenis") return "/tenis"
   if (category === "tenis-mesa") return "/tenis-mesa"
   return "/"
 }

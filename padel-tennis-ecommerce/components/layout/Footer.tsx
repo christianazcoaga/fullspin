@@ -37,14 +37,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/tenis"
-                  className="transition-colors hover:text-brand-blue-light"
-                >
-                  Tenis
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/tenis-mesa"
                   className="transition-colors hover:text-brand-blue-light"
                 >

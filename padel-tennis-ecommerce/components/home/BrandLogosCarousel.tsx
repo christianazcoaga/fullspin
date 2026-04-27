@@ -44,13 +44,6 @@ const FALLBACK_SLIDES: LegacySlide[] = [
       { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 150, height: 100 },
     ],
   },
-  {
-    sport: "tenis",
-    logos: [
-      { src: "/optimized/wilson-logo.webp", alt: "Wilson", width: 150, height: 100 },
-      { src: "/optimized/head-logo.webp", alt: "Head", width: 178, height: 100 },
-    ],
-  },
 ]
 
 const AUTOPLAY_INTERVAL_MS = 4000
@@ -61,7 +54,7 @@ export default function BrandLogosCarousel({ brands }: BrandLogosCarouselProps) 
 
   // Group DB brands by sport, preserving sport order and per-brand display_order.
   const grouped: { sport: BrandSport; logos: { src: string; alt: string }[] }[] =
-    (["padel", "tenis", "tenis-mesa"] as BrandSport[])
+    (["padel", "tenis-mesa"] as BrandSport[])
       .map((sport) => ({
         sport,
         logos: brands
