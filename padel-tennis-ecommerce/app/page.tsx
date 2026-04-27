@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 
-import { getComingSoonProducts, getProductsOnOffer } from "@/lib/products.server";
+import {
+  getComingSoonProducts,
+  getNoveltyProducts,
+  getProductsOnOffer,
+} from "@/lib/products.server";
 import HomePageClient from "@/components/HomePageClient";
 
 export const metadata: Metadata = {
@@ -14,11 +18,18 @@ export const metadata: Metadata = {
 // export const revalidate = 3600; // Revalidate every hour
 
 export default async function Page() {
-  const [padelOffers, tenisMesaOffers, tenisOffers, comingSoonProducts] = await Promise.all([
+  const [
+    padelOffers,
+    tenisMesaOffers,
+    tenisOffers,
+    comingSoonProducts,
+    noveltyProducts,
+  ] = await Promise.all([
     getProductsOnOffer("padel"),
     getProductsOnOffer("tenis-mesa"),
     getProductsOnOffer("tenis"),
     getComingSoonProducts(undefined, 8),
+    getNoveltyProducts(undefined, 8),
   ]);
 
   return (
@@ -27,6 +38,7 @@ export default async function Page() {
       initialTenisMesaOffers={tenisMesaOffers || []}
       initialTenisOffers={tenisOffers || []}
       initialComingSoonProducts={comingSoonProducts || []}
+      initialNoveltyProducts={noveltyProducts || []}
     />
   );
 }

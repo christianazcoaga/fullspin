@@ -9,6 +9,7 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/tenis", label: "Tenis" },
   { href: "/tenis-mesa", label: "Tenis de Mesa" },
   { href: "/ofertas", label: "Ofertas" },
-  { href: "/local", label: "En el local" },
   { href: "/sobre-nosotros", label: "Sobre nosotros" },
+  // /local route exists (productos en stock físico) but is intentionally
+  // hidden from the public nav for now. Direct URL access still works.
 ]

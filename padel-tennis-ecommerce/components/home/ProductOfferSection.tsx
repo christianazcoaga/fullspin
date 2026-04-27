@@ -77,20 +77,20 @@ export function ProductOfferSection({
 
         {isLoading || products.length > 0 ? (
           // Mobile: horizontal swipe (each card 78% wide so the next one
-          // peeks, snap to start). sm+: standard responsive grid.
+          // peeks, snap to start). sm+: flex-wrap with justify-center so
+          // a partial last row centers instead of left-aligning.
           <div
             className="
               -mx-4 flex gap-4 overflow-x-auto px-4 pb-3 snap-x snap-mandatory
               [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-              sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none
-              lg:grid-cols-4
+              sm:mx-0 sm:flex-wrap sm:justify-center sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none
             "
           >
             {isLoading
               ? Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
-                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-auto"
+                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-[calc((100%-1.25rem)/2)] sm:shrink lg:w-[calc((100%-3.75rem)/4)]"
                   >
                     <SkeletonCard />
                   </div>
@@ -98,7 +98,7 @@ export function ProductOfferSection({
               : products.map((product) => (
                   <div
                     key={product.id}
-                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-auto"
+                    className="flex flex-col shrink-0 w-[78%] snap-start sm:w-[calc((100%-1.25rem)/2)] sm:shrink lg:w-[calc((100%-3.75rem)/4)]"
                   >
                     <OfferCard
                       product={product}
@@ -204,11 +204,11 @@ function OfferCard({
                   </span>
                 </p>
               </div>
-              <div className="rounded-md bg-brand-blue-dark/5 px-2 py-1">
-                <p className="text-sm font-bold text-brand-blue-dark leading-tight">
+              <div className="rounded-md bg-brand-blue-dark/5 px-2 py-1.5">
+                <p className="text-xl font-extrabold text-brand-blue-dark leading-tight">
                   {formatPrice(finalPrice)}
                 </p>
-                <p className="text-[10px] text-brand-black/60 leading-tight">
+                <p className="text-[11px] text-brand-black/60 leading-tight">
                   con transferencia o efectivo
                 </p>
               </div>

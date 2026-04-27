@@ -84,6 +84,7 @@ export function ProductEditForm({
   const [success, setSuccess] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [inStock, setInStock] = useState(product.in_stock)
+  const [isNovelty, setIsNovelty] = useState(product.is_novelty ?? false)
   const [inOffer, setInOffer] = useState(product.in_offer ?? false)
   const [offerPercent, setOfferPercent] = useState(product.offer_percent ?? 0)
   const [comingSoon, setComingSoon] = useState(product.coming_soon ?? false)
@@ -106,6 +107,7 @@ export function ProductEditForm({
   // Sincroniza los estados locales con el producto seleccionado
   useEffect(() => {
     setInStock(product.in_stock)
+    setIsNovelty(product.is_novelty ?? false)
     setInOffer(product.in_offer ?? false)
     setOfferPercent(product.offer_percent ?? 0)
     setComingSoon(product.coming_soon ?? false)
@@ -131,6 +133,7 @@ export function ProductEditForm({
     setError(null)
     setSuccess(false)
     formData.set("in_stock", inStock ? "true" : "false")
+    formData.set("is_novelty", isNovelty ? "true" : "false")
     formData.set("in_offer", inOffer ? "true" : "false")
     formData.set("offer_percent", offerPercent.toString())
     formData.set("coming_soon", comingSoon ? "true" : "false")
@@ -266,6 +269,21 @@ export function ProductEditForm({
             <Switch id="in_stock" name="in_stock" checked={inStock} onCheckedChange={setInStock} />
             <Label htmlFor="in_stock" className="cursor-pointer text-sm">
               Disponible en Stock
+            </Label>
+          </div>
+
+          <div className="flex items-center space-x-2 pt-1">
+            <Switch
+              id="is_novelty"
+              name="is_novelty"
+              checked={isNovelty}
+              onCheckedChange={setIsNovelty}
+            />
+            <Label
+              htmlFor="is_novelty"
+              className="cursor-pointer text-sm font-semibold text-brand-blue-dark"
+            >
+              Novedad
             </Label>
           </div>
 

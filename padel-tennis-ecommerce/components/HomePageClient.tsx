@@ -16,6 +16,8 @@ interface HomePageClientProps {
   initialTenisMesaOffers?: Product[]
   initialTenisOffers?: Product[]
   initialComingSoonProducts?: Product[]
+  /** Products flagged "Novedad" — shown right after the promo carousel. */
+  initialNoveltyProducts?: Product[]
 }
 
 export default async function HomePageClient({
@@ -23,6 +25,7 @@ export default async function HomePageClient({
   initialTenisMesaOffers = [],
   initialTenisOffers = [],
   initialComingSoonProducts = [],
+  initialNoveltyProducts = [],
 }: HomePageClientProps) {
   const brands = await getAllBrands()
   return (
@@ -30,14 +33,13 @@ export default async function HomePageClient({
       <HomeHero />
       <PromoCarousel />
 
-      {initialComingSoonProducts.length > 0 && (
+      {initialNoveltyProducts.length > 0 && (
         <ProductOfferSection
-          title="Próximamente"
-          subtitle="Productos que estarán disponibles muy pronto"
-          products={initialComingSoonProducts}
+          title="Novedades"
+          subtitle="Lo último que llegó al catálogo"
+          products={initialNoveltyProducts}
           categoryLink="/padel"
           categoryName="Productos"
-          isComingSoon
         />
       )}
 
@@ -64,6 +66,17 @@ export default async function HomePageClient({
         categoryLink="/tenis"
         categoryName="Tenis"
       />
+
+      {initialComingSoonProducts.length > 0 && (
+        <ProductOfferSection
+          title="Próximamente"
+          subtitle="Productos que estarán disponibles muy pronto"
+          products={initialComingSoonProducts}
+          categoryLink="/padel"
+          categoryName="Productos"
+          isComingSoon
+        />
+      )}
 
       <BrandLogosCarousel brands={brands} />
       <FeaturedCategories />

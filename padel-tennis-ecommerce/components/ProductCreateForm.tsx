@@ -72,6 +72,7 @@ export function ProductCreateForm({
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [currentCategory, setCurrentCategory] = useState(initialFormData.category)
   const [inStock, setInStock] = useState(initialFormData.in_stock)
+  const [isNovelty, setIsNovelty] = useState(false)
   const brandOptions = useMemo(() => uniqueBrandNames(brands), [brands])
   const [marca, setMarca] = useState<string>("")
   const [inOffer, setInOffer] = useState(false)
@@ -107,9 +108,12 @@ export function ProductCreateForm({
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
       in_stock: formData.get("in_stock") === "true",
-      // Local-store availability is managed from a dedicated admin tab,
-      // never from the create/edit forms — defaults to false on creation.
+      is_novelty: isNovelty,
+      // Local-store availability + unit count are managed from the
+      // dedicated "Stock local" admin tab, never from the create/edit
+      // forms. Defaults below mean "not in the local listing yet".
       in_local_stock: false,
+      local_stock_count: 0,
       in_offer: inOffer,
       offer_percent: offerPercent,
       coming_soon: comingSoon,
@@ -140,9 +144,11 @@ export function ProductCreateForm({
     description: "",
     in_stock: true,
     in_local_stock: false,
+    local_stock_count: 0,
     in_offer: false,
     offer_percent: 0,
     coming_soon: false,
+    is_novelty: false,
     created_at: new Date().toISOString(),
   }
 
@@ -246,6 +252,20 @@ export function ProductCreateForm({
             <Switch id="in_stock" name="in_stock" checked={inStock} onCheckedChange={setInStock} />
             <Label htmlFor="in_stock" className="cursor-pointer text-sm">
               En stock
+            </Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              id="is_novelty"
+              name="is_novelty"
+              checked={isNovelty}
+              onCheckedChange={setIsNovelty}
+            />
+            <Label
+              htmlFor="is_novelty"
+              className="cursor-pointer text-sm font-semibold text-brand-blue-dark"
+            >
+              Novedad
             </Label>
           </div>
           <div className="flex items-center gap-2">

@@ -193,21 +193,6 @@ export default function SobreNosotrosClient() {
             <strong className="font-semibold text-brand-black">Tenis</strong>.
             Envíos a todo el país.
           </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button asChild variant="black">
-              <Link href="/padel">
-                Padel
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/tenis-mesa">Tenis de Mesa</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/tenis">Tenis</Link>
-            </Button>
-          </div>
         </div>
       </section>
 

@@ -244,10 +244,10 @@ export default async function ProductoPage({
                     </p>
                   </div>
                   <div className="rounded-xl border border-brand-blue-dark/20 bg-brand-blue-dark/5 px-4 py-3">
-                    <p className="text-2xl font-extrabold text-brand-blue-dark leading-tight">
+                    <p className="text-[clamp(2.25rem,5vw,3rem)] font-extrabold text-brand-blue-dark leading-[1.05]">
                       {formatPrice(finalPrice)}
                     </p>
-                    <p className="text-sm font-medium text-brand-black/70">
+                    <p className="mt-1 text-base text-brand-black/75">
                       con transferencia o efectivo
                     </p>
                   </div>

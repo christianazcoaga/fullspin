@@ -15,9 +15,14 @@ export type Product = {
   in_stock: boolean
   /** Marked when the product is physically available at the storefront. */
   in_local_stock: boolean
+  /** Internal: number of units available at the storefront. Hidden from
+   *  customers; controls visibility of the product on `/local` (zero hides). */
+  local_stock_count: number
   in_offer: boolean
   offer_percent: number
   coming_soon: boolean
+  /** Surfaces the product in the home "Novedades" section. */
+  is_novelty: boolean
   created_at: string
 }
 

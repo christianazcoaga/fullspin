@@ -2,9 +2,12 @@
 
 import Image from "next/image"
 import { useMemo, useState, useTransition } from "react"
-import { Search, Store } from "lucide-react"
+import { AlertCircle, Minus, Plus, Search, Store } from "lucide-react"
 
-import { toggleLocalStockAction } from "@/app/admin/local-stock-actions"
+import {
+  setLocalStockCountAction,
+  toggleLocalStockAction,
+} from "@/app/admin/local-stock-actions"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { categoryLabel } from "@/lib/catalog"
@@ -22,13 +25,12 @@ const CATEGORY_FILTERS: { value: "all" | "padel" | "tenis" | "tenis-mesa"; label
 ]
 
 /**
- * Per-product toggle for the "in physical store" flag. The rest of the
- * product attributes are NOT editable here — this view is intentionally
- * focused on a single decision: ¿está disponible en el local?
+ * Per-product toggle + unit count for the storefront. Admin marks which
+ * products are physically available and how many of each. The /local page
+ * hides products with count = 0, so when something sells out the admin
+ * just lowers the count and it disappears.
  *
- * Optimistic update: the switch flips instantly and the server call
- * happens in a transition. If the server reports an error, the toggle
- * reverts and a message is shown.
+ * Optimistic updates on every interaction; server errors revert.
  */
 export default function LocalStockManager({ initialProducts }: LocalStockManagerProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
@@ -51,26 +53,71 @@ export default function LocalStockManager({ initialProducts }: LocalStockManager
     })
   }, [products, search, category, showOnlyInLocal])
 
-  const inLocalCount = useMemo(
-    () => products.filter((p) => p.in_local_stock).length,
-    [products]
-  )
+  const stats = useMemo(() => {
+    let active = 0
+    let units = 0
+    let outOfStock = 0
+    for (const p of products) {
+      if (p.in_local_stock) {
+        active++
+        units += p.local_stock_count ?? 0
+        if ((p.local_stock_count ?? 0) === 0) outOfStock++
+      }
+    }
+    return { active, units, outOfStock }
+  }, [products])
 
   const handleToggle = (id: number, next: boolean) => {
-    // Optimistic update.
+    const product = products.find((p) => p.id === id)
+    if (!product) return
+    const currentCount = product.local_stock_count ?? 0
+    // Mirror the server-side rule so the UI stays in sync without waiting
+    // for the round-trip (toggle ON guarantees count ≥ 1; OFF resets to 0).
+    const nextCount = next ? Math.max(1, currentCount) : 0
+
     setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, in_local_stock: next } : p))
+      prev.map((p) =>
+        p.id === id
+          ? { ...p, in_local_stock: next, local_stock_count: nextCount }
+          : p
+      )
     )
     setError(null)
 
     startTransition(async () => {
-      const r = await toggleLocalStockAction(id, next)
+      const r = await toggleLocalStockAction(id, next, currentCount)
       if (!r.success) {
-        // Revert on failure.
         setProducts((prev) =>
-          prev.map((p) => (p.id === id ? { ...p, in_local_stock: !next } : p))
+          prev.map((p) =>
+            p.id === id
+              ? { ...p, in_local_stock: !next, local_stock_count: currentCount }
+              : p
+          )
         )
         setError(r.error ?? "No se pudo guardar el cambio.")
+      }
+    })
+  }
+
+  const handleCountChange = (id: number, next: number) => {
+    const safe = Math.max(0, Math.floor(next || 0))
+    const product = products.find((p) => p.id === id)
+    if (!product) return
+    const previous = product.local_stock_count ?? 0
+    if (previous === safe) return
+
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, local_stock_count: safe } : p))
+    )
+    setError(null)
+
+    startTransition(async () => {
+      const r = await setLocalStockCountAction(id, safe)
+      if (!r.success) {
+        setProducts((prev) =>
+          prev.map((p) => (p.id === id ? { ...p, local_stock_count: previous } : p))
+        )
+        setError(r.error ?? "No se pudo guardar la cantidad.")
       }
     })
   }
@@ -81,13 +128,25 @@ export default function LocalStockManager({ initialProducts }: LocalStockManager
         <div>
           <h2 className="text-lg font-bold text-brand-black">Stock en el local</h2>
           <p className="text-xs text-brand-black/60">
-            Marcá los productos disponibles físicamente en el local. Aparecen
-            destacados en la home como "Disponibles para retirar".
+            Marcá los productos disponibles en el local y la cantidad de cada
+            uno. Si el contador llega a 0, el producto deja de aparecer en{" "}
+            <code className="rounded bg-brand-black/5 px-1 text-[10px]">/local</code>.
           </p>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-md bg-brand-blue-dark/10 px-3 py-1.5 text-xs font-semibold text-brand-blue-dark">
-          <Store className="h-3.5 w-3.5" />
-          {inLocalCount} en el local
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-brand-blue-dark/10 px-2.5 py-1.5 text-brand-blue-dark">
+            <Store className="h-3.5 w-3.5" />
+            {stats.active} activos
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-brand-black/5 px-2.5 py-1.5 text-brand-black/70">
+            {stats.units} unidades
+          </span>
+          {stats.outOfStock > 0 && (
+            <span className="inline-flex items-center gap-1.5 rounded-md bg-[hsl(var(--status-warning))]/15 px-2.5 py-1.5 text-[hsl(var(--status-warning))]">
+              <AlertCircle className="h-3.5 w-3.5" />
+              {stats.outOfStock} agotados
+            </span>
+          )}
         </div>
       </div>
 
@@ -123,7 +182,7 @@ export default function LocalStockManager({ initialProducts }: LocalStockManager
             onChange={(e) => setShowOnlyInLocal(e.target.checked)}
             className="h-4 w-4 cursor-pointer accent-brand-blue-dark"
           />
-          Sólo en el local
+          Sólo activos
         </label>
       </div>
 
@@ -140,41 +199,130 @@ export default function LocalStockManager({ initialProducts }: LocalStockManager
         ) : (
           <ul className="divide-y divide-brand-black/5">
             {filtered.map((p) => (
-              <li
+              <ProductRow
                 key={p.id}
-                className="flex items-center gap-3 px-3 py-2 hover:bg-brand-cream/50"
-              >
-                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md bg-brand-cream">
-                  <Image
-                    src={p.image || "/placeholder.svg"}
-                    alt=""
-                    fill
-                    sizes="48px"
-                    className="object-contain p-1"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-brand-black">
-                    {p.name}
-                  </p>
-                  <p className="truncate text-[11px] text-brand-black/55">
-                    {p.marca || "—"} · {categoryLabel(p.category)}
-                  </p>
-                </div>
-                <Switch
-                  checked={p.in_local_stock}
-                  onCheckedChange={(v) => handleToggle(p.id, v)}
-                  aria-label={
-                    p.in_local_stock
-                      ? `Quitar ${p.name} del stock local`
-                      : `Marcar ${p.name} como en stock local`
-                  }
-                />
-              </li>
+                product={p}
+                onToggle={handleToggle}
+                onCountChange={handleCountChange}
+              />
             ))}
           </ul>
         )}
       </div>
+    </div>
+  )
+}
+
+function ProductRow({
+  product: p,
+  onToggle,
+  onCountChange,
+}: {
+  product: Product
+  onToggle: (id: number, next: boolean) => void
+  onCountChange: (id: number, next: number) => void
+}) {
+  const isActive = p.in_local_stock
+  const count = p.local_stock_count ?? 0
+  const isOutOfStock = isActive && count === 0
+
+  return (
+    <li
+      className={`flex items-center gap-3 px-3 py-2 ${
+        isOutOfStock ? "bg-[hsl(var(--status-warning))]/5" : "hover:bg-brand-cream/50"
+      }`}
+    >
+      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md bg-brand-cream">
+        <Image
+          src={p.image || "/placeholder.svg"}
+          alt=""
+          fill
+          sizes="48px"
+          className="object-contain p-1"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <p className="truncate text-sm font-semibold text-brand-black">
+            {p.name}
+          </p>
+          {isOutOfStock && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[hsl(var(--status-warning))]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[hsl(var(--status-warning))]">
+              <AlertCircle className="h-3 w-3" />
+              Agotado
+            </span>
+          )}
+        </div>
+        <p className="truncate text-[11px] text-brand-black/55">
+          {p.marca || "—"} · {categoryLabel(p.category)}
+        </p>
+      </div>
+
+      {/* Count stepper, only meaningful when active */}
+      {isActive && (
+        <CountStepper
+          value={count}
+          onChange={(v) => onCountChange(p.id, v)}
+          aria-label={`Cantidad de ${p.name} en el local`}
+        />
+      )}
+
+      <Switch
+        checked={p.in_local_stock}
+        onCheckedChange={(v) => onToggle(p.id, v)}
+        aria-label={
+          p.in_local_stock
+            ? `Quitar ${p.name} del stock local`
+            : `Marcar ${p.name} como en stock local`
+        }
+      />
+    </li>
+  )
+}
+
+function CountStepper({
+  value,
+  onChange,
+  ...rest
+}: {
+  value: number
+  onChange: (next: number) => void
+  "aria-label"?: string
+}) {
+  return (
+    <div
+      className="inline-flex items-center overflow-hidden rounded-md border border-brand-black/15 bg-white"
+      {...rest}
+    >
+      <button
+        type="button"
+        onClick={() => onChange(Math.max(0, value - 1))}
+        disabled={value <= 0}
+        aria-label="Restar uno"
+        className="flex h-8 w-8 items-center justify-center text-brand-black/70 hover:bg-brand-black/5 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        <Minus className="h-3.5 w-3.5" />
+      </button>
+      <input
+        type="number"
+        min={0}
+        inputMode="numeric"
+        value={value}
+        onChange={(e) => {
+          const n = Number(e.target.value)
+          if (!Number.isFinite(n)) return
+          onChange(Math.max(0, Math.floor(n)))
+        }}
+        className="h-8 w-12 border-x border-brand-black/15 bg-white text-center text-sm font-semibold text-brand-black focus:outline-none focus:ring-2 focus:ring-brand-blue-dark [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+      />
+      <button
+        type="button"
+        onClick={() => onChange(value + 1)}
+        aria-label="Sumar uno"
+        className="flex h-8 w-8 items-center justify-center text-brand-black/70 hover:bg-brand-black/5"
+      >
+        <Plus className="h-3.5 w-3.5" />
+      </button>
     </div>
   )
 }

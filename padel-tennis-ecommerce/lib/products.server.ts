@@ -171,6 +171,10 @@ export async function getLocalStockProducts(category?: string, limit: number = 8
     .from("productos_fullspin")
     .select("*")
     .eq("in_local_stock", true)
+    // Hide products that have run out of physical units even if the
+    // `in_local_stock` flag is still on (admin keeps the flag, just edits
+    // the count down to 0 when something sells out).
+    .gt("local_stock_count", 0)
     .eq("in_stock", true)
     .eq("coming_soon", false)
     .order("in_offer", { ascending: false })
@@ -188,6 +192,39 @@ export async function getLocalStockProducts(category?: string, limit: number = 8
 
   if (error) {
     console.error("Error fetching local-stock products:", error)
+    return []
+  }
+  return data ?? []
+}
+
+/**
+ * Products flagged `is_novelty = true`. Excludes coming-soon items and
+ * respects `in_stock`. Optionally filtered by category.
+ */
+export async function getNoveltyProducts(category?: string, limit: number = 8) {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  let query = supabase
+    .from("productos_fullspin")
+    .select("*")
+    .eq("is_novelty", true)
+    .eq("in_stock", true)
+    .eq("coming_soon", false)
+    .order("created_at", { ascending: false })
+
+  if (category) {
+    query = query.eq("category", category)
+  }
+
+  if (limit) {
+    query = query.limit(limit)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error("Error fetching novelty products:", error)
     return []
   }
   return data ?? []

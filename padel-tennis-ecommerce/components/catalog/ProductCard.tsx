@@ -99,11 +99,11 @@ export default function ProductCard({ product, className }: ProductCardProps) {
               </span>
             </p>
           </div>
-          <div className="rounded-md bg-brand-blue-dark/5 px-2 py-1">
-            <p className="text-sm font-bold text-brand-blue-dark leading-tight">
+          <div className="rounded-md bg-brand-blue-dark/5 px-2 py-1.5">
+            <p className="text-xl font-extrabold text-brand-blue-dark leading-tight">
               {formatPrice(finalPrice)}
             </p>
-            <p className="text-[10px] text-brand-black/60 leading-tight">
+            <p className="text-[11px] text-brand-black/60 leading-tight">
               con transferencia o efectivo
             </p>
           </div>
