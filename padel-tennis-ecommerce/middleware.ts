@@ -2,10 +2,24 @@ import { NextResponse, type NextRequest } from "next/server"
 import { createClient } from "@/lib/supabase/middleware"
 
 export async function middleware(request: NextRequest) {
+  const staleAuthCookies = request.cookies
+    .getAll()
+    .filter((c) => c.name.startsWith("sb-") && c.name.includes("auth-token"))
+
+  if (staleAuthCookies.length > 0) {
+    const probe = createClient(request).supabase
+    const { error } = await probe.auth.getUser()
+    if (error?.code === "refresh_token_not_found") {
+      const cleaned = NextResponse.redirect(request.nextUrl)
+      for (const c of staleAuthCookies) {
+        cleaned.cookies.delete(c.name)
+      }
+      return cleaned
+    }
+  }
+
   const { supabase, response } = createClient(request)
 
-  // Refresh session if expired - required for Server Components
-  // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
   const {
     data: { session },
   } = await supabase.auth.getSession()
@@ -15,11 +29,9 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   if (!session && request.nextUrl.pathname.startsWith("/admin")) {
-    // No session, redirect to login
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
-  // Auth condition not met, redirect to home page.
   if (user && request.nextUrl.pathname.startsWith("/login")) {
     return NextResponse.redirect(new URL("/", request.url))
   }
@@ -28,5 +40,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
-} 
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif)$).*)",
+  ],
+}
