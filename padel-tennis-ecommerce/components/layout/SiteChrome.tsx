@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation"
 
 import Footer from "./Footer"
 import Header from "./Header"
+import InlineSearchResults from "./InlineSearchResults"
+import { SearchProvider, useSearch } from "./SearchProvider"
 
 const HIDDEN_PREFIXES = ["/admin", "/login"]
 
@@ -20,10 +22,22 @@ export default function SiteChrome({
   if (hideChrome) return <>{children}</>
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </div>
+    <SearchProvider>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <SearchAwareMain>{children}</SearchAwareMain>
+        <Footer />
+      </div>
+    </SearchProvider>
+  )
+}
+
+function SearchAwareMain({ children }: { children: React.ReactNode }) {
+  const { isActive } = useSearch()
+
+  return (
+    <main className="flex-1">
+      {isActive ? <InlineSearchResults /> : children}
+    </main>
   )
 }

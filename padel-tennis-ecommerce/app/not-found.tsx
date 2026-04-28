@@ -20,14 +20,11 @@ export default function NotFound() {
         </h1>
         <p className="mt-4 text-base text-brand-black/70">
           El enlace puede estar roto o la página fue movida. Probá desde el
-          inicio o buscá un producto.
+          inicio.
         </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-8 flex justify-center">
           <Button asChild size="lg" variant="black">
             <Link href="/">Volver al inicio</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/buscar">Buscar productos</Link>
           </Button>
         </div>
       </div>

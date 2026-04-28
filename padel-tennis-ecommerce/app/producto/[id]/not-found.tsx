@@ -16,12 +16,9 @@ export default function ProductNotFound() {
           Puede que ya no esté disponible o que el enlace no sea correcto.
           Mirá el catálogo completo o consultanos por WhatsApp.
         </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-8 flex justify-center">
           <Button asChild size="lg" variant="black">
             <Link href="/">Volver al inicio</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/buscar">Buscar productos</Link>
           </Button>
         </div>
       </div>

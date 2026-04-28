@@ -25,6 +25,7 @@ export default function ProductBrandLogo({
         height={logo.height}
         style={{ maxHeight, width: "auto" }}
         className={className}
+        unoptimized
       />
     )
   }

@@ -163,6 +163,7 @@ export default function BrandLogosCarousel({ brands }: BrandLogosCarouselProps) 
                                 height={logo.height}
                                 sizes="(max-width: 640px) 30vw, (max-width: 1024px) 18vw, 220px"
                                 className={`w-auto object-contain grayscale opacity-70 transition-all duration-200 hover:opacity-100 hover:grayscale-0 ${heightClass}`}
+                                unoptimized
                               />
                             </div>
                           )
