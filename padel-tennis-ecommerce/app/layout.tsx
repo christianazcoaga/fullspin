@@ -4,6 +4,8 @@ import './globals.css'
 import { Analytics } from "@vercel/analytics/next"
 import Preloader from "@/components/Preloader"
 import SiteChrome from "@/components/layout/SiteChrome"
+import { BrandLogosProvider } from "@/components/layout/BrandLogosProvider"
+import { getAllBrands } from "@/lib/brands.server"
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ['latin'],
@@ -63,16 +65,24 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const brands = await getAllBrands()
+  const brandLogos: Record<string, string> = {}
+  for (const b of brands) {
+    if (b.logo_url) brandLogos[b.name] = b.logo_url
+  }
+
   return (
     <html lang="es" className={`${hankenGrotesk.variable} ${inter.variable}`}>
       <body className="font-sans">
         <Preloader />
-        <SiteChrome>{children}</SiteChrome>
+        <BrandLogosProvider logos={brandLogos}>
+          <SiteChrome>{children}</SiteChrome>
+        </BrandLogosProvider>
         <Analytics />
       </body>
     </html>

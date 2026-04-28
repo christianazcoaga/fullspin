@@ -67,8 +67,8 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 border-t border-brand-black/5 p-3">
-        <div className="flex h-7 items-center">
-          <ProductBrandLogo marca={product.marca} maxHeight={24} />
+        <div className="flex h-10 items-center">
+          <ProductBrandLogo marca={product.marca} maxHeight={36} />
         </div>
 
         <Link

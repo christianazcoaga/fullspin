@@ -5,6 +5,7 @@ import { ArrowRight, MessageCircle, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import OptimizedImage from "@/components/OptimizedImage"
+import ProductBrandLogo from "@/components/catalog/ProductBrandLogo"
 import { gsap } from "@/lib/gsap"
 import {
   creditTotalPrice,
@@ -178,7 +179,9 @@ function OfferCard({
           {product.name}
         </Link>
         {product.marca && (
-          <p className="text-xs text-brand-black/55">{product.marca}</p>
+          <div className="flex h-9 items-center">
+            <ProductBrandLogo marca={product.marca} maxHeight={32} />
+          </div>
         )}
 
         <div className="mt-auto space-y-1.5">
