@@ -43,16 +43,20 @@ export default function Preloader() {
     setIsVisible(true)
     setIsFading(false)
 
-    const timer = window.setTimeout(() => {
+    let fadeTimer: number | undefined
+    const holdTimer = window.setTimeout(() => {
       setIsFading(true)
-      window.setTimeout(() => {
+      fadeTimer = window.setTimeout(() => {
         setIsVisible(false)
         // Notify any home-section animations waiting on the splash.
         setPreloaderActive(false)
       }, FADE_OUT_MS)
     }, hold)
 
-    return () => window.clearTimeout(timer)
+    return () => {
+      window.clearTimeout(holdTimer)
+      if (fadeTimer !== undefined) window.clearTimeout(fadeTimer)
+    }
   }, [pathname, isAdmin])
 
   // GSAP entrance choreography.
