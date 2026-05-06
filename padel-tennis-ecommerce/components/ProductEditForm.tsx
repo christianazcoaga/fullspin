@@ -29,6 +29,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { updateProductAction, deleteProductAction } from "@/app/admin/actions"
+import { convertUsdToArs, formatPrice } from "@/lib/price-utils"
 
 interface ProductEditFormProps {
   product: Product
@@ -90,17 +91,23 @@ export function ProductEditForm({
   const [subcategory, setSubcategory] = useState(product.subcategory)
   const [name, setName] = useState(product.name)
   const [marca, setMarca] = useState(product.marca)
-  const [priceArs, setPriceArs] = useState(product.price)
-  const [calculatedUsdPrice, setCalculatedUsdPrice] = useState(product.price_usd || 0)
+  const [priceMode, setPriceMode] = useState<"usd" | "ars">("usd")
+  const [priceUsd, setPriceUsd] = useState<number>(product.price_usd || 0)
+  const [priceArs, setPriceArs] = useState<number>(product.price || 0)
   const [description, setDescription] = useState(product.description)
 
-  const handlePriceArsChange = (value: number) => {
-    setPriceArs(value)
-    if (value > 0) {
-      const usdPrice = value / conversionRate
-      setCalculatedUsdPrice(usdPrice)
-    }
-  }
+  // Source of truth depends on the mode the admin is editing in.
+  // - usd mode: ARS is derived (USD × rate, rounded to thousand)
+  // - ars mode: USD is derived (ARS / rate, kept so global recalc still works
+  //   when the conversion rate changes)
+  const finalArsPrice =
+    priceMode === "usd"
+      ? priceUsd > 0 ? convertUsdToArs(priceUsd, conversionRate) : 0
+      : priceArs
+  const finalUsdPrice =
+    priceMode === "usd"
+      ? priceUsd
+      : priceArs > 0 && conversionRate > 0 ? priceArs / conversionRate : 0
 
   // Sincroniza los estados locales con el producto seleccionado
   useEffect(() => {
@@ -122,8 +129,11 @@ export function ProductEditForm({
     }
     setName(product.name)
     setMarca(product.marca)
-    setPriceArs(product.price)
-    setCalculatedUsdPrice(product.price_usd || 0)
+    setPriceUsd(product.price_usd || 0)
+    setPriceArs(product.price || 0)
+    // Default to USD mode unless the product clearly has only an ARS value
+    // (legacy product without a USD base set).
+    setPriceMode((product.price_usd ?? 0) > 0 ? "usd" : "ars")
     setDescription(product.description)
   }, [product])
 
@@ -135,8 +145,8 @@ export function ProductEditForm({
     formData.set("in_offer", inOffer ? "true" : "false")
     formData.set("offer_percent", offerPercent.toString())
     formData.set("coming_soon", comingSoon ? "true" : "false")
-    formData.set("price", priceArs.toString())
-    formData.set("price_usd", calculatedUsdPrice.toString())
+    formData.set("price", finalArsPrice.toString())
+    formData.set("price_usd", finalUsdPrice.toString())
     const result = await updateProductAction(product.id, formData)
     if (result.success) {
       setSuccess(true)
@@ -194,26 +204,85 @@ export function ProductEditForm({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="price_ars" className="text-sm">Precio Base (ARS)</Label>
-            <Input 
-              id="price_ars" 
-              name="price_ars" 
-              type="number" 
-              step="0.01" 
-              value={priceArs}
-              onChange={(e) => handlePriceArsChange(Number(e.target.value))}
-              required 
-              className="h-9" 
-            />
-            {calculatedUsdPrice > 0 && (
-              <div className="bg-blue-50 rounded-lg p-2 border border-blue-200">
-                <p className="text-xs text-blue-900">
-                  <span className="font-semibold">Precio calculado en USD:</span>{" "}
-                  ${calculatedUsdPrice.toFixed(2)}
-                </p>
-                <p className="text-xs text-blue-700">
-                  Tasa: 1 USD = {conversionRate.toLocaleString('es-AR')} ARS
-                </p>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm">Cargar precio en</Label>
+              <div className="inline-flex rounded-lg border border-brand-black/15 bg-white p-0.5 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setPriceMode("usd")}
+                  className={`px-3 py-1 rounded-md transition-colors ${
+                    priceMode === "usd"
+                      ? "bg-brand-blue-dark text-white"
+                      : "text-brand-black/60 hover:text-brand-black"
+                  }`}
+                >
+                  USD
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPriceMode("ars")}
+                  className={`px-3 py-1 rounded-md transition-colors ${
+                    priceMode === "ars"
+                      ? "bg-brand-blue-dark text-white"
+                      : "text-brand-black/60 hover:text-brand-black"
+                  }`}
+                >
+                  ARS
+                </button>
+              </div>
+            </div>
+
+            {priceMode === "usd" ? (
+              <Input
+                id="price_usd"
+                name="price_usd_input"
+                type="number"
+                step="0.01"
+                min="0"
+                value={priceUsd || ""}
+                onChange={(e) => setPriceUsd(Number(e.target.value))}
+                placeholder="Ej: 100.00"
+                required
+                className="h-9"
+              />
+            ) : (
+              <Input
+                id="price_ars"
+                name="price_ars_input"
+                type="number"
+                step="1"
+                min="0"
+                value={priceArs || ""}
+                onChange={(e) => setPriceArs(Number(e.target.value))}
+                placeholder="Ej: 145000"
+                required
+                className="h-9"
+              />
+            )}
+
+            {finalArsPrice > 0 && (
+              <div className="bg-blue-50 rounded-lg p-2 border border-blue-200 space-y-0.5">
+                {priceMode === "usd" ? (
+                  <>
+                    <p className="text-xs text-blue-900">
+                      <span className="font-semibold">Precio público en ARS:</span>{" "}
+                      {formatPrice(finalArsPrice)}
+                    </p>
+                    <p className="text-xs text-blue-700">
+                      Tasa 1 USD = {conversionRate.toLocaleString('es-AR')} ARS · redondeado al millar
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-xs text-blue-900">
+                      <span className="font-semibold">Equivale a:</span>{" "}
+                      USD {finalUsdPrice.toFixed(2)}
+                    </p>
+                    <p className="text-xs text-blue-700">
+                      Si cambiás la tasa global, este precio se recalculará desde USD {finalUsdPrice.toFixed(2)}.
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select"
 import { ImageUpload } from "@/components/image-upload"
 import { createProductAction } from "@/app/admin/actions"
+import { convertUsdToArs, formatPrice } from "@/lib/price-utils"
 
 interface ProductCreateFormProps {
   onProductCreated: (newProduct: Product) => void
@@ -76,19 +77,25 @@ export function ProductCreateForm({
   const [inOffer, setInOffer] = useState(false)
   const [offerPercent, setOfferPercent] = useState(0)
   const [comingSoon, setComingSoon] = useState(false)
+  const [priceMode, setPriceMode] = useState<"usd" | "ars">("usd")
+  const [priceUsd, setPriceUsd] = useState<string>("")
   const [priceArs, setPriceArs] = useState<string>("")
-  const [calculatedUsdPrice, setCalculatedUsdPrice] = useState<number>(0)
 
-  const handlePriceArsChange = (value: string) => {
-    setPriceArs(value)
-    const parsedArs = parseFloat(value)
-    if (!isNaN(parsedArs) && parsedArs > 0) {
-      const usdPrice = parsedArs / conversionRate
-      setCalculatedUsdPrice(usdPrice)
-    } else {
-      setCalculatedUsdPrice(0)
-    }
-  }
+  const parsedUsd = parseFloat(priceUsd)
+  const parsedArs = parseFloat(priceArs)
+  const usdValid = !isNaN(parsedUsd) && parsedUsd > 0
+  const arsValid = !isNaN(parsedArs) && parsedArs > 0
+
+  // Same dual-mode logic as the edit form: whichever side the admin types
+  // on becomes the source of truth, the other is derived.
+  const finalArsPrice =
+    priceMode === "usd"
+      ? usdValid ? convertUsdToArs(parsedUsd, conversionRate) : 0
+      : arsValid ? parsedArs : 0
+  const finalUsdPrice =
+    priceMode === "usd"
+      ? usdValid ? parsedUsd : 0
+      : arsValid && conversionRate > 0 ? parsedArs / conversionRate : 0
 
   const handleCreateAction = async (formData: FormData) => {
     setError(null)
@@ -100,8 +107,8 @@ export function ProductCreateForm({
     const productData = {
       name: formData.get("name") as string,
       marca,
-      price: parseFloat(priceArs),
-      price_usd: calculatedUsdPrice,
+      price: finalArsPrice,
+      price_usd: finalUsdPrice,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
       subcategory: formData.get("subcategory") as string,
@@ -182,22 +189,74 @@ export function ProductCreateForm({
           </div>
         </div>
 
-        <div>
-          <Label htmlFor="price_ars">Precio Base (ARS)</Label>
-          <Input
-            id="price_ars"
-            name="price_ars"
-            type="number"
-            step="0.01"
-            value={priceArs}
-            onChange={(e) => handlePriceArsChange(e.target.value)}
-            placeholder="Ej: 150000.00"
-            required
-          />
-          {calculatedUsdPrice > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label className="text-sm">Cargar precio en</Label>
+            <div className="inline-flex rounded-lg border border-brand-black/15 bg-white p-0.5 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setPriceMode("usd")}
+                className={`px-3 py-1 rounded-md transition-colors ${
+                  priceMode === "usd"
+                    ? "bg-brand-blue-dark text-white"
+                    : "text-brand-black/60 hover:text-brand-black"
+                }`}
+              >
+                USD
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceMode("ars")}
+                className={`px-3 py-1 rounded-md transition-colors ${
+                  priceMode === "ars"
+                    ? "bg-brand-blue-dark text-white"
+                    : "text-brand-black/60 hover:text-brand-black"
+                }`}
+              >
+                ARS
+              </button>
+            </div>
+          </div>
+
+          {priceMode === "usd" ? (
+            <Input
+              id="price_usd"
+              name="price_usd_input"
+              type="number"
+              step="0.01"
+              min="0"
+              value={priceUsd}
+              onChange={(e) => setPriceUsd(e.target.value)}
+              placeholder="Ej: 100.00"
+              required
+            />
+          ) : (
+            <Input
+              id="price_ars"
+              name="price_ars_input"
+              type="number"
+              step="1"
+              min="0"
+              value={priceArs}
+              onChange={(e) => setPriceArs(e.target.value)}
+              placeholder="Ej: 145000"
+              required
+            />
+          )}
+
+          {finalArsPrice > 0 && (
             <p className="mt-1.5 text-xs text-brand-black/60">
-              ≈ USD {calculatedUsdPrice.toFixed(2)} · Tasa 1 USD ={" "}
-              {conversionRate.toLocaleString("es-AR")} ARS
+              {priceMode === "usd" ? (
+                <>
+                  Precio público: {formatPrice(finalArsPrice)} · Tasa 1 USD ={" "}
+                  {conversionRate.toLocaleString("es-AR")} ARS · redondeado al millar
+                </>
+              ) : (
+                <>
+                  Equivale a USD {finalUsdPrice.toFixed(2)}. Si cambiás la tasa global,
+                  el precio se recalculará desde ese valor.
+                </>
+              )}
             </p>
           )}
         </div>
