@@ -55,3 +55,9 @@ firebase.json
 *.credentials
 *.auth.json
 *.token.json
+
+# Image-framing scripts: locally generated artifacts that contain
+# Supabase signed URLs (long-lived JWT tokens) — must never be committed
+scripts/cropped/
+scripts/product-image-framing.csv
+scripts/image-fix-*.json
