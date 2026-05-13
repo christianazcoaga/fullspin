@@ -1,0 +1,241 @@
+{
+  "ts": 1778700919438,
+  "threshold": 0.85,
+  "padding": 0.08,
+  "results": [
+    {
+      "id": 301,
+      "name": "Pelotas Wilson Padel x3",
+      "before": "67.5",
+      "after": "84.0",
+      "objectPath": "products/301-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/301-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMzAxLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyMSwiZXhwIjoyMDk0MDYwOTIxfQ.jzCs1uwgD0lKy6cqnaBcXNJaw0yJHyYZgHCY6Yw07qU",
+      "ok": true
+    },
+    {
+      "id": 297,
+      "name": "Blister  Overgrips Wilson Pro Comfort Blanco x12",
+      "before": "67.6",
+      "after": "84.0",
+      "objectPath": "products/297-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/297-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjk3LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyMiwiZXhwIjoyMDk0MDYwOTIyfQ.3KoIqZQasADysSb075NGVQiUbcz2MSTidaBCPJBFRYA",
+      "ok": true
+    },
+    {
+      "id": 289,
+      "name": "Wilson LS V3",
+      "before": "67.6",
+      "after": "84.0",
+      "objectPath": "products/289-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/289-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjg5LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyNCwiZXhwIjoyMDk0MDYwOTI0fQ.Q9tOytY-HDHKfTICFVubptidkJ4pcmNvE5xbdI3J70c",
+      "ok": true
+    },
+    {
+      "id": 294,
+      "name": "Overgrip Pro Padel x3",
+      "before": "70.7",
+      "after": "84.0",
+      "objectPath": "products/294-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/294-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjk0LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyNSwiZXhwIjoyMDk0MDYwOTI1fQ.J32T4do65CWJp1qBhcqg8tlFoI9q-vA0bdzErU85g1Q",
+      "ok": true
+    },
+    {
+      "id": 155,
+      "name": "Adidas muñequera",
+      "before": "71.9",
+      "after": "84.0",
+      "objectPath": "products/155-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/155-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTU1LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyNiwiZXhwIjoyMDk0MDYwOTI2fQ.Mpk7W585p1n4XbqI-8QNiqIF9jUc5iy6SgPy6OJVtNk",
+      "ok": true
+    },
+    {
+      "id": 276,
+      "name": "Adidas Arrow Hit CTRL 2026",
+      "before": "78.0",
+      "after": "84.0",
+      "objectPath": "products/276-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/276-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjc2LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyNywiZXhwIjoyMDk0MDYwOTI3fQ.lusfW2plyqqlnFORpBPcXseMgBZtd9iFq4Qs9km7aR8",
+      "ok": true
+    },
+    {
+      "id": 153,
+      "name": "Wilson Roland Garros X3 ",
+      "before": "78.9",
+      "after": "84.0",
+      "objectPath": "products/153-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/153-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTUzLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyOCwiZXhwIjoyMDk0MDYwOTI4fQ.V0d8cYwpreBoEmOsDdE6B92WgGaUs7Bx5fugdIL25P8",
+      "ok": true
+    },
+    {
+      "id": 179,
+      "name": "Butterfly Limpiador Clean Care",
+      "before": "79.5",
+      "after": "84.0",
+      "objectPath": "products/179-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/179-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTc5LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkyOSwiZXhwIjoyMDk0MDYwOTI5fQ.otFpoRLHCnO29TPzFLqx8MDJmz5lIco82ZDzQqzIuN4",
+      "ok": true
+    },
+    {
+      "id": 170,
+      "name": "Butterfly Muñequera",
+      "before": "80.0",
+      "after": "84.0",
+      "objectPath": "products/170-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/170-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTcwLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzMCwiZXhwIjoyMDk0MDYwOTMwfQ.6UWHF1Tj-jTkNjJlLKqgV-qY5olzpKqCcNiTBts0sFE",
+      "ok": true
+    },
+    {
+      "id": 291,
+      "name": "Wilson Endure V1 2026",
+      "before": "80.3",
+      "after": "84.0",
+      "objectPath": "products/291-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/291-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjkxLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzMiwiZXhwIjoyMDk0MDYwOTMyfQ.W37JvknYtT6iyToMoh_DsXCr73CCotr3mow5LTllDnc",
+      "ok": true
+    },
+    {
+      "id": 292,
+      "name": "Wilson Endure LS 2026",
+      "before": "80.3",
+      "after": "84.0",
+      "objectPath": "products/292-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/292-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjkyLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzMywiZXhwIjoyMDk0MDYwOTMzfQ.U7eozq8CyamtbmsCgXP28N7MIUfaQ-961MzE4lD1oeE",
+      "ok": true
+    },
+    {
+      "id": 117,
+      "name": "Butterfly Petr Korbel",
+      "before": "80.6",
+      "after": "84.0",
+      "objectPath": "products/117-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/117-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTE3LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzNSwiZXhwIjoyMDk0MDYwOTM1fQ.O0Y4IYoqDMSk98sYFZvqEBc8cMSZOax8do_ZOVLQ5yw",
+      "ok": true
+    },
+    {
+      "id": 184,
+      "name": "Butterfly Pelotas 3 Estrellas X6 Unidades",
+      "before": "80.6",
+      "after": "84.0",
+      "objectPath": "products/184-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/184-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTg0LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzNiwiZXhwIjoyMDk0MDYwOTM2fQ.Tb8Wsaw9hgFFptJZf-mQJYtYTtY2FAxpLit3cto3Sis",
+      "ok": true
+    },
+    {
+      "id": 288,
+      "name": "Wilson Bela LT V2.5",
+      "before": "82.4",
+      "after": "84.0",
+      "objectPath": "products/288-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/288-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjg4LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzNywiZXhwIjoyMDk0MDYwOTM3fQ.FFT8D0VE5cHJ5SeuGIdCtFYzOfQKkOTapkrKoK5QLAU",
+      "ok": true
+    },
+    {
+      "id": 225,
+      "name": "Wilson Super Tour Bag Red",
+      "before": "83.1",
+      "after": "84.0",
+      "objectPath": "products/225-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/225-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjI1LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDkzOCwiZXhwIjoyMDk0MDYwOTM4fQ.OJBXjva-VVr1JmsfDWR3VylUYnInennvAR95S_0Zsdo",
+      "ok": true
+    },
+    {
+      "id": 215,
+      "name": "Wilson Defy Pro V1",
+      "before": "83.4",
+      "after": "84.0",
+      "objectPath": "products/215-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/215-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjE1LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0MCwiZXhwIjoyMDk0MDYwOTQwfQ.7MmlugDyHit0mBJ8wgKNSdDkkthf_4ejotP3AElI34s",
+      "ok": true
+    },
+    {
+      "id": 216,
+      "name": "Wilson Bela V3",
+      "before": "83.4",
+      "after": "84.0",
+      "objectPath": "products/216-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/216-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjE2LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0MSwiZXhwIjoyMDk0MDYwOTQxfQ.RPIyyyi6GV87PSfNxwRdlDkobhNNaQ2YmQydNrxuaY4",
+      "ok": true
+    },
+    {
+      "id": 103,
+      "name": "Wilson Blade Team Pádel v2",
+      "before": "83.5",
+      "after": "84.0",
+      "objectPath": "products/103-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/103-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTAzLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0MiwiZXhwIjoyMDk0MDYwOTQyfQ.avpYH5es6j_Lub1G4WuexqG46XiE53xywWs_RJXTgeY",
+      "ok": true
+    },
+    {
+      "id": 213,
+      "name": "Wilson Bela Pro V3 ",
+      "before": "83.5",
+      "after": "84.0",
+      "objectPath": "products/213-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/213-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjEzLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0NSwiZXhwIjoyMDk0MDYwOTQ1fQ.DWrAZr7_7yWWuqC0u4MkZLl2b1_3SO-8B9Pt0k5bG1A",
+      "ok": true
+    },
+    {
+      "id": 290,
+      "name": "Wilson Endure Pro V1 2026",
+      "before": "83.5",
+      "after": "84.0",
+      "objectPath": "products/290-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/290-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjkwLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0NiwiZXhwIjoyMDk0MDYwOTQ2fQ.f62n6mCd3lKWXg_tcwjr3wOPGSiMUhYEpJ6AIS8GDEg",
+      "ok": true
+    },
+    {
+      "id": 107,
+      "name": "Wilson Blade Pro V3",
+      "before": "83.6",
+      "after": "84.0",
+      "objectPath": "products/107-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/107-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTA3LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0NywiZXhwIjoyMDk0MDYwOTQ3fQ.7ySnLsC-Km1ffXsNjnAvCOnDzMabXghz35YXuegJ8R4",
+      "ok": true
+    },
+    {
+      "id": 214,
+      "name": "Wilson Defy V1",
+      "before": "83.6",
+      "after": "84.0",
+      "objectPath": "products/214-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/214-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjE0LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk0OSwiZXhwIjoyMDk0MDYwOTQ5fQ.G4A5JXs4DEhUTHPrnOdrAv1d6Ea2z13-h4WDwJ2R5N0",
+      "ok": true
+    },
+    {
+      "id": 217,
+      "name": "Wilson Blade V3",
+      "before": "83.6",
+      "after": "84.0",
+      "objectPath": "products/217-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/217-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMjE3LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk1MCwiZXhwIjoyMDk0MDYwOTUwfQ.71naDGpPYWj6wK7-5IXY4V_Rnfw9UnYcb917zFWuEaw",
+      "ok": true
+    },
+    {
+      "id": 136,
+      "name": "Adidas Balls Speed RX",
+      "before": "83.8",
+      "after": "84.0",
+      "objectPath": "products/136-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/136-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTM2LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk1MSwiZXhwIjoyMDk0MDYwOTUxfQ.P3_kzZXOqtQzk2IJMS4FDdb_n0sPG3gh7OfQFn9_zus",
+      "ok": true
+    },
+    {
+      "id": 143,
+      "name": "Wilson Premier Pádel Speed X3 ",
+      "before": "84.5",
+      "after": "84.0",
+      "objectPath": "products/143-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/143-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTQzLWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk1MiwiZXhwIjoyMDk0MDYwOTUyfQ.K0nDZafhamkZV_aZyBBieW7FMwkrJ1lrDPCw7-UqUPE",
+      "ok": true
+    },
+    {
+      "id": 168,
+      "name": "Butterfly Estuche Logo Individual",
+      "before": "84.9",
+      "after": "84.0",
+      "objectPath": "products/168-fixed-1778700919438.webp",
+      "newUrl": "https://itllufoljyibrrzlwapm.supabase.co/storage/v1/object/sign/images/products/168-fixed-1778700919438.webp?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMGI4MTEwOC05MjM2LTRmOGQtYWVmMC0xYmFjOWIwMGNmNjAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcHJvZHVjdHMvMTY4LWZpeGVkLTE3Nzg3MDA5MTk0Mzgud2VicCIsImlhdCI6MTc3ODcwMDk1MywiZXhwIjoyMDk0MDYwOTUzfQ.8qoYq2k9n3afLoRslr-N4tiTk52oWhm0ATlZdodELBM",
+      "ok": true
+    }
+  ]
+}

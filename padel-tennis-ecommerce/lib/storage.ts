@@ -1,8 +1,88 @@
+import sharp from "sharp"
 import { createClient } from "./supabase/server"
 import { cookies } from "next/headers"
 import { MAX_ADDITIONAL_IMAGES } from "./products"
 
 const BUCKET_NAME = "images"
+
+// Product image normalization: detect non-white bbox, recanvas to a square
+// white background with a fixed relative padding, then resize to a uniform
+// output size. Guarantees every product photo occupies a consistent share of
+// the card area in the grid. Keep these in sync with
+// scripts/fix-product-image-framing.mjs.
+const NORMALIZE_PADDING = 0.08
+const NORMALIZE_OUTPUT_SIZE = 1000
+const WHITE_THRESHOLD = 238
+
+async function normalizeProductImageBuffer(input: Buffer): Promise<Buffer> {
+  const flattened = sharp(input).flatten({ background: "#ffffff" })
+  const { data, info } = await flattened
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+  const { width: w, height: h, channels } = info
+
+  let minX = w
+  let minY = h
+  let maxX = -1
+  let maxY = -1
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * channels
+      if (
+        data[i] < WHITE_THRESHOLD ||
+        data[i + 1] < WHITE_THRESHOLD ||
+        data[i + 2] < WHITE_THRESHOLD
+      ) {
+        if (x < minX) minX = x
+        if (x > maxX) maxX = x
+        if (y < minY) minY = y
+        if (y > maxY) maxY = y
+      }
+    }
+  }
+  if (maxX < 0) {
+    // Blank image — return a webp-encoded copy at the target size rather than fail.
+    return sharp(input)
+      .flatten({ background: "#ffffff" })
+      .resize(NORMALIZE_OUTPUT_SIZE, NORMALIZE_OUTPUT_SIZE, {
+        fit: "contain",
+        background: "#ffffff",
+      })
+      .webp({ quality: 88 })
+      .toBuffer()
+  }
+
+  const bboxW = maxX - minX + 1
+  const bboxH = maxY - minY + 1
+  const longBbox = Math.max(bboxW, bboxH)
+  const canvas = Math.round(longBbox / (1 - 2 * NORMALIZE_PADDING))
+  const padTop = Math.round((canvas - bboxH) / 2)
+  const padLeft = Math.round((canvas - bboxW) / 2)
+  const padBottom = canvas - bboxH - padTop
+  const padRight = canvas - bboxW - padLeft
+
+  // sharp applies `extend` after `resize` regardless of call order, so we
+  // materialize extract+extend to a buffer first, then resize separately.
+  const padded = await sharp(input)
+    .flatten({ background: "#ffffff" })
+    .extract({ left: minX, top: minY, width: bboxW, height: bboxH })
+    .extend({
+      top: padTop,
+      bottom: padBottom,
+      left: padLeft,
+      right: padRight,
+      background: "#ffffff",
+    })
+    .toBuffer()
+
+  return sharp(padded)
+    .resize(NORMALIZE_OUTPUT_SIZE, NORMALIZE_OUTPUT_SIZE, {
+      fit: "contain",
+      background: "#ffffff",
+    })
+    .webp({ quality: 88 })
+    .toBuffer()
+}
 
 export async function uploadProductImage(file: File, productId: number | string) {
   const cookieStore = await cookies()
@@ -12,11 +92,22 @@ export async function uploadProductImage(file: File, productId: number | string)
     throw new Error("No file provided for upload.")
   }
 
-  const fileExt = file.name.split(".").pop()
+  const original = Buffer.from(await file.arrayBuffer())
+  let normalized: Buffer
+  try {
+    normalized = await normalizeProductImageBuffer(original)
+  } catch (err) {
+    console.error("Image normalization failed, uploading original:", err)
+    normalized = original
+  }
+  const fileExt = normalized === original ? (file.name.split(".").pop() ?? "bin") : "webp"
+  const contentType = normalized === original ? file.type || "application/octet-stream" : "image/webp"
   const fileName = `${productId}-${Date.now()}.${fileExt}`
   const filePath = `products/${fileName}`
 
-  const { error: uploadError } = await supabase.storage.from(BUCKET_NAME).upload(filePath, file)
+  const { error: uploadError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .upload(filePath, normalized, { contentType })
 
   if (uploadError) {
     console.error("Error uploading file:", uploadError)

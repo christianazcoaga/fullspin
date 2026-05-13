@@ -1,10 +1,10 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, MessageCircle, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import OptimizedImage from "@/components/OptimizedImage"
 import ProductBrandLogo from "@/components/catalog/ProductBrandLogo"
 import { gsap } from "@/lib/gsap"
 import {
@@ -162,12 +162,12 @@ function OfferCard({
             Envío gratis
           </span>
         )}
-        <OptimizedImage
+        <Image
           src={product.image}
           alt={product.name}
-          width={320}
-          height={320}
-          className="h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.03]"
+          fill
+          sizes="(min-width: 1280px) 23vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+          className="object-contain p-5 transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </Link>
 
