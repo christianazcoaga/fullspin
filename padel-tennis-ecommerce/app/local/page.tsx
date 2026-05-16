@@ -1,75 +1,14 @@
 import type { Metadata } from "next"
 import { ArrowRight, CalendarClock, MapPin, MessageCircle, Store } from "lucide-react"
 
-import ProductCard from "@/components/catalog/ProductCard"
+import LocalProductBrowser from "@/components/local/LocalProductBrowser"
 import { Button } from "@/components/ui/button"
-import { categoryLabel, subcategoryLabel } from "@/lib/catalog"
-import type { Product } from "@/lib/products"
 import { getLocalStockProducts } from "@/lib/products.server"
 
 const SITE_URL = "https://www.fullspinarg.com"
 const WHATSAPP_HREF = `https://wa.me/543705103672?text=${encodeURIComponent(
   "Hola! Quería coordinar una visita al local para ver los productos en persona."
 )}`
-
-/** Sort + group products into (category, subcategory) buckets so the page
- * shows neat blocks like "Padel · Palas" instead of an interleaved grid. */
-type ProductGroup = {
-  key: string
-  label: string
-  products: Product[]
-}
-
-const CATEGORY_ORDER: Record<string, number> = {
-  padel: 0,
-  tenis: 1,
-  "tenis-mesa": 2,
-}
-
-// Lower number = appears first inside its category. Palas/paletas/raquetas
-// (the headline product per sport) lead; accesorios always closes last.
-const SUBCATEGORY_ORDER: Record<string, number> = {
-  palas: 0,
-  paletas: 0,
-  raquetas: 0,
-  pelotas: 1,
-  bolsos: 2,
-  ropa: 3,
-  gomas: 4,
-  zapatillas: 5,
-  mesas: 6,
-  accesorios: 99, // always last
-}
-
-function groupByCategoryAndSubcategory(products: Product[]): ProductGroup[] {
-  // Stable sort: category (preferred order) → subcategory (custom order,
-  // see SUBCATEGORY_ORDER) → fallback alphabetical.
-  const sorted = [...products].sort((a, b) => {
-    const ca = CATEGORY_ORDER[a.category] ?? 99
-    const cb = CATEGORY_ORDER[b.category] ?? 99
-    if (ca !== cb) return ca - cb
-    const sa = SUBCATEGORY_ORDER[a.subcategory] ?? 50
-    const sb = SUBCATEGORY_ORDER[b.subcategory] ?? 50
-    if (sa !== sb) return sa - sb
-    return (a.subcategory ?? "").localeCompare(b.subcategory ?? "", "es")
-  })
-
-  const map = new Map<string, ProductGroup>()
-  for (const p of sorted) {
-    const key = `${p.category}::${p.subcategory ?? "otros"}`
-    let group = map.get(key)
-    if (!group) {
-      group = {
-        key,
-        label: `${categoryLabel(p.category)} · ${subcategoryLabel(p.subcategory)}`,
-        products: [],
-      }
-      map.set(key, group)
-    }
-    group.products.push(p)
-  }
-  return Array.from(map.values())
-}
 
 // Storefront location. Hard-coded here because it's the only place we render
 // it; if it shows up anywhere else later, lift to lib/store.ts.
@@ -222,10 +161,10 @@ export default async function LocalPage() {
         </div>
       </section>
 
-      {/* Product grid */}
+      {/* Product browser */}
       <section className="bg-brand-cream py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {products.length === 0 ? (
+        {products.length === 0 ? (
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="rounded-xl border border-dashed border-brand-black/15 bg-white p-10 text-center">
               <Store className="mx-auto mb-4 h-10 w-10 text-brand-black/30" />
               <h2 className="text-lg font-bold text-brand-black">
@@ -246,49 +185,10 @@ export default async function LocalPage() {
                 </Button>
               </div>
             </div>
-          ) : (
-            <>
-              <div className="mb-6 flex flex-col gap-1">
-                <h2 className="text-base font-semibold text-brand-black">
-                  {products.length}{" "}
-                  {products.length === 1 ? "producto" : "productos"} disponibles
-                  en el local
-                </h2>
-                <p className="text-xs text-brand-black/60">
-                  Coordiná tu visita por WhatsApp para verlos en persona.
-                </p>
-              </div>
-              <div className="space-y-12">
-                {groupByCategoryAndSubcategory(products).map((group) => (
-                  <section key={group.key} aria-labelledby={`group-${group.key}`}>
-                    <div className="mb-4 flex items-baseline gap-3 border-b border-brand-black/10 pb-2">
-                      <h3
-                        id={`group-${group.key}`}
-                        className="text-lg font-bold tracking-tight text-brand-black sm:text-xl"
-                      >
-                        {group.label}
-                      </h3>
-                      <span className="text-xs font-medium text-brand-black/55">
-                        {group.products.length}{" "}
-                        {group.products.length === 1 ? "producto" : "productos"}
-                      </span>
-                    </div>
-                    <ul className="flex flex-wrap justify-center gap-5">
-                      {group.products.map((product) => (
-                        <li
-                          key={product.id}
-                          className="flex w-full sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-2.5rem)/3)] xl:w-[calc((100%-3.75rem)/4)]"
-                        >
-                          <ProductCard product={product} className="w-full" />
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+          </div>
+        ) : (
+          <LocalProductBrowser products={products} />
+        )}
       </section>
     </div>
   )
